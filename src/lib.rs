@@ -1,7 +1,6 @@
 use cbqn_sys::*;
 use once_cell::sync::Lazy;
 use parking_lot::ReentrantMutex;
-use std::ffi::CString;
 use std::num::TryFromIntError;
 use std::sync::Once;
 
@@ -129,10 +128,14 @@ impl From<char> for BQNValue {
 
 impl From<&str> for BQNValue {
     fn from(v: &str) -> BQNValue {
-        let cstring = CString::new(v).expect("Input string must not contain null bytes");
-        let len = cstring.as_bytes().len();
+        let str_bytes = v.as_bytes();
         let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeUTF8Str(len.try_into().unwrap(), cstring.as_ptr()) })
+        BQNValue::new(unsafe {
+            bqn_makeUTF8Str(
+                str_bytes.len().try_into().unwrap(),
+                str_bytes.as_ptr() as *const i8,
+            )
+        })
     }
 }
 
@@ -218,11 +221,21 @@ impl FromIterator<i8> for BQNValue {
 
 /// Evaluates BQN code
 pub fn eval(bqn: &str) -> BQNValue {
-    INIT.call_once(|| unsafe { bqn_init() });
-    let cstring = CString::new(bqn)
-        .expect("input string must not have null bytes in the middle of the string");
+    INIT.call_once(|| {
+        let _l = LOCK.lock();
+        unsafe { bqn_init() }
+    });
+    let str_bytes = bqn.as_bytes();
     let _l = LOCK.lock();
-    BQNValue::new(unsafe { bqn_evalCStr(cstring.as_ptr()) })
+    let bqn_str = unsafe {
+        bqn_makeUTF8Str(
+            str_bytes.len().try_into().unwrap(),
+            str_bytes.as_ptr() as *const i8,
+        )
+    };
+    let ret = BQNValue::new(unsafe { bqn_eval(bqn_str) });
+    unsafe { bqn_free(bqn_str) }
+    ret
 }
 
 #[cfg(test)]

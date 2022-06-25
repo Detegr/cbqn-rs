@@ -21,6 +21,23 @@ impl BQNValue {
         BQNValue::new(unsafe { bqn_makeChar(0) })
     }
 
+    pub fn has_field(&self, field: &str) -> bool {
+        let _l = LOCK.lock();
+        unsafe { bqn_hasField(self.value, BQNValue::from(field).value) }
+    }
+
+    pub fn get_field(&self, field: &str) -> Option<BQNValue> {
+        let f = BQNValue::from(field);
+        let _l = LOCK.lock();
+        unsafe {
+            if bqn_hasField(self.value, f.value) {
+                Some(BQNValue::new(bqn_getField(self.value, f.value)))
+            } else {
+                None
+            }
+        }
+    }
+
     /// Calls BQN function with 1 argument
     pub fn call1(&self, x: &BQNValue) -> BQNValue {
         let _l = LOCK.lock();

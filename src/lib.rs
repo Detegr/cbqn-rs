@@ -55,7 +55,6 @@ impl BQNValue {
         let mut ret = Vec::with_capacity(b);
         unsafe {
             bqn_readF64Arr(self.value, ret.as_mut_ptr());
-            bqn_free(self.value);
             drop(l);
             ret.set_len(b);
         }
@@ -70,7 +69,6 @@ impl BQNValue {
         let mut ret = Vec::with_capacity(b);
         unsafe {
             bqn_readI32Arr(self.value, ret.as_mut_ptr());
-            bqn_free(self.value);
             drop(l);
             ret.set_len(b);
         }
@@ -85,7 +83,6 @@ impl BQNValue {
         let mut u32s = Vec::with_capacity(b);
         unsafe {
             bqn_readC32Arr(self.value, u32s.as_mut_ptr());
-            bqn_free(self.value);
             drop(l);
             u32s.set_len(b);
         }
@@ -98,6 +95,13 @@ impl BQNValue {
 
     pub fn bound(&self) -> u32 {
         unsafe { bqn_bound(self.value) }.try_into().unwrap()
+    }
+}
+
+impl Drop for BQNValue {
+    fn drop(&mut self) {
+        let _l = LOCK.lock();
+        unsafe { bqn_free(self.value) };
     }
 }
 

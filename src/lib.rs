@@ -18,7 +18,8 @@ impl BQNValue {
     }
 
     pub fn null() -> BQNValue {
-        eval("@")
+        let _l = LOCK.lock();
+        BQNValue::new(unsafe { bqn_makeChar(0) })
     }
 
     /// Calls BQN function with 1 argument

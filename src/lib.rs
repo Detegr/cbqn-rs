@@ -225,16 +225,8 @@ pub fn eval(bqn: &str) -> BQNValue {
         let _l = LOCK.lock();
         unsafe { bqn_init() }
     });
-    let str_bytes = bqn.as_bytes();
     let _l = LOCK.lock();
-    let bqn_str = unsafe {
-        bqn_makeUTF8Str(
-            str_bytes.len().try_into().unwrap(),
-            str_bytes.as_ptr() as *const i8,
-        )
-    };
-    let ret = BQNValue::new(unsafe { bqn_eval(bqn_str) });
-    unsafe { bqn_free(bqn_str) }
+    let ret = BQNValue::new(unsafe { bqn_eval(BQNValue::from(bqn).value) });
     ret
 }
 

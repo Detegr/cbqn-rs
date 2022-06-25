@@ -51,7 +51,7 @@ impl BQNValue {
     pub fn into_f64_vec(self) -> Result<Vec<f64>, TryFromIntError> {
         let l = LOCK.lock();
 
-        let b = unsafe { bqn_bound(self.value) }.try_into()?;
+        let b = self.bound()?;
         let mut ret = Vec::with_capacity(b);
         unsafe {
             bqn_readF64Arr(self.value, ret.as_mut_ptr());
@@ -65,7 +65,7 @@ impl BQNValue {
     pub fn into_i32_vec(self) -> Result<Vec<i32>, TryFromIntError> {
         let l = LOCK.lock();
 
-        let b = unsafe { bqn_bound(self.value) }.try_into()?;
+        let b = self.bound()?;
         let mut ret = Vec::with_capacity(b);
         unsafe {
             bqn_readI32Arr(self.value, ret.as_mut_ptr());
@@ -79,7 +79,7 @@ impl BQNValue {
     pub fn into_char_vec(self) -> Result<Vec<char>, TryFromIntError> {
         let l = LOCK.lock();
 
-        let b = unsafe { bqn_bound(self.value) }.try_into()?;
+        let b = self.bound()?;
         let mut u32s = Vec::with_capacity(b);
         unsafe {
             bqn_readC32Arr(self.value, u32s.as_mut_ptr());
@@ -93,8 +93,8 @@ impl BQNValue {
             .collect())
     }
 
-    pub fn bound(&self) -> u32 {
-        unsafe { bqn_bound(self.value) }.try_into().unwrap()
+    fn bound(&self) -> Result<usize, TryFromIntError> {
+        unsafe { bqn_bound(self.value) }.try_into()
     }
 }
 

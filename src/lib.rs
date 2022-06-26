@@ -95,7 +95,7 @@ impl BQNValue {
         ret
     }
 
-    pub fn into_string(self) -> String {
+    fn into_char_container<T: FromIterator<char>>(self) -> T {
         let l = LOCK.lock();
 
         let b = self.bound();
@@ -106,7 +106,15 @@ impl BQNValue {
             u32s.set_len(b);
         }
 
-        u32s.into_iter().filter_map(char::from_u32).collect()
+        u32s.into_iter().filter_map(char::from_u32).collect::<T>()
+    }
+
+    pub fn into_char_vec(self) -> Vec<char> {
+        self.into_char_container::<Vec<char>>()
+    }
+
+    pub fn into_string(self) -> String {
+        self.into_char_container::<String>()
     }
 
     fn bound(&self) -> usize {

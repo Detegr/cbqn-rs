@@ -1,7 +1,6 @@
 use cbqn_sys::*;
 use once_cell::sync::Lazy;
 use parking_lot::ReentrantMutex;
-use std::num::TryFromIntError;
 use std::sync::Once;
 
 mod macros;
@@ -68,10 +67,10 @@ impl BQNValue {
         unsafe { bqn_toChar(self.value) }
     }
 
-    pub fn into_f64_vec(self) -> Result<Vec<f64>, TryFromIntError> {
+    pub fn into_f64_vec(self) -> Vec<f64> {
         let l = LOCK.lock();
 
-        let b = self.bound()?;
+        let b = self.bound();
         let mut ret = Vec::with_capacity(b);
         unsafe {
             bqn_readF64Arr(self.value, ret.as_mut_ptr());
@@ -79,13 +78,13 @@ impl BQNValue {
             ret.set_len(b);
         }
 
-        Ok(ret)
+        ret
     }
 
-    pub fn into_i32_vec(self) -> Result<Vec<i32>, TryFromIntError> {
+    pub fn into_i32_vec(self) -> Vec<i32> {
         let l = LOCK.lock();
 
-        let b = self.bound()?;
+        let b = self.bound();
         let mut ret = Vec::with_capacity(b);
         unsafe {
             bqn_readI32Arr(self.value, ret.as_mut_ptr());
@@ -93,13 +92,13 @@ impl BQNValue {
             ret.set_len(b);
         }
 
-        Ok(ret)
+        ret
     }
 
-    pub fn into_string(self) -> Result<String, TryFromIntError> {
+    pub fn into_string(self) -> String {
         let l = LOCK.lock();
 
-        let b = self.bound()?;
+        let b = self.bound();
         let mut u32s = Vec::with_capacity(b);
         unsafe {
             bqn_readC32Arr(self.value, u32s.as_mut_ptr());
@@ -107,14 +106,11 @@ impl BQNValue {
             u32s.set_len(b);
         }
 
-        Ok(u32s
-            .into_iter()
-            .map(|c| unsafe { char::from_u32_unchecked(c) })
-            .collect())
+        u32s.into_iter().filter_map(char::from_u32).collect()
     }
 
-    fn bound(&self) -> Result<usize, TryFromIntError> {
-        unsafe { bqn_bound(self.value) }.try_into()
+    fn bound(&self) -> usize {
+        unsafe { bqn_bound(self.value) as usize }
     }
 }
 
@@ -202,19 +198,19 @@ mod tests {
     #[test]
     fn into_f64_vec() {
         let ret = eval("2‿∘⥊↕6");
-        assert_eq!(ret.into_f64_vec(), Ok(vec![0.0, 1.0, 2.0, 3.0, 4.0, 5.0]));
+        assert_eq!(ret.into_f64_vec(), vec![0.0, 1.0, 2.0, 3.0, 4.0, 5.0]);
     }
 
     #[test]
     fn into_u32_vec() {
         let ret = eval("0.25+↕5");
-        assert_eq!(ret.into_i32_vec(), Ok(vec![0, 1, 2, 3, 4]));
+        assert_eq!(ret.into_i32_vec(), vec![0, 1, 2, 3, 4]);
     }
     #[test]
     fn call1() {
         let f = eval("↕");
         let ret = f.call1(&5.into());
-        assert_eq!(ret.into_i32_vec(), Ok(vec![0, 1, 2, 3, 4]));
+        assert_eq!(ret.into_i32_vec(), vec![0, 1, 2, 3, 4]);
     }
 
     #[test]
@@ -279,6 +275,6 @@ mod tests {
         assert_eq!(BQN!("+´", [1, 2, 3]).into_f64(), 6.0);
         assert_eq!(BQN!('a', "+", 1).into_char(), Some('b'));
         let arr = BQN!("+`", [1, 2, 3]);
-        assert_eq!(BQN!(2, "×", arr).into_i32_vec(), Ok(vec![2, 6, 12]));
+        assert_eq!(BQN!(2, "×", arr).into_i32_vec(), vec![2, 6, 12]);
     }
 }

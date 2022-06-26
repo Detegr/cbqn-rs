@@ -96,7 +96,7 @@ impl BQNValue {
         Ok(ret)
     }
 
-    pub fn into_char_vec(self) -> Result<Vec<char>, TryFromIntError> {
+    pub fn into_string(self) -> Result<String, TryFromIntError> {
         let l = LOCK.lock();
 
         let b = self.bound()?;

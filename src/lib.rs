@@ -4,6 +4,9 @@ use parking_lot::ReentrantMutex;
 use std::num::TryFromIntError;
 use std::sync::Once;
 
+mod macros;
+use macros::*;
+
 static LOCK: Lazy<ReentrantMutex<()>> = Lazy::new(|| ReentrantMutex::new(()));
 
 static INIT: Once = Once::new();
@@ -156,85 +159,20 @@ impl From<&str> for BQNValue {
     }
 }
 
-impl From<&[f64]> for BQNValue {
-    fn from(arr: &[f64]) -> BQNValue {
-        let len = arr.len();
-        let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeF64Vec(len.try_into().unwrap(), arr.as_ptr()) })
-    }
-}
+impl_from_array!(f64, bqn_makeF64Vec);
+impl_from_array!(i32, bqn_makeI32Vec);
+impl_from_array!(i16, bqn_makeI16Vec);
+impl_from_array!(i8, bqn_makeI8Vec);
 
-impl From<&[i32]> for BQNValue {
-    fn from(arr: &[i32]) -> BQNValue {
-        let len = arr.len();
-        let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeI32Vec(len.try_into().unwrap(), arr.as_ptr()) })
-    }
-}
+impl_from_slice!(&[f64], bqn_makeF64Vec);
+impl_from_slice!(&[i32], bqn_makeI32Vec);
+impl_from_slice!(&[i16], bqn_makeI16Vec);
+impl_from_slice!(&[i8], bqn_makeI8Vec);
 
-impl From<&[i16]> for BQNValue {
-    fn from(arr: &[i16]) -> BQNValue {
-        let len = arr.len();
-        let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeI16Vec(len.try_into().unwrap(), arr.as_ptr()) })
-    }
-}
-
-impl From<&[i8]> for BQNValue {
-    fn from(arr: &[i8]) -> BQNValue {
-        let len = arr.len();
-        let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeI8Vec(len.try_into().unwrap(), arr.as_ptr()) })
-    }
-}
-
-impl FromIterator<f64> for BQNValue {
-    fn from_iter<T>(iter: T) -> BQNValue
-    where
-        T: IntoIterator<Item = f64>,
-    {
-        let elems = iter.into_iter().collect::<Vec<_>>();
-        let len = elems.len();
-        let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeF64Vec(len.try_into().unwrap(), elems.as_ptr()) })
-    }
-}
-
-impl FromIterator<i32> for BQNValue {
-    fn from_iter<T>(iter: T) -> BQNValue
-    where
-        T: IntoIterator<Item = i32>,
-    {
-        let elems = iter.into_iter().collect::<Vec<_>>();
-        let len = elems.len();
-        let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeI32Vec(len.try_into().unwrap(), elems.as_ptr()) })
-    }
-}
-
-impl FromIterator<i16> for BQNValue {
-    fn from_iter<T>(iter: T) -> BQNValue
-    where
-        T: IntoIterator<Item = i16>,
-    {
-        let elems = iter.into_iter().collect::<Vec<_>>();
-        let len = elems.len();
-        let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeI16Vec(len.try_into().unwrap(), elems.as_ptr()) })
-    }
-}
-
-impl FromIterator<i8> for BQNValue {
-    fn from_iter<T>(iter: T) -> BQNValue
-    where
-        T: IntoIterator<Item = i8>,
-    {
-        let elems = iter.into_iter().collect::<Vec<_>>();
-        let len = elems.len();
-        let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeI8Vec(len.try_into().unwrap(), elems.as_ptr()) })
-    }
-}
+impl_from_iterator!(f64, bqn_makeF64Vec);
+impl_from_iterator!(i32, bqn_makeI32Vec);
+impl_from_iterator!(i16, bqn_makeI16Vec);
+impl_from_iterator!(i8, bqn_makeI8Vec);
 
 /// Evaluates BQN code
 pub fn eval(bqn: &str) -> BQNValue {
@@ -284,6 +222,21 @@ mod tests {
         let f = eval("⊑");
         let ret = f.call2(&3.into(), &"hello".into());
         assert_eq!(ret.into_char(), Some('l'));
+    }
+
+    #[test]
+    fn fixed_size_array() {
+        let f = eval("+´");
+        f.call1(&[0.0, 1.0, 2.0, 3.0, 4.0].into());
+    }
+
+    #[test]
+    fn from_iterator_f64() {
+        let f = eval("+´");
+        let ret = f.call1(&BQNValue::from_iter(
+            [0.0f64, 1.0, 2.0, 3.0, 4.0].into_iter(),
+        ));
+        assert_eq!(ret.into_f64(), 10.0);
     }
 
     #[test]

@@ -38,6 +38,19 @@ macro_rules! impl_from_iterator {
     };
 }
 
+#[macro_export]
+macro_rules! BQN {
+    ($code:expr) => {
+        eval($code)
+    };
+    ($code:expr, $x:expr) => {
+        eval($code).call1(&BQNValue::from($x))
+    };
+    ($w:expr, $code:expr, $x:expr) => {
+        eval($code).call2(&BQNValue::from($w), &BQNValue::from($x))
+    };
+}
+
 pub(crate) use impl_from_array;
 pub(crate) use impl_from_iterator;
 pub(crate) use impl_from_slice;

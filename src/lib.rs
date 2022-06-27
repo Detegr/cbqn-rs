@@ -76,6 +76,9 @@ impl BQNValue {
         let b = self.bound();
         let mut ret = Vec::with_capacity(b);
         unsafe {
+            if !bqneltype_is_numeric(self.direct_arr_type()) {
+                panic!("value isn't a f64 array");
+            }
             bqn_readF64Arr(self.value, ret.as_mut_ptr());
             drop(l);
             ret.set_len(b);
@@ -90,6 +93,9 @@ impl BQNValue {
         let b = self.bound();
         let mut ret = Vec::with_capacity(b);
         unsafe {
+            if !bqneltype_is_numeric(self.direct_arr_type()) {
+                panic!("value isn't an i32 array");
+            }
             bqn_readI32Arr(self.value, ret.as_mut_ptr());
             drop(l);
             ret.set_len(b);
@@ -104,6 +110,9 @@ impl BQNValue {
         let b = self.bound();
         let mut ret = Vec::with_capacity(b);
         unsafe {
+            if !bqneltype_is_obj_arr(self.direct_arr_type()) {
+                panic!("value isn't an object array");
+            }
             bqn_readObjArr(self.value, ret.as_mut_ptr());
             drop(l);
             ret.set_len(b);
@@ -120,6 +129,9 @@ impl BQNValue {
         let b = self.bound();
         let mut u32s = Vec::with_capacity(b);
         unsafe {
+            if !bqneltype_is_char(self.direct_arr_type()) {
+                panic!("value isn't a character array");
+            }
             bqn_readC32Arr(self.value, u32s.as_mut_ptr());
             drop(l);
             u32s.set_len(b);
@@ -139,6 +151,30 @@ impl BQNValue {
     fn bound(&self) -> usize {
         unsafe { bqn_bound(self.value) as usize }
     }
+
+    fn direct_arr_type(&self) -> u32 {
+        unsafe { bqn_directArrType(self.value) }
+    }
+}
+
+const fn bqneltype_is_numeric(eltype: u32) -> bool {
+    #![allow(non_upper_case_globals)]
+    match eltype {
+        BQNElType_elt_f64 | BQNElType_elt_i32 | BQNElType_elt_i16 | BQNElType_elt_i8 => true,
+        _ => false,
+    }
+}
+
+const fn bqneltype_is_char(eltype: u32) -> bool {
+    #![allow(non_upper_case_globals)]
+    match eltype {
+        BQNElType_elt_c32 | BQNElType_elt_c16 | BQNElType_elt_c8 => true,
+        _ => false,
+    }
+}
+
+const fn bqneltype_is_obj_arr(eltype: u32) -> bool {
+    eltype == BQNElType_elt_unk
 }
 
 impl fmt::Debug for BQNValue {
@@ -219,11 +255,13 @@ pub fn eval(bqn: &str) -> BQNValue {
 #[cfg(test)]
 mod tests {
     use crate::*;
+
     #[test]
     fn into_char() {
         let ret = eval(r#"⊑"hello""#);
         assert_eq!(ret.into_char(), Some('h'));
     }
+
     #[test]
     fn into_u32() {
         let ret = eval(r#"⊑"hello""#);
@@ -237,7 +275,7 @@ mod tests {
     }
 
     #[test]
-    fn into_u32_vec() {
+    fn into_i32_vec() {
         let ret = eval("0.25+↕5");
         assert_eq!(ret.into_i32_vec(), vec![0, 1, 2, 3, 4]);
     }
@@ -328,5 +366,51 @@ mod tests {
     fn test_debug_repr() {
         let v = BQN!("1‿2‿3");
         assert_eq!(format!("{:?}", v), "⟨ 1 2 3 ⟩");
+    }
+
+    #[test]
+    #[should_panic]
+    fn should_panic_string_to_bqnvalue_vec() {
+        let _ = BQN!("•Fmt∘↑", "hello").into_bqnvalue_vec();
+    }
+
+    #[test]
+    #[should_panic]
+    fn should_panic_string_to_f64_vec() {
+        let _ = BQN!(r#""hello""#).into_f64_vec();
+    }
+
+    #[test]
+    #[should_panic]
+    fn should_panic_string_to_i32_vec() {
+        let _ = BQN!(r#""hello""#).into_i32_vec();
+    }
+
+    #[test]
+    #[should_panic]
+    fn should_panic_f64_to_string() {
+        let _ = BQN!("1.2‿3.4‿5.6").into_string();
+        // assert eltype == f64
+    }
+
+    #[test]
+    #[should_panic]
+    fn should_panic_u32_to_string() {
+        let _ = BQN!("67000‿68000").into_string();
+        // assert eltype == u32
+    }
+
+    #[test]
+    #[should_panic]
+    fn should_panic_u16_to_string() {
+        let _ = BQN!("1234‿5678").into_string();
+        // assert eltype == u16
+    }
+
+    #[test]
+    #[should_panic]
+    fn should_panic_u8_to_string() {
+        let _ = BQN!("12‿34").into_string();
+        // assert eltype == u8
     }
 }

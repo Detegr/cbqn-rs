@@ -9,6 +9,9 @@ use macros::*;
 static LOCK: Lazy<ReentrantMutex<()>> = Lazy::new(|| ReentrantMutex::new(()));
 
 static INIT: Once = Once::new();
+
+// Fields of this struct must not be altered.
+// It has to have the same in-memory representation than plain BQNV
 pub struct BQNValue {
     value: BQNV,
 }
@@ -93,6 +96,22 @@ impl BQNValue {
         }
 
         ret
+    }
+
+    pub fn into_bqnvalue_vec(self) -> Vec<BQNValue> {
+        let l = LOCK.lock();
+
+        let b = self.bound();
+        let mut ret = Vec::with_capacity(b);
+        unsafe {
+            bqn_readObjArr(self.value, ret.as_mut_ptr());
+            drop(l);
+            ret.set_len(b);
+
+            // NOTE: This relies on the fact that BQNValue has the same in-memory representation
+            // than u64 (BQNV)
+            std::mem::transmute::<Vec<u64>, Vec<BQNValue>>(ret)
+        }
     }
 
     fn into_char_container<T: FromIterator<char>>(self) -> T {
@@ -214,6 +233,17 @@ mod tests {
         let ret = eval("0.25+↕5");
         assert_eq!(ret.into_i32_vec(), vec![0, 1, 2, 3, 4]);
     }
+
+    #[test]
+    fn into_bqnvalue_vec() {
+        let strings = BQN!("↑", "hello")
+            .into_bqnvalue_vec()
+            .into_iter()
+            .map(|v| v.into_string())
+            .collect::<Vec<String>>();
+        assert_eq!(strings, vec!["", "h", "he", "hel", "hell", "hello"]);
+    }
+
     #[test]
     fn call1() {
         let f = eval("↕");

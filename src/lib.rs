@@ -1,7 +1,7 @@
 use cbqn_sys::*;
 use once_cell::sync::Lazy;
 use parking_lot::ReentrantMutex;
-use std::sync::Once;
+use std::{fmt, sync::Once};
 
 mod macros;
 use macros::*;
@@ -138,6 +138,14 @@ impl BQNValue {
 
     fn bound(&self) -> usize {
         unsafe { bqn_bound(self.value) as usize }
+    }
+}
+
+impl fmt::Debug for BQNValue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let fmt = crate::eval("•Fmt");
+        let formatted = fmt.call1(self);
+        write!(f, "{}", formatted.into_string())
     }
 }
 
@@ -314,5 +322,11 @@ mod tests {
         assert_eq!(BQN!('a', "+", 1).into_char(), Some('b'));
         let arr = BQN!("+`", [1, 2, 3]);
         assert_eq!(BQN!(2, "×", arr).into_i32_vec(), vec![2, 6, 12]);
+    }
+
+    #[test]
+    fn test_debug_repr() {
+        let v = BQN!("1‿2‿3");
+        assert_eq!(format!("{:?}", v), "⟨ 1 2 3 ⟩");
     }
 }

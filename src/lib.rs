@@ -28,12 +28,21 @@ impl BQNValue {
 
     pub fn has_field(&self, field: &str) -> bool {
         let _l = LOCK.lock();
+        if self.bqn_type() != BQNType::Namespace {
+            panic!("value isn't a namespace");
+        }
         unsafe { bqn_hasField(self.value, BQNValue::from(field).value) }
     }
 
     pub fn get_field(&self, field: &str) -> Option<BQNValue> {
-        let f = BQNValue::from(field);
         let _l = LOCK.lock();
+        if self.bqn_type() != BQNType::Namespace {
+            panic!("value isn't a namespace");
+        }
+        let f = BQNValue::from(field);
+        if !bqneltype_is_char(f.direct_arr_type()) {
+            panic!("field is not a string");
+        }
         unsafe {
             if bqn_hasField(self.value, f.value) {
                 Some(BQNValue::new(bqn_getField(self.value, f.value)))
@@ -57,28 +66,37 @@ impl BQNValue {
 
     pub fn into_f64(self) -> f64 {
         let _l = LOCK.lock();
+        if self.bqn_type() != BQNType::Number {
+            panic!("value isn't a number");
+        }
         unsafe { bqn_toF64(self.value) }
     }
 
     pub fn into_char(self) -> Option<char> {
         let _l = LOCK.lock();
+        if self.bqn_type() != BQNType::Character {
+            panic!("value isn't a character");
+        }
         unsafe { char::from_u32(bqn_toChar(self.value)) }
     }
 
     pub fn into_u32(self) -> u32 {
         let _l = LOCK.lock();
+        if self.bqn_type() != BQNType::Character {
+            panic!("value isn't a character");
+        }
         unsafe { bqn_toChar(self.value) }
     }
 
     pub fn into_f64_vec(self) -> Vec<f64> {
         let l = LOCK.lock();
+        if !bqneltype_is_numeric(self.direct_arr_type()) {
+            panic!("value isn't a f64 array");
+        }
 
         let b = self.bound();
         let mut ret = Vec::with_capacity(b);
         unsafe {
-            if !bqneltype_is_numeric(self.direct_arr_type()) {
-                panic!("value isn't a f64 array");
-            }
             bqn_readF64Arr(self.value, ret.as_mut_ptr());
             drop(l);
             ret.set_len(b);
@@ -89,13 +107,13 @@ impl BQNValue {
 
     pub fn into_i32_vec(self) -> Vec<i32> {
         let l = LOCK.lock();
+        if !bqneltype_is_numeric(self.direct_arr_type()) {
+            panic!("value isn't an i32 array");
+        }
 
         let b = self.bound();
         let mut ret = Vec::with_capacity(b);
         unsafe {
-            if !bqneltype_is_numeric(self.direct_arr_type()) {
-                panic!("value isn't an i32 array");
-            }
             bqn_readI32Arr(self.value, ret.as_mut_ptr());
             drop(l);
             ret.set_len(b);
@@ -106,13 +124,17 @@ impl BQNValue {
 
     pub fn into_bqnvalue_vec(self) -> Vec<BQNValue> {
         let l = LOCK.lock();
+        if !bqneltype_is_unknown(self.direct_arr_type()) {
+            panic!("value isn't an object array");
+        } else {
+            if self.bqn_type() != BQNType::Array {
+                panic!("value isn't an object array");
+            }
+        }
 
         let b = self.bound();
         let mut ret = Vec::with_capacity(b);
         unsafe {
-            if !bqneltype_is_obj_arr(self.direct_arr_type()) {
-                panic!("value isn't an object array");
-            }
             bqn_readObjArr(self.value, ret.as_mut_ptr());
             drop(l);
             ret.set_len(b);
@@ -125,13 +147,13 @@ impl BQNValue {
 
     fn into_char_container<T: FromIterator<char>>(self) -> T {
         let l = LOCK.lock();
+        if !bqneltype_is_char(self.direct_arr_type()) {
+            panic!("value isn't a character array");
+        }
 
         let b = self.bound();
         let mut u32s = Vec::with_capacity(b);
         unsafe {
-            if !bqneltype_is_char(self.direct_arr_type()) {
-                panic!("value isn't a character array");
-            }
             bqn_readC32Arr(self.value, u32s.as_mut_ptr());
             drop(l);
             u32s.set_len(b);
@@ -152,8 +174,39 @@ impl BQNValue {
         unsafe { bqn_bound(self.value) as usize }
     }
 
+    fn bqn_type(&self) -> BQNType {
+        BQNType::try_from(unsafe { bqn_type(self.value) }).expect("expected to handle all types")
+    }
+
     fn direct_arr_type(&self) -> u32 {
         unsafe { bqn_directArrType(self.value) }
+    }
+}
+
+#[derive(Debug, PartialEq)]
+enum BQNType {
+    Array,
+    Number,
+    Character,
+    Function,
+    Mod1,
+    Mod2,
+    Namespace,
+}
+impl TryFrom<i32> for BQNType {
+    type Error = &'static str;
+
+    fn try_from(value: i32) -> Result<Self, Self::Error> {
+        match value {
+            0 => Ok(BQNType::Array),
+            1 => Ok(BQNType::Number),
+            2 => Ok(BQNType::Character),
+            3 => Ok(BQNType::Function),
+            4 => Ok(BQNType::Mod1),
+            5 => Ok(BQNType::Mod2),
+            6 => Ok(BQNType::Namespace),
+            _ => Err("Invalid type"),
+        }
     }
 }
 
@@ -173,7 +226,7 @@ const fn bqneltype_is_char(eltype: u32) -> bool {
     }
 }
 
-const fn bqneltype_is_obj_arr(eltype: u32) -> bool {
+const fn bqneltype_is_unknown(eltype: u32) -> bool {
     eltype == BQNElType_elt_unk
 }
 
@@ -255,6 +308,19 @@ pub fn eval(bqn: &str) -> BQNValue {
 #[cfg(test)]
 mod tests {
     use crate::*;
+    use std::panic;
+
+    fn c8_str() -> BQNValue {
+        BQN!(r#""hello""#)
+    }
+
+    fn c16_str() -> BQNValue {
+        BQN!(r#""hello∘""#)
+    }
+
+    fn c32_str() -> BQNValue {
+        BQN!(r#""hello💣""#)
+    }
 
     #[test]
     fn into_char() {
@@ -369,48 +435,190 @@ mod tests {
     }
 
     #[test]
-    #[should_panic]
-    fn should_panic_string_to_bqnvalue_vec() {
-        let _ = BQN!("•Fmt∘↑", "hello").into_bqnvalue_vec();
+    fn should_panic_c8_string_to_f64_vec() {
+        let v = c8_str();
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_c8);
+        assert!(panic::catch_unwind(move || {
+            _ = v.into_f64_vec();
+        })
+        .is_err());
     }
 
     #[test]
-    #[should_panic]
-    fn should_panic_string_to_f64_vec() {
-        let _ = BQN!(r#""hello""#).into_f64_vec();
+    fn should_panic_c16_string_to_f64_vec() {
+        let v = c16_str();
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_c16);
+        assert!(panic::catch_unwind(move || {
+            _ = v.into_f64_vec();
+        })
+        .is_err());
     }
 
     #[test]
-    #[should_panic]
-    fn should_panic_string_to_i32_vec() {
-        let _ = BQN!(r#""hello""#).into_i32_vec();
+    fn should_panic_c32_string_to_f64_vec() {
+        let v = c32_str();
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_c32);
+        assert!(panic::catch_unwind(move || {
+            _ = v.into_f64_vec();
+        })
+        .is_err());
     }
 
     #[test]
-    #[should_panic]
-    fn should_panic_f64_to_string() {
-        let _ = BQN!("1.2‿3.4‿5.6").into_string();
-        // assert eltype == f64
+    fn should_panic_c8_string_to_i32_vec() {
+        let v = c8_str();
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_c8);
+        assert!(panic::catch_unwind(move || {
+            _ = v.into_i32_vec();
+        })
+        .is_err());
     }
 
     #[test]
-    #[should_panic]
-    fn should_panic_u32_to_string() {
-        let _ = BQN!("67000‿68000").into_string();
-        // assert eltype == u32
+    fn should_panic_c16_string_to_i32_vec() {
+        let v = c16_str();
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_c16);
+        assert!(panic::catch_unwind(move || {
+            _ = v.into_i32_vec();
+        })
+        .is_err());
     }
 
     #[test]
-    #[should_panic]
-    fn should_panic_u16_to_string() {
-        let _ = BQN!("1234‿5678").into_string();
-        // assert eltype == u16
+    fn should_panic_c32_string_to_i32_vec() {
+        let v = c32_str();
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_c32);
+        assert!(panic::catch_unwind(move || {
+            v.into_i32_vec();
+        })
+        .is_err());
     }
 
     #[test]
-    #[should_panic]
-    fn should_panic_u8_to_string() {
-        let _ = BQN!("12‿34").into_string();
-        // assert eltype == u8
+    fn should_panic_f64_arr_to_string() {
+        let v = BQN!("1.2‿3.4‿5.6");
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_f64);
+        assert!(panic::catch_unwind(move || {
+            let _ = v.into_string();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_i32_arr_to_string() {
+        let v = BQN!("67000‿68000");
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_i32);
+        assert!(panic::catch_unwind(move || {
+            v.into_string();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_i16_arr_to_string() {
+        let v = BQN!("1234‿5678");
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_i16);
+        assert!(panic::catch_unwind(move || {
+            v.into_string();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_i8_arr_to_string() {
+        let v = BQN!("12‿34");
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_i8);
+        assert!(panic::catch_unwind(move || {
+            v.into_string();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_number_to_string() {
+        let v = BQN!("123");
+        assert!(panic::catch_unwind(move || {
+            v.into_string();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_c8_string_to_bqnvalue_vec() {
+        let v = c8_str();
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_c8);
+        assert!(panic::catch_unwind(move || {
+            _ = v.into_bqnvalue_vec();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_c16_string_to_bqnvalue_vec() {
+        let v = c16_str();
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_c16);
+        assert!(panic::catch_unwind(move || {
+            _ = v.into_bqnvalue_vec();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_c32_string_to_bqnvalue_vec() {
+        let v = c32_str();
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_c32);
+        assert!(panic::catch_unwind(move || {
+            _ = v.into_bqnvalue_vec();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_f64_arr_to_bqnvalue_vec() {
+        let v = BQN!("1.2‿3.4‿5.6");
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_f64);
+        assert!(panic::catch_unwind(move || {
+            let _ = v.into_bqnvalue_vec();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_i32_arr_to_bqnvalue_vec() {
+        let v = BQN!("67000‿68000");
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_i32);
+        assert!(panic::catch_unwind(move || {
+            v.into_bqnvalue_vec();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_i16_arr_to_bqnvalue_vec() {
+        let v = BQN!("1234‿5678");
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_i16);
+        assert!(panic::catch_unwind(move || {
+            v.into_bqnvalue_vec();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_i8_arr_to_bqnvalue_vec() {
+        let v = BQN!("12‿34");
+        assert_eq!(v.direct_arr_type(), BQNElType_elt_i8);
+        assert!(panic::catch_unwind(move || {
+            v.into_bqnvalue_vec();
+        })
+        .is_err());
+    }
+
+    #[test]
+    fn should_panic_number_to_bqnvalue_vec() {
+        let v = BQN!("123");
+        assert!(panic::catch_unwind(move || {
+            v.into_bqnvalue_vec();
+        })
+        .is_err());
     }
 }

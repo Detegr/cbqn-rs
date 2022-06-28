@@ -53,6 +53,37 @@ macro_rules! impl_from_iterator {
     };
 }
 
+/// Convenience macro for running BQN expressions
+///
+/// Takes a string of BQN code and optional left and right argument
+/// # Examples
+/// ```
+/// # use cbqn::{BQN, BQNValue, eval};
+/// let sum = BQN!("1+1");
+/// assert_eq!(sum.into_f64(), 2.0);
+/// ```
+///
+/// ```
+/// # use cbqn::{BQN, BQNValue, eval};
+/// let bqn_is_anagram = BQN!("⌽≡⊢", "BQN");
+/// assert_eq!(bqn_is_anagram.into_f64(), 0.0);
+/// ```
+///
+/// ```
+/// # use cbqn::{BQN, BQNValue, eval};
+/// let strs = BQN!(' ', "(⊢-˜+`×¬)∘=⊔⊢", "Rust ❤️ BQN")
+///     .into_bqnvalue_vec()
+///     .into_iter()
+///     .map(BQNValue::into_string)
+///     .collect::<Vec<String>>();
+/// assert_eq!(strs, ["Rust", "❤️", "BQN"]);
+/// ```
+///
+/// ```
+/// # use cbqn::{BQN, BQNValue, eval};
+/// let strings = ["join", "these", "please"];
+/// assert_eq!(BQN!("∾", strings).into_string(), "jointheseplease");
+/// ```
 #[macro_export]
 macro_rules! BQN {
     ($code:expr) => {

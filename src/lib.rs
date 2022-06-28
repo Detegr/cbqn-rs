@@ -1,3 +1,74 @@
+//! cbqn
+//!
+//! A crate for running [BQN](https://mlochbaum.github.io/BQN) code within a Rust program using [CBQN](https://github.com/dzaima/CBQN) interpreter compiled as a shared object.
+//!
+//! # Usage
+//!
+//! Simple expressions can be run with the `BQN!` convenience macro. For more advanced use, the
+//! methods of `BQNValue` provide the necessary functionality.
+//!
+//! # Examples using the BQN! macro
+//! ```
+//! # use cbqn::{BQN, BQNValue, eval};
+//! let sum = BQN!("1+1");
+//! assert_eq!(sum.into_f64(), 2.0);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQN, BQNValue, eval};
+//! assert_eq!(BQN!("⌽≡⊢", "BQN").into_f64(), 0.0);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQN, BQNValue, eval};
+//! let strs = BQN!(' ', "(⊢-˜+`×¬)∘=⊔⊢", "Rust ❤️ BQN")
+//!     .into_bqnvalue_vec()
+//!     .into_iter()
+//!     .map(BQNValue::into_string)
+//!     .collect::<Vec<String>>();
+//! assert_eq!(strs, ["Rust", "❤️", "BQN"]);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQN, BQNValue, eval};
+//! let strings = ["join", "these", "please"];
+//! assert_eq!(BQN!("∾", strings).into_string(), "jointheseplease");
+//! ```
+//!
+//! # Examples using BQNValue
+//!
+//! ```
+//! # use cbqn::{BQNValue, eval};
+//! let sum = eval("1+1");
+//! assert_eq!(sum.into_f64(), 2.0);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQNValue, eval};
+//! let is_anagram = eval("⌽≡⊢");
+//! assert_eq!(is_anagram.call1(&"BQN".into()).into_f64(), 0.0);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQNValue, eval};
+//! let split = eval("(⊢-˜+`×¬)∘=⊔⊢");
+//! let strs = split.call2(&' '.into(), &"Rust ❤️ BQN".into())
+//!     .into_bqnvalue_vec()
+//!     .into_iter()
+//!     .map(BQNValue::into_string)
+//!     .collect::<Vec<String>>();
+//! assert_eq!(strs, ["Rust", "❤️", "BQN"]);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQN, BQNValue, eval};
+//! let counter = BQN!("{v←0 ⋄ Inc⇐{v+↩𝕩}}");
+//! let increment = counter.get_field("inc").unwrap();
+//! increment.call1(&1.into());
+//! increment.call1(&2.into());
+//! let result = increment.call1(&3.into());
+//! assert_eq!(result.into_f64(), 6.0);
+//! ```
 use cbqn_sys::*;
 use once_cell::sync::Lazy;
 use parking_lot::ReentrantMutex;
@@ -13,12 +84,12 @@ mod typecheck;
 use typecheck::*;
 
 static LOCK: Lazy<ReentrantMutex<()>> = Lazy::new(|| ReentrantMutex::new(()));
-
 static INIT: Once = Once::new();
 
-// Fields of this struct must not be altered.
-// It has to have the same in-memory representation than plain BQNV
+/// Represents a BQN value
 pub struct BQNValue {
+    // Fields of this struct must not be altered.
+    // It has to have the same in-memory representation than plain BQNV
     value: BQNV,
 }
 
@@ -27,12 +98,28 @@ impl BQNValue {
         BQNValue { value }
     }
 
+    /// Constructs a BQN null value `@`
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use cbqn::{BQN, BQNValue, eval};
+    /// BQN!('a', "-", BQNValue::null());
+    /// ```
     pub fn null() -> BQNValue {
         let _l = LOCK.lock();
         crate::INIT.call_once(|| unsafe { bqn_init() });
         BQNValue::new(unsafe { bqn_makeChar(0) })
     }
 
+    /// Returns a boolean value indicating whether `field` exists in a BQN namespace
+    /// As CBQN requires the searched field name to be in a string with all lowercase letters, this
+    /// function returns `false` if it is supplied with a `field` string that contains uppercase
+    /// characters.
+    ///
+    /// # Panics
+    ///
+    /// * If `self` isn't a namespace.
     pub fn has_field(&self, field: &str) -> bool {
         let _l = LOCK.lock();
 
@@ -47,6 +134,15 @@ impl BQNValue {
         unsafe { bqn_hasField(self.value, BQNValue::from(field).value) }
     }
 
+    /// Returns `field` from a BQN namespace as `BQNValue`. Returns `None` if the field cannot be
+    /// found.
+    /// As CBQN requires the searched field name to be in a string with all lowercase letters, this
+    /// function returns `None` if it is supplied with a `field` string that contains uppercase
+    /// characters.
+    ///
+    /// # Panics
+    ///
+    /// * If `self` isn't a namespace.
     pub fn get_field(&self, field: &str) -> Option<BQNValue> {
         let _l = LOCK.lock();
 
@@ -68,18 +164,22 @@ impl BQNValue {
         }
     }
 
-    /// Calls BQN function with 1 argument
+    /// Calls `BQNValue` as a function with one argument
     pub fn call1(&self, x: &BQNValue) -> BQNValue {
         let _l = LOCK.lock();
         BQNValue::new(unsafe { bqn_call1(self.value, x.value) })
     }
 
-    /// Calls BQN function with 2 arguments
+    /// Calls `BQNValue` as a function with two arguments
     pub fn call2(&self, w: &BQNValue, x: &BQNValue) -> BQNValue {
         let _l = LOCK.lock();
         unsafe { BQNValue::new(bqn_call2(self.value, w.value, x.value)) }
     }
 
+    /// Converts `BQNValue` into `f64`
+    ///
+    /// # Panics
+    /// * If `self` isn't a number
     pub fn into_f64(self) -> f64 {
         let _l = LOCK.lock();
         if self.bqn_type() != BQNType::Number {
@@ -88,6 +188,13 @@ impl BQNValue {
         unsafe { bqn_toF64(self.value) }
     }
 
+    /// Converts `BQNValue` into `char`
+    ///
+    /// Returns `None` if the value is not an Unicode scalar value. Rust `char`s cannot represent
+    /// characters that are not Unicode scalar values.
+    ///
+    /// # Panics
+    /// * If `self` isn't a BQN character
     pub fn into_char(self) -> Option<char> {
         let _l = LOCK.lock();
         if self.bqn_type() != BQNType::Character {
@@ -96,6 +203,13 @@ impl BQNValue {
         unsafe { char::from_u32(bqn_toChar(self.value)) }
     }
 
+    /// Converts `BQNValue` into `u32`
+    ///
+    /// BQN characters can contain values that aren't Unicode scalar values. Those characters can
+    /// be converted into a Rust type `u32` using this function.
+    ///
+    /// # Panics
+    /// * If `self` isn't a BQN character
     pub fn into_u32(self) -> u32 {
         let _l = LOCK.lock();
         if self.bqn_type() != BQNType::Character {
@@ -104,6 +218,10 @@ impl BQNValue {
         unsafe { bqn_toChar(self.value) }
     }
 
+    /// Converts `BQNValue` into a vector of `f64`s
+    ///
+    /// # Panics
+    /// * If `self` isn't a BQN array containing numbers
     pub fn into_f64_vec(self) -> Vec<f64> {
         let l = LOCK.lock();
         if !bqneltype_is_numeric(self.direct_arr_type()) {
@@ -121,6 +239,12 @@ impl BQNValue {
         ret
     }
 
+    /// Converts `BQNValue` into a vector of `i32`s
+    ///
+    /// This function will do a lossy conversion from `f64` to `i32` for the values of the array.
+    ///
+    /// # Panics
+    /// * If `self` isn't a BQN array containing numbers
     pub fn into_i32_vec(self) -> Vec<i32> {
         let l = LOCK.lock();
         if !bqneltype_is_numeric(self.direct_arr_type()) {
@@ -138,6 +262,10 @@ impl BQNValue {
         ret
     }
 
+    /// Converts `BQNValue` into a vector of `BQNValue`s
+    ///
+    /// # Panics
+    /// * If `self` isn't a BQN array that contains BQN objects
     pub fn into_bqnvalue_vec(self) -> Vec<BQNValue> {
         let l = LOCK.lock();
         if !bqneltype_is_unknown(self.direct_arr_type()) {
@@ -178,10 +306,18 @@ impl BQNValue {
         u32s.into_iter().filter_map(char::from_u32).collect::<T>()
     }
 
+    /// Converts `BQNValue` into vector of `char`s
+    ///
+    /// # Panics
+    /// * If `self` isn't a BQN array that contains characters
     pub fn into_char_vec(self) -> Vec<char> {
         self.into_char_container::<Vec<char>>()
     }
 
+    /// Converts `BQNValue` into a `String`
+    ///
+    /// # Panics
+    /// * If `self` isn't a BQN array that contains characters
     pub fn into_string(self) -> String {
         self.into_char_container::<String>()
     }
@@ -215,6 +351,13 @@ impl Drop for BQNValue {
 }
 
 /// Evaluates BQN code
+///
+/// # Examples
+/// ```
+/// # use cbqn::eval;
+/// let bqnv = eval("1+1");
+/// let bqnfn = eval("{𝕩×10}");
+/// ```
 pub fn eval(bqn: &str) -> BQNValue {
     INIT.call_once(|| {
         let _l = LOCK.lock();

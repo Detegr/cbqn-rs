@@ -20,7 +20,7 @@ fn into_f64_vec() {
 
 #[test]
 fn into_i32_vec() {
-    let ret = eval("0.25+↕5");
+    let ret = eval("0.75+↕5");
     assert_eq!(ret.into_i32_vec(), vec![0, 1, 2, 3, 4]);
 }
 

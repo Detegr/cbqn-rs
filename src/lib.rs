@@ -59,9 +59,6 @@ impl BQNValue {
             panic!("value isn't a namespace");
         }
         let f = BQNValue::from(field);
-        if !bqneltype_is_char(f.direct_arr_type()) {
-            panic!("field is not a string");
-        }
         unsafe {
             if bqn_hasField(self.value, f.value) {
                 Some(BQNValue::new(bqn_getField(self.value, f.value)))

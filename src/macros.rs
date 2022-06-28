@@ -2,6 +2,11 @@ macro_rules! impl_from_slice {
     ($ty:ty, $fn:ident) => {
         impl From<$ty> for BQNValue {
             fn from(arr: $ty) -> BQNValue {
+                crate::INIT.call_once(|| {
+                    let _l = LOCK.lock();
+                    unsafe { bqn_init() }
+                });
+
                 let len = arr.len();
                 let _l = LOCK.lock();
                 BQNValue::new(unsafe { $fn(len.try_into().unwrap(), arr.as_ptr()) })
@@ -14,6 +19,11 @@ macro_rules! impl_from_array {
     ($ty:ty, $fn:ident) => {
         impl<const N: usize> From<[$ty; N]> for BQNValue {
             fn from(arr: [$ty; N]) -> BQNValue {
+                crate::INIT.call_once(|| {
+                    let _l = LOCK.lock();
+                    unsafe { bqn_init() }
+                });
+
                 let len = arr.len();
                 let _l = LOCK.lock();
                 BQNValue::new(unsafe { $fn(len.try_into().unwrap(), arr.as_ptr()) })
@@ -29,6 +39,11 @@ macro_rules! impl_from_iterator {
             where
                 T: IntoIterator<Item = $ty>,
             {
+                crate::INIT.call_once(|| {
+                    let _l = LOCK.lock();
+                    unsafe { bqn_init() }
+                });
+
                 let elems = iter.into_iter().collect::<Vec<_>>();
                 let len = elems.len();
                 let _l = LOCK.lock();

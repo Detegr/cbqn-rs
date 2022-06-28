@@ -29,6 +29,7 @@ impl BQNValue {
 
     pub fn null() -> BQNValue {
         let _l = LOCK.lock();
+        crate::INIT.call_once(|| unsafe { bqn_init() });
         BQNValue::new(unsafe { bqn_makeChar(0) })
     }
 

@@ -35,6 +35,12 @@ impl BQNValue {
 
     pub fn has_field(&self, field: &str) -> bool {
         let _l = LOCK.lock();
+
+        // CBQN requires the string to be all lowercase
+        if !field.chars().all(char::is_lowercase) {
+            return false;
+        }
+
         if self.bqn_type() != BQNType::Namespace {
             panic!("value isn't a namespace");
         }
@@ -43,6 +49,12 @@ impl BQNValue {
 
     pub fn get_field(&self, field: &str) -> Option<BQNValue> {
         let _l = LOCK.lock();
+
+        // CBQN requires the string to be all lowercase
+        if !field.chars().all(char::is_lowercase) {
+            return None;
+        }
+
         if self.bqn_type() != BQNType::Namespace {
             panic!("value isn't a namespace");
         }

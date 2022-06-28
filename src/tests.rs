@@ -13,6 +13,10 @@ fn c32_str() -> BQNValue {
     BQN!(r#""hello💣""#)
 }
 
+fn ns() -> BQNValue {
+    BQN!("{a⇐1, B⇐{a+𝕩}}")
+}
+
 #[test]
 fn into_char() {
     let ret = eval(r#"⊑"hello""#);
@@ -369,4 +373,26 @@ fn should_panic_null_to_string() {
 #[should_panic]
 fn should_panic_null_to_char_vec() {
     let _ = BQNValue::null().into_char_vec();
+}
+
+#[test]
+fn namespace() {
+    let ns = ns();
+
+    assert!(ns.has_field("a"));
+    assert!(ns.get_field("a").is_some());
+    assert!(!ns.has_field("A"));
+    assert!(ns.get_field("A").is_none());
+    assert!(ns.has_field("b"));
+    assert!(ns.get_field("b").is_some());
+    assert!(!ns.has_field("B"));
+    assert!(ns.get_field("B").is_none());
+    assert!(!ns.has_field("c"));
+    assert!(ns.get_field("c").is_none());
+
+    assert_eq!(ns.get_field("a").map(BQNValue::into_f64), Some(1.0));
+    assert_eq!(
+        ns.get_field("b").map(|b| b.call1(&1.into()).into_f64()),
+        Some(2.0)
+    );
 }

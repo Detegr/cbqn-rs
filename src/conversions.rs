@@ -35,6 +35,22 @@ impl From<&str> for BQNValue {
     }
 }
 
+impl<const N: usize> From<[&str; N]> for BQNValue {
+    fn from(arr: [&str; N]) -> BQNValue {
+        let mut strs = Vec::with_capacity(N);
+        for s in arr {
+            let str_bytes = s.as_bytes();
+            strs.push(unsafe {
+                bqn_makeUTF8Str(
+                    str_bytes.len().try_into().unwrap(),
+                    str_bytes.as_ptr() as *const i8,
+                )
+            });
+        }
+        BQNValue::new(unsafe { bqn_makeObjVec(N as u64, strs.as_ptr()) })
+    }
+}
+
 impl_from_array!(f64, bqn_makeF64Vec);
 impl_from_array!(i32, bqn_makeI32Vec);
 impl_from_array!(i16, bqn_makeI16Vec);

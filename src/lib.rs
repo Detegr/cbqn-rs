@@ -72,7 +72,8 @@
 use cbqn_sys::*;
 use once_cell::sync::Lazy;
 use parking_lot::ReentrantMutex;
-use std::{fmt, sync::Once};
+use rand::{self, prelude::*};
+use std::{cell::RefCell, collections::HashMap, fmt, mem, sync::Once};
 
 #[cfg(test)]
 mod tests;
@@ -88,14 +89,16 @@ static INIT: Once = Once::new();
 
 /// Represents a BQN value
 pub struct BQNValue {
-    // Fields of this struct must not be altered.
-    // It has to have the same in-memory representation than plain BQNV
     value: BQNV,
+    boundfn_key: u64,
 }
 
 impl BQNValue {
     fn new(value: BQNV) -> BQNValue {
-        BQNValue { value }
+        BQNValue {
+            value,
+            boundfn_key: 0,
+        }
     }
 
     /// Constructs a BQN null value `@`
@@ -277,16 +280,14 @@ impl BQNValue {
         }
 
         let b = self.bound();
-        let mut ret = Vec::with_capacity(b);
+        let mut objarr = Vec::with_capacity(b);
         unsafe {
-            bqn_readObjArr(self.value, ret.as_mut_ptr());
+            bqn_readObjArr(self.value, objarr.as_mut_ptr());
             drop(l);
-            ret.set_len(b);
-
-            // NOTE: This relies on the fact that BQNValue has the same in-memory representation
-            // than u64 (BQNV)
-            std::mem::transmute::<Vec<u64>, Vec<BQNValue>>(ret)
+            objarr.set_len(b);
         }
+
+        objarr.into_iter().map(BQNValue::new).collect()
     }
 
     fn to_char_container<T: FromIterator<char>>(&self) -> T {
@@ -322,6 +323,76 @@ impl BQNValue {
         self.to_char_container::<String>()
     }
 
+    /// Generates a BQNValue from a Rust function
+    ///
+    /// The function receives two arguments.
+    ///
+    /// # Examples
+    /// ```
+    /// # use cbqn::{BQN, BQNValue, eval};
+    /// let add_three = BQNValue::fn1(|x| BQNValue::from(x.to_f64() + 3.0));
+    /// assert_eq!(BQN!(3, "{𝕏𝕨}", add_three).to_f64(), 6.0);
+    /// ```
+    pub fn fn1<F: Fn(&BQNValue) -> BQNValue + 'static>(f: F) -> BQNValue {
+        INIT.call_once(|| {
+            let _l = LOCK.lock();
+            unsafe { bqn_init() }
+        });
+
+        let mut rng = rand::thread_rng();
+        let mut key = rng.gen::<u64>() & 0xFFFFFFFF;
+        FNS.with(|fns| {
+            let mut boundfns = fns.borrow_mut();
+            // unlikely
+            while boundfns.boundfn_1.contains_key(&key) || key == 0 {
+                key = rng.gen::<u64>() & 0xFFFFFFFF;
+            }
+            boundfns.boundfn_1.insert(key, Box::new(f));
+        });
+
+        let obj = BQNValue::from(f64::from_bits(key));
+        let _l = LOCK.lock();
+        BQNValue {
+            value: unsafe { bqn_makeBoundFn1(Some(boundfn_1_wrapper), obj.value) },
+            boundfn_key: key,
+        }
+    }
+
+    /// Generates a BQNValue from a Rust function
+    ///
+    /// The function receives two arguments.
+    ///
+    /// # Examples
+    /// ```
+    /// # use cbqn::{BQN, BQNValue, eval};
+    /// let multiply = BQNValue::fn2(|w, x| BQNValue::from(w.to_f64() * x.to_f64()));
+    /// assert_eq!(BQN!(multiply, "{𝕎´𝕩}", [1,2,3,4,5]).to_f64(), 120.0);
+    /// ```
+    pub fn fn2<F: Fn(&BQNValue, &BQNValue) -> BQNValue + 'static>(f: F) -> BQNValue {
+        INIT.call_once(|| {
+            let _l = LOCK.lock();
+            unsafe { bqn_init() }
+        });
+
+        let mut rng = rand::thread_rng();
+        let mut key = rng.gen::<u64>() & 0xFFFFFFFF00000000;
+        FNS.with(|fns| {
+            let mut boundfns = fns.borrow_mut();
+            // unlikely
+            while boundfns.boundfn_2.contains_key(&key) || key == 0 {
+                key = rng.gen::<u64>() & 0xFFFFFFFF00000000;
+            }
+            boundfns.boundfn_2.insert(key, Box::new(f));
+        });
+
+        let obj = BQNValue::from(f64::from_bits(key));
+        let _l = LOCK.lock();
+        BQNValue {
+            value: unsafe { bqn_makeBoundFn2(Some(boundfn_2_wrapper), obj.value) },
+            boundfn_key: key,
+        }
+    }
+
     fn bound(&self) -> usize {
         unsafe { bqn_bound(self.value) as usize }
     }
@@ -347,7 +418,70 @@ impl Drop for BQNValue {
     fn drop(&mut self) {
         let _l = LOCK.lock();
         unsafe { bqn_free(self.value) };
+        if self.boundfn_key > 0 {
+            FNS.with(|fns| {
+                if self.boundfn_key <= 0xFFFFFFFF {
+                    (*fns.borrow_mut()).boundfn_1.remove(&self.boundfn_key);
+                } else {
+                    (*fns.borrow_mut()).boundfn_2.remove(&self.boundfn_key);
+                }
+            })
+        }
     }
+}
+
+#[derive(Default)]
+struct BoundFns {
+    boundfn_1: HashMap<u64, Box<dyn Fn(&BQNValue) -> BQNValue>>,
+    boundfn_2: HashMap<u64, Box<dyn Fn(&BQNValue, &BQNValue) -> BQNValue>>,
+}
+
+thread_local! {
+    static FNS: RefCell<BoundFns> = RefCell::new(BoundFns::default());
+}
+
+unsafe extern "C" fn boundfn_1_wrapper(obj: BQNV, x: BQNV) -> BQNV {
+    let key = BQNValue::new(obj).to_f64().to_bits();
+
+    let tgt = FNS.with(|fns| {
+        let mut boundfns = fns.borrow_mut();
+        boundfns.boundfn_1.remove(&key).unwrap()
+    });
+
+    let l = LOCK.lock();
+    let ret = tgt(&BQNValue::new(x));
+    drop(l);
+
+    FNS.with(|fns| {
+        let mut boundfns = fns.borrow_mut();
+        boundfns.boundfn_1.insert(key, Box::new(tgt));
+    });
+
+    let retval = ret.value;
+    mem::forget(ret);
+    retval
+}
+
+unsafe extern "C" fn boundfn_2_wrapper(obj: BQNV, w: BQNV, x: BQNV) -> BQNV {
+    let key = BQNValue::new(obj).to_f64().to_bits();
+
+    let tgt = FNS.with(|fns| {
+        let mut boundfns = fns.borrow_mut();
+        boundfns.boundfn_2.remove(&key).unwrap()
+    });
+
+    let l = LOCK.lock();
+    let ret = tgt(&BQNValue::new(w), &BQNValue::new(x));
+    drop(l);
+
+    FNS.with(|fns| {
+        let mut boundfns = fns.borrow_mut();
+        boundfns.boundfn_2.insert(key, Box::new(tgt));
+    });
+
+    let retval = ret.value;
+    mem::forget(ret);
+    retval
 }
 
 /// Evaluates BQN code

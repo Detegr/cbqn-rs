@@ -1,4 +1,5 @@
 mod arrconv;
+mod boundfn;
 mod from;
 mod gen;
 mod null;

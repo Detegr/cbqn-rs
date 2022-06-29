@@ -1,8 +1,8 @@
 mod arrconv;
 mod from;
 mod gen;
-mod into;
 mod null;
+mod to;
 
 use crate::*;
 use gen::*;
@@ -12,14 +12,14 @@ use std::panic;
 fn call1() {
     let f = eval("↕");
     let ret = f.call1(&5.into());
-    assert_eq!(ret.into_i32_vec(), vec![0, 1, 2, 3, 4]);
+    assert_eq!(ret.to_i32_vec(), vec![0, 1, 2, 3, 4]);
 }
 
 #[test]
 fn call2() {
     let f = eval("⊑");
     let ret = f.call2(&3.into(), &"hello".into());
-    assert_eq!(ret.into_char(), Some('l'));
+    assert_eq!(ret.to_char(), Some('l'));
 }
 
 #[test]
@@ -30,10 +30,10 @@ fn fixed_size_array() {
 
 #[test]
 fn bqn_macro() {
-    assert_eq!(BQN!("+´", [1, 2, 3]).into_f64(), 6.0);
-    assert_eq!(BQN!('a', "+", 1).into_char(), Some('b'));
+    assert_eq!(BQN!("+´", [1, 2, 3]).to_f64(), 6.0);
+    assert_eq!(BQN!('a', "+", 1).to_char(), Some('b'));
     let arr = BQN!("+`", [1, 2, 3]);
-    assert_eq!(BQN!(2, "×", arr).into_i32_vec(), vec![2, 6, 12]);
+    assert_eq!(BQN!(2, "×", arr).to_i32_vec(), vec![2, 6, 12]);
 }
 
 #[test]
@@ -57,9 +57,9 @@ fn namespace() {
     assert!(!ns.has_field("c"));
     assert!(ns.get_field("c").is_none());
 
-    assert_eq!(ns.get_field("a").map(BQNValue::into_f64), Some(1.0));
+    assert_eq!(ns.get_field("a").as_ref().map(BQNValue::to_f64), Some(1.0));
     assert_eq!(
-        ns.get_field("b").map(|b| b.call1(&1.into()).into_f64()),
+        ns.get_field("b").map(|b| b.call1(&1.into()).to_f64()),
         Some(2.0)
     );
 }

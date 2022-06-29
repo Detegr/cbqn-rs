@@ -11,20 +11,20 @@
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval};
 //! let sum = BQN!("1+1");
-//! assert_eq!(sum.into_f64(), 2.0);
+//! assert_eq!(sum.to_f64(), 2.0);
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval};
-//! assert_eq!(BQN!("⌽≡⊢", "BQN").into_f64(), 0.0);
+//! assert_eq!(BQN!("⌽≡⊢", "BQN").to_f64(), 0.0);
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval};
 //! let strs = BQN!(' ', "(⊢-˜+`×¬)∘=⊔⊢", "Rust ❤️ BQN")
-//!     .into_bqnvalue_vec()
-//!     .into_iter()
-//!     .map(BQNValue::into_string)
+//!     .to_bqnvalue_vec()
+//!     .iter()
+//!     .map(BQNValue::to_string)
 //!     .collect::<Vec<String>>();
 //! assert_eq!(strs, ["Rust", "❤️", "BQN"]);
 //! ```
@@ -32,7 +32,7 @@
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval};
 //! let strings = ["join", "these", "please"];
-//! assert_eq!(BQN!("∾", strings).into_string(), "jointheseplease");
+//! assert_eq!(BQN!("∾", strings).to_string(), "jointheseplease");
 //! ```
 //!
 //! # Examples using BQNValue
@@ -40,22 +40,22 @@
 //! ```
 //! # use cbqn::{BQNValue, eval};
 //! let sum = eval("1+1");
-//! assert_eq!(sum.into_f64(), 2.0);
+//! assert_eq!(sum.to_f64(), 2.0);
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQNValue, eval};
 //! let is_anagram = eval("⌽≡⊢");
-//! assert_eq!(is_anagram.call1(&"BQN".into()).into_f64(), 0.0);
+//! assert_eq!(is_anagram.call1(&"BQN".into()).to_f64(), 0.0);
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQNValue, eval};
 //! let split = eval("(⊢-˜+`×¬)∘=⊔⊢");
 //! let strs = split.call2(&' '.into(), &"Rust ❤️ BQN".into())
-//!     .into_bqnvalue_vec()
-//!     .into_iter()
-//!     .map(BQNValue::into_string)
+//!     .to_bqnvalue_vec()
+//!     .iter()
+//!     .map(BQNValue::to_string)
 //!     .collect::<Vec<String>>();
 //! assert_eq!(strs, ["Rust", "❤️", "BQN"]);
 //! ```
@@ -67,7 +67,7 @@
 //! increment.call1(&1.into());
 //! increment.call1(&2.into());
 //! let result = increment.call1(&3.into());
-//! assert_eq!(result.into_f64(), 6.0);
+//! assert_eq!(result.to_f64(), 6.0);
 //! ```
 use cbqn_sys::*;
 use once_cell::sync::Lazy;
@@ -180,12 +180,12 @@ impl BQNValue {
     ///
     /// # Panics
     /// * If `self` isn't a number
-    pub fn into_f64(self) -> f64 {
+    pub fn to_f64(&self) -> f64 {
         let _l = LOCK.lock();
         if self.bqn_type() != BQNType::Number {
             panic!("value isn't a number");
         }
-        unsafe { bqn_toF64(self.value) }
+        unsafe { bqn_readF64(self.value) }
     }
 
     /// Converts `BQNValue` into `char`
@@ -195,12 +195,12 @@ impl BQNValue {
     ///
     /// # Panics
     /// * If `self` isn't a BQN character
-    pub fn into_char(self) -> Option<char> {
+    pub fn to_char(&self) -> Option<char> {
         let _l = LOCK.lock();
         if self.bqn_type() != BQNType::Character {
             panic!("value isn't a character");
         }
-        unsafe { char::from_u32(bqn_toChar(self.value)) }
+        unsafe { char::from_u32(bqn_readChar(self.value)) }
     }
 
     /// Converts `BQNValue` into `u32`
@@ -210,19 +210,19 @@ impl BQNValue {
     ///
     /// # Panics
     /// * If `self` isn't a BQN character
-    pub fn into_u32(self) -> u32 {
+    pub fn to_u32(&self) -> u32 {
         let _l = LOCK.lock();
         if self.bqn_type() != BQNType::Character {
             panic!("value isn't a character");
         }
-        unsafe { bqn_toChar(self.value) }
+        unsafe { bqn_readChar(self.value) }
     }
 
     /// Converts `BQNValue` into a vector of `f64`s
     ///
     /// # Panics
     /// * If `self` isn't a BQN array containing numbers
-    pub fn into_f64_vec(self) -> Vec<f64> {
+    pub fn to_f64_vec(&self) -> Vec<f64> {
         let l = LOCK.lock();
         if !bqneltype_is_numeric(self.direct_arr_type()) {
             panic!("value isn't a f64 array");
@@ -245,7 +245,7 @@ impl BQNValue {
     ///
     /// # Panics
     /// * If `self` isn't a BQN array containing numbers
-    pub fn into_i32_vec(self) -> Vec<i32> {
+    pub fn to_i32_vec(&self) -> Vec<i32> {
         let l = LOCK.lock();
         if !bqneltype_is_numeric(self.direct_arr_type()) {
             panic!("value isn't an i32 array");
@@ -266,7 +266,7 @@ impl BQNValue {
     ///
     /// # Panics
     /// * If `self` isn't a BQN array that contains BQN objects
-    pub fn into_bqnvalue_vec(self) -> Vec<BQNValue> {
+    pub fn to_bqnvalue_vec(&self) -> Vec<BQNValue> {
         let l = LOCK.lock();
         if !bqneltype_is_unknown(self.direct_arr_type()) {
             panic!("value isn't an object array");
@@ -289,7 +289,7 @@ impl BQNValue {
         }
     }
 
-    fn into_char_container<T: FromIterator<char>>(self) -> T {
+    fn to_char_container<T: FromIterator<char>>(&self) -> T {
         let l = LOCK.lock();
         if !bqneltype_is_char(self.direct_arr_type()) {
             panic!("value isn't a character array");
@@ -310,16 +310,16 @@ impl BQNValue {
     ///
     /// # Panics
     /// * If `self` isn't a BQN array that contains characters
-    pub fn into_char_vec(self) -> Vec<char> {
-        self.into_char_container::<Vec<char>>()
+    pub fn to_char_vec(&self) -> Vec<char> {
+        self.to_char_container::<Vec<char>>()
     }
 
     /// Converts `BQNValue` into a `String`
     ///
     /// # Panics
     /// * If `self` isn't a BQN array that contains characters
-    pub fn into_string(self) -> String {
-        self.into_char_container::<String>()
+    pub fn to_string(&self) -> String {
+        self.to_char_container::<String>()
     }
 
     fn bound(&self) -> usize {
@@ -339,7 +339,7 @@ impl fmt::Debug for BQNValue {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let fmt = crate::eval("•Fmt");
         let formatted = fmt.call1(self);
-        write!(f, "{}", formatted.into_string())
+        write!(f, "{}", formatted.to_string())
     }
 }
 

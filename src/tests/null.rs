@@ -2,8 +2,8 @@ use super::*;
 
 #[test]
 #[should_panic]
-fn should_panic_null_into_f64() {
-    let _ = BQNValue::null().into_f64();
+fn should_panic_null_to_f64() {
+    let _ = BQNValue::null().to_f64();
 }
 
 #[test]
@@ -19,41 +19,41 @@ fn should_panic_null_has_field() {
 }
 
 #[test]
-fn null_into_char() {
-    let _ = BQNValue::null().into_char();
+fn null_to_char() {
+    let _ = BQNValue::null().to_char();
 }
 
 #[test]
-fn null_into_u32() {
-    let _ = BQNValue::null().into_u32();
-}
-
-#[test]
-#[should_panic]
-fn should_panic_null_into_f64_vec() {
-    let _ = BQNValue::null().into_f64_vec();
+fn null_to_u32() {
+    let _ = BQNValue::null().to_u32();
 }
 
 #[test]
 #[should_panic]
-fn should_panic_null_into_i32_vec() {
-    let _ = BQNValue::null().into_i32_vec();
+fn should_panic_null_to_f64_vec() {
+    let _ = BQNValue::null().to_f64_vec();
 }
 
 #[test]
 #[should_panic]
-fn should_panic_null_into_bqnvalue_vec() {
-    let _ = BQNValue::null().into_bqnvalue_vec();
+fn should_panic_null_to_i32_vec() {
+    let _ = BQNValue::null().to_i32_vec();
 }
 
 #[test]
 #[should_panic]
-fn should_panic_null_into_string() {
-    let _ = BQNValue::null().into_string();
+fn should_panic_null_to_bqnvalue_vec() {
+    let _ = BQNValue::null().to_bqnvalue_vec();
 }
 
 #[test]
 #[should_panic]
-fn should_panic_null_into_char_vec() {
-    let _ = BQNValue::null().into_char_vec();
+fn should_panic_null_to_string() {
+    let _ = BQNValue::null().to_string();
+}
+
+#[test]
+#[should_panic]
+fn should_panic_null_to_char_vec() {
+    let _ = BQNValue::null().to_char_vec();
 }

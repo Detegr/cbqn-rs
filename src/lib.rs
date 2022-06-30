@@ -227,11 +227,7 @@ impl BQNValue {
     /// * If `self` isn't a BQN array containing numbers
     pub fn to_f64_vec(&self) -> Vec<f64> {
         let l = LOCK.lock();
-        if !bqneltype_is_numeric(self.direct_arr_type()) {
-            panic!("value isn't a f64 array");
-        }
-
-        let b = self.bound();
+        let b = self.get_numeric_array_bounds_or_panic();
         let mut ret = Vec::with_capacity(b);
         unsafe {
             bqn_readF64Arr(self.value, ret.as_mut_ptr());
@@ -250,11 +246,7 @@ impl BQNValue {
     /// * If `self` isn't a BQN array containing numbers
     pub fn to_i32_vec(&self) -> Vec<i32> {
         let l = LOCK.lock();
-        if !bqneltype_is_numeric(self.direct_arr_type()) {
-            panic!("value isn't an i32 array");
-        }
-
-        let b = self.bound();
+        let b = self.get_numeric_array_bounds_or_panic();
         let mut ret = Vec::with_capacity(b);
         unsafe {
             bqn_readI32Arr(self.value, ret.as_mut_ptr());
@@ -292,11 +284,7 @@ impl BQNValue {
 
     fn to_char_container<T: FromIterator<char>>(&self) -> T {
         let l = LOCK.lock();
-        if !bqneltype_is_char(self.direct_arr_type()) {
-            panic!("value isn't a character array");
-        }
-
-        let b = self.bound();
+        let b = self.get_character_array_bounds_or_panic();
         let mut u32s = Vec::with_capacity(b);
         unsafe {
             bqn_readC32Arr(self.value, u32s.as_mut_ptr());
@@ -403,6 +391,52 @@ impl BQNValue {
 
     fn direct_arr_type(&self) -> u32 {
         unsafe { bqn_directArrType(self.value) }
+    }
+
+    fn get_character_array_bounds_or_panic(&self) -> usize {
+        if self.bqn_type() != BQNType::Array {
+            panic!("value isn't an array");
+        }
+        let b = self.bound();
+        if !bqneltype_is_char(self.direct_arr_type()) {
+            for i in 0..b {
+                let t = BQNType::try_from(unsafe {
+                    let v = bqn_pick(self.value, i.try_into().unwrap());
+                    let t = bqn_type(v);
+                    bqn_free(v);
+                    t
+                })
+                .expect("expected known type");
+
+                if t != BQNType::Character {
+                    panic!("value isn't a character array");
+                }
+            }
+        }
+        b
+    }
+
+    fn get_numeric_array_bounds_or_panic(&self) -> usize {
+        if self.bqn_type() != BQNType::Array {
+            panic!("value isn't an array");
+        }
+        let b = self.bound();
+        if !bqneltype_is_numeric(self.direct_arr_type()) {
+            for i in 0..b {
+                let t = BQNType::try_from(unsafe {
+                    let v = bqn_pick(self.value, i.try_into().unwrap());
+                    let t = bqn_type(v);
+                    bqn_free(v);
+                    t
+                })
+                .expect("expected known type");
+
+                if t != BQNType::Number {
+                    panic!("value isn't a numeric array");
+                }
+            }
+        }
+        b
     }
 }
 

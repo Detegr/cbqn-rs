@@ -19,6 +19,12 @@ fn to_f64_vec() {
 }
 
 #[test]
+fn elt_unk_to_f64_vec() {
+    let ret = eval(r#"1↓"abc"∾2‿∘⥊↕6"#);
+    assert_eq!(ret.to_f64_vec(), vec![0.0, 1.0, 2.0, 3.0, 4.0, 5.0]);
+}
+
+#[test]
 fn to_i32_vec() {
     let ret = eval("0.75+↕5");
     assert_eq!(ret.to_i32_vec(), vec![0, 1, 2, 3, 4]);
@@ -41,4 +47,10 @@ fn should_panic_number_to_bqnvalue_vec() {
         v.to_bqnvalue_vec();
     })
     .is_err());
+}
+
+#[test]
+fn elt_unk_to_string() {
+    let v = BQN!(r#"1↓0∾"aaa""#);
+    assert_eq!(v.to_string(), "aaa");
 }

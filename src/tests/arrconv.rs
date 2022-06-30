@@ -31,36 +31,6 @@ fn should_panic_c32_string_to_f64_vec() {
 }
 
 #[test]
-fn should_panic_c8_string_to_i32_vec() {
-    let v = c8_str();
-    assert_eq!(v.direct_arr_type(), BQNElType_elt_c8);
-    assert!(panic::catch_unwind(move || {
-        _ = v.to_i32_vec();
-    })
-    .is_err());
-}
-
-#[test]
-fn should_panic_c16_string_to_i32_vec() {
-    let v = c16_str();
-    assert_eq!(v.direct_arr_type(), BQNElType_elt_c16);
-    assert!(panic::catch_unwind(move || {
-        _ = v.to_i32_vec();
-    })
-    .is_err());
-}
-
-#[test]
-fn should_panic_c32_string_to_i32_vec() {
-    let v = c32_str();
-    assert_eq!(v.direct_arr_type(), BQNElType_elt_c32);
-    assert!(panic::catch_unwind(move || {
-        v.to_i32_vec();
-    })
-    .is_err());
-}
-
-#[test]
 fn should_panic_f64_arr_to_string() {
     let v = BQN!("1.2‿3.4‿5.6");
     assert_eq!(v.direct_arr_type(), BQNElType_elt_f64);

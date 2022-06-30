@@ -36,12 +36,6 @@ fn should_panic_null_to_f64_vec() {
 
 #[test]
 #[should_panic]
-fn should_panic_null_to_i32_vec() {
-    let _ = BQNValue::null().to_i32_vec();
-}
-
-#[test]
-#[should_panic]
 fn should_panic_null_to_bqnvalue_vec() {
     let _ = BQNValue::null().to_bqnvalue_vec();
 }

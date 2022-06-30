@@ -238,25 +238,6 @@ impl BQNValue {
         ret
     }
 
-    /// Converts `BQNValue` into a vector of `i32`s
-    ///
-    /// This function will do a lossy conversion from `f64` to `i32` for the values of the array.
-    ///
-    /// # Panics
-    /// * If `self` isn't a BQN array containing numbers
-    pub fn to_i32_vec(&self) -> Vec<i32> {
-        let l = LOCK.lock();
-        let b = self.get_numeric_array_bounds_or_panic();
-        let mut ret = Vec::with_capacity(b);
-        unsafe {
-            bqn_readI32Arr(self.value, ret.as_mut_ptr());
-            drop(l);
-            ret.set_len(b);
-        }
-
-        ret
-    }
-
     /// Converts `BQNValue` into a vector of `BQNValue`s
     ///
     /// # Panics

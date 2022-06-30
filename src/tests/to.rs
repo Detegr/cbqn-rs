@@ -25,12 +25,6 @@ fn elt_unk_to_f64_vec() {
 }
 
 #[test]
-fn to_i32_vec() {
-    let ret = eval("0.75+↕5");
-    assert_eq!(ret.to_i32_vec(), vec![0, 1, 2, 3, 4]);
-}
-
-#[test]
 fn to_bqnvalue_vec() {
     let strings = BQN!("↑", "hello")
         .to_bqnvalue_vec()

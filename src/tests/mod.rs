@@ -13,7 +13,7 @@ use std::panic;
 fn call1() {
     let f = eval("↕");
     let ret = f.call1(&5.into());
-    assert_eq!(ret.to_i32_vec(), vec![0, 1, 2, 3, 4]);
+    assert_eq!(ret.to_f64_vec(), vec![0.0, 1.0, 2.0, 3.0, 4.0]);
 }
 
 #[test]
@@ -34,7 +34,7 @@ fn bqn_macro() {
     assert_eq!(BQN!("+´", [1, 2, 3]).to_f64(), 6.0);
     assert_eq!(BQN!('a', "+", 1).to_char(), Some('b'));
     let arr = BQN!("+`", [1, 2, 3]);
-    assert_eq!(BQN!(2, "×", arr).to_i32_vec(), vec![2, 6, 12]);
+    assert_eq!(BQN!(2, "×", arr).to_f64_vec(), vec![2.0, 6.0, 12.0]);
 }
 
 #[test]

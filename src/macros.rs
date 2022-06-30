@@ -1,3 +1,42 @@
+macro_rules! impl_from_string_like {
+    ($ty:ty) => {
+        impl From<$ty> for BQNValue {
+            fn from(v: $ty) -> BQNValue {
+                let str_bytes = v.as_bytes();
+                let _l = LOCK.lock();
+                BQNValue::new(unsafe {
+                    bqn_makeUTF8Str(
+                        str_bytes.len().try_into().unwrap(),
+                        str_bytes.as_ptr() as *const i8,
+                    )
+                })
+            }
+        }
+    };
+}
+
+macro_rules! impl_from_string_like_vec {
+    ($ty:ty) => {
+        impl From<Vec<$ty>> for BQNValue {
+            fn from(arr: Vec<$ty>) -> BQNValue {
+                let mut strs = Vec::with_capacity(arr.len());
+                for s in &arr {
+                    let str_bytes = s.as_bytes();
+                    strs.push(unsafe {
+                        bqn_makeUTF8Str(
+                            str_bytes.len().try_into().unwrap(),
+                            str_bytes.as_ptr() as *const i8,
+                        )
+                    });
+                }
+                BQNValue::new(unsafe {
+                    bqn_makeObjVec(arr.len().try_into().unwrap(), strs.as_ptr())
+                })
+            }
+        }
+    };
+}
+
 macro_rules! impl_from_slice {
     ($ty:ty, $fn:ident) => {
         impl From<$ty> for BQNValue {
@@ -117,4 +156,6 @@ macro_rules! BQN {
 pub(crate) use impl_from_array;
 pub(crate) use impl_from_iterator;
 pub(crate) use impl_from_slice;
+pub(crate) use impl_from_string_like;
+pub(crate) use impl_from_string_like_vec;
 pub(crate) use impl_from_vec;

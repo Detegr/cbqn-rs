@@ -22,34 +22,12 @@ impl From<char> for BQNValue {
     }
 }
 
-impl From<&str> for BQNValue {
-    fn from(v: &str) -> BQNValue {
-        let str_bytes = v.as_bytes();
-        let _l = LOCK.lock();
-        BQNValue::new(unsafe {
-            bqn_makeUTF8Str(
-                str_bytes.len().try_into().unwrap(),
-                str_bytes.as_ptr() as *const i8,
-            )
-        })
-    }
-}
-
-impl From<Vec<&str>> for BQNValue {
-    fn from(arr: Vec<&str>) -> BQNValue {
-        let mut strs = Vec::with_capacity(arr.len());
-        for s in &arr {
-            let str_bytes = s.as_bytes();
-            strs.push(unsafe {
-                bqn_makeUTF8Str(
-                    str_bytes.len().try_into().unwrap(),
-                    str_bytes.as_ptr() as *const i8,
-                )
-            });
-        }
-        BQNValue::new(unsafe { bqn_makeObjVec(arr.len().try_into().unwrap(), strs.as_ptr()) })
-    }
-}
+impl_from_string_like!(&str);
+impl_from_string_like!(&String);
+impl_from_string_like!(String);
+impl_from_string_like_vec!(&str);
+impl_from_string_like_vec!(&String);
+impl_from_string_like_vec!(String);
 
 impl<const N: usize> From<[&str; N]> for BQNValue {
     fn from(arr: [&str; N]) -> BQNValue {

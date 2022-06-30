@@ -35,8 +35,40 @@ impl From<&str> for BQNValue {
     }
 }
 
+impl From<Vec<&str>> for BQNValue {
+    fn from(arr: Vec<&str>) -> BQNValue {
+        let mut strs = Vec::with_capacity(arr.len());
+        for s in &arr {
+            let str_bytes = s.as_bytes();
+            strs.push(unsafe {
+                bqn_makeUTF8Str(
+                    str_bytes.len().try_into().unwrap(),
+                    str_bytes.as_ptr() as *const i8,
+                )
+            });
+        }
+        BQNValue::new(unsafe { bqn_makeObjVec(arr.len().try_into().unwrap(), strs.as_ptr()) })
+    }
+}
+
 impl<const N: usize> From<[&str; N]> for BQNValue {
     fn from(arr: [&str; N]) -> BQNValue {
+        let mut strs = Vec::with_capacity(N);
+        for s in arr {
+            let str_bytes = s.as_bytes();
+            strs.push(unsafe {
+                bqn_makeUTF8Str(
+                    str_bytes.len().try_into().unwrap(),
+                    str_bytes.as_ptr() as *const i8,
+                )
+            });
+        }
+        BQNValue::new(unsafe { bqn_makeObjVec(N as u64, strs.as_ptr()) })
+    }
+}
+
+impl<const N: usize> From<[String; N]> for BQNValue {
+    fn from(arr: [String; N]) -> BQNValue {
         let mut strs = Vec::with_capacity(N);
         for s in arr {
             let str_bytes = s.as_bytes();
@@ -60,6 +92,11 @@ impl_from_slice!(&[f64], bqn_makeF64Vec);
 impl_from_slice!(&[i32], bqn_makeI32Vec);
 impl_from_slice!(&[i16], bqn_makeI16Vec);
 impl_from_slice!(&[i8], bqn_makeI8Vec);
+
+impl_from_vec!(f64, bqn_makeF64Vec);
+impl_from_vec!(i32, bqn_makeI32Vec);
+impl_from_vec!(i16, bqn_makeI16Vec);
+impl_from_vec!(i8, bqn_makeI8Vec);
 
 impl_from_iterator!(f64, bqn_makeF64Vec);
 impl_from_iterator!(i32, bqn_makeI32Vec);

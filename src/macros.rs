@@ -53,6 +53,23 @@ macro_rules! impl_from_iterator {
     };
 }
 
+macro_rules! impl_from_vec {
+    ($ty:ty, $fn:ident) => {
+        impl From<Vec<$ty>> for BQNValue {
+            fn from(arr: Vec<$ty>) -> BQNValue {
+                crate::INIT.call_once(|| {
+                    let _l = LOCK.lock();
+                    unsafe { bqn_init() }
+                });
+
+                let len = arr.len();
+                let _l = LOCK.lock();
+                BQNValue::new(unsafe { $fn(len.try_into().unwrap(), arr.as_ptr()) })
+            }
+        }
+    };
+}
+
 /// Convenience macro for running BQN expressions
 ///
 /// Takes a string of BQN code and optional left and right argument
@@ -100,3 +117,4 @@ macro_rules! BQN {
 pub(crate) use impl_from_array;
 pub(crate) use impl_from_iterator;
 pub(crate) use impl_from_slice;
+pub(crate) use impl_from_vec;

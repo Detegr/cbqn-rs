@@ -313,7 +313,7 @@ impl BQNValue {
 
     /// Generates a BQNValue from a Rust function
     ///
-    /// The function receives two arguments.
+    /// The function receives one argument.
     ///
     /// # Examples
     /// ```

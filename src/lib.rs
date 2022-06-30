@@ -366,7 +366,7 @@ impl BQNValue {
         unsafe { bqn_bound(self.value) as usize }
     }
 
-    fn bqn_type(&self) -> BQNType {
+    pub fn bqn_type(&self) -> BQNType {
         BQNType::try_from(unsafe { bqn_type(self.value) }).expect("expected to handle all types")
     }
 

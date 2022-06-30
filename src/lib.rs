@@ -344,12 +344,12 @@ impl BQNValue {
         });
 
         let mut rng = rand::thread_rng();
-        let mut key = rng.gen::<u64>() & 0xFFFFFFFF00000000;
+        let mut key = (rng.gen::<u64>() & 0xFFFFFFFF) | 0x100000000;
         FNS.with(|fns| {
             let mut boundfns = fns.borrow_mut();
             // unlikely
             while boundfns.boundfn_2.contains_key(&key) || key == 0 {
-                key = rng.gen::<u64>() & 0xFFFFFFFF00000000;
+                key = (rng.gen::<u64>() & 0xFFFFFFFF) | 0x100000000;
             }
             boundfns.boundfn_2.insert(key, Box::new(f));
         });

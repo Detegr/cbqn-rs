@@ -6,38 +6,38 @@
         </a><h2 class="location"><a href="#">Crate cbqn</a></h2><div class="sidebar-elems"><div class="block"><ul><li class="version">Version 0.1.0</li><li><a id="all-types" href="all.html">All Items</a></li></ul></div><section><div class="block"><ul><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="cbqn" data-ty="mod" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../cbqn/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
                                 <a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div>
                         </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
-    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">cbqn</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/cbqn/lib.rs.html#1-369">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>cbqn</p>
+    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">cbqn</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/cbqn/lib.rs.html#1-537">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>cbqn</p>
 <p>A crate for running <a href="https://mlochbaum.github.io/BQN">BQN</a> code within a Rust program using <a href="https://github.com/dzaima/CBQN">CBQN</a> interpreter compiled as a shared object.</p>
 <h2 id="usage"><a href="#usage">Usage</a></h2>
 <p>Simple expressions can be run with the <code>BQN!</code> convenience macro. For more advanced use, the
 methods of <code>BQNValue</code> provide the necessary functionality.</p>
 <h2 id="examples-using-the-bqn-macro"><a href="#examples-using-the-bqn-macro">Examples using the BQN! macro</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="ident">sum</span> <span class="op">=</span> <span class="macro">BQN!</span>(<span class="string">&quot;1+1&quot;</span>);
-<span class="macro">assert_eq!</span>(<span class="ident">sum</span>.<span class="ident">into_f64</span>(), <span class="number">2.0</span>);</code></pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">sum</span>.<span class="ident">to_f64</span>(), <span class="number">2.0</span>);</code></pre></div>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="macro">assert_eq!</span>(<span class="macro">BQN!</span>(<span class="string">&quot;⌽≡⊢&quot;</span>, <span class="string">&quot;BQN&quot;</span>).<span class="ident">into_f64</span>(), <span class="number">0.0</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="macro">assert_eq!</span>(<span class="macro">BQN!</span>(<span class="string">&quot;⌽≡⊢&quot;</span>, <span class="string">&quot;BQN&quot;</span>).<span class="ident">to_f64</span>(), <span class="number">0.0</span>);</code></pre></div>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="ident">strs</span> <span class="op">=</span> <span class="macro">BQN!</span>(<span class="string">&#39; &#39;</span>, <span class="string">&quot;(⊢-˜+`×¬)∘=⊔⊢&quot;</span>, <span class="string">&quot;Rust ❤️ BQN&quot;</span>)
-    .<span class="ident">into_bqnvalue_vec</span>()
-    .<span class="ident">into_iter</span>()
-    .<span class="ident">map</span>(<span class="ident">BQNValue::into_string</span>)
+    .<span class="ident">to_bqnvalue_vec</span>()
+    .<span class="ident">iter</span>()
+    .<span class="ident">map</span>(<span class="ident">BQNValue::to_string</span>)
     .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 <span class="macro">assert_eq!</span>(<span class="ident">strs</span>, [<span class="string">&quot;Rust&quot;</span>, <span class="string">&quot;❤️&quot;</span>, <span class="string">&quot;BQN&quot;</span>]);</code></pre></div>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="ident">strings</span> <span class="op">=</span> [<span class="string">&quot;join&quot;</span>, <span class="string">&quot;these&quot;</span>, <span class="string">&quot;please&quot;</span>];
-<span class="macro">assert_eq!</span>(<span class="macro">BQN!</span>(<span class="string">&quot;∾&quot;</span>, <span class="ident">strings</span>).<span class="ident">into_string</span>(), <span class="string">&quot;jointheseplease&quot;</span>);</code></pre></div>
+<span class="macro">assert_eq!</span>(<span class="macro">BQN!</span>(<span class="string">&quot;∾&quot;</span>, <span class="ident">strings</span>).<span class="ident">to_string</span>(), <span class="string">&quot;jointheseplease&quot;</span>);</code></pre></div>
 <h2 id="examples-using-bqnvalue"><a href="#examples-using-bqnvalue">Examples using BQNValue</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="ident">sum</span> <span class="op">=</span> <span class="ident">eval</span>(<span class="string">&quot;1+1&quot;</span>);
-<span class="macro">assert_eq!</span>(<span class="ident">sum</span>.<span class="ident">into_f64</span>(), <span class="number">2.0</span>);</code></pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">sum</span>.<span class="ident">to_f64</span>(), <span class="number">2.0</span>);</code></pre></div>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="ident">is_anagram</span> <span class="op">=</span> <span class="ident">eval</span>(<span class="string">&quot;⌽≡⊢&quot;</span>);
-<span class="macro">assert_eq!</span>(<span class="ident">is_anagram</span>.<span class="ident">call1</span>(<span class="kw-2">&amp;</span><span class="string">&quot;BQN&quot;</span>.<span class="ident">into</span>()).<span class="ident">into_f64</span>(), <span class="number">0.0</span>);</code></pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">is_anagram</span>.<span class="ident">call1</span>(<span class="kw-2">&amp;</span><span class="string">&quot;BQN&quot;</span>.<span class="ident">into</span>()).<span class="ident">to_f64</span>(), <span class="number">0.0</span>);</code></pre></div>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="ident">split</span> <span class="op">=</span> <span class="ident">eval</span>(<span class="string">&quot;(⊢-˜+`×¬)∘=⊔⊢&quot;</span>);
 <span class="kw">let</span> <span class="ident">strs</span> <span class="op">=</span> <span class="ident">split</span>.<span class="ident">call2</span>(<span class="kw-2">&amp;</span><span class="string">&#39; &#39;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="string">&quot;Rust ❤️ BQN&quot;</span>.<span class="ident">into</span>())
-    .<span class="ident">into_bqnvalue_vec</span>()
-    .<span class="ident">into_iter</span>()
-    .<span class="ident">map</span>(<span class="ident">BQNValue::into_string</span>)
+    .<span class="ident">to_bqnvalue_vec</span>()
+    .<span class="ident">iter</span>()
+    .<span class="ident">map</span>(<span class="ident">BQNValue::to_string</span>)
     .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 <span class="macro">assert_eq!</span>(<span class="ident">strs</span>, [<span class="string">&quot;Rust&quot;</span>, <span class="string">&quot;❤️&quot;</span>, <span class="string">&quot;BQN&quot;</span>]);</code></pre></div>
 
@@ -46,7 +46,7 @@ methods of <code>BQNValue</code> provide the necessary functionality.</p>
 <span class="ident">increment</span>.<span class="ident">call1</span>(<span class="kw-2">&amp;</span><span class="number">1</span>.<span class="ident">into</span>());
 <span class="ident">increment</span>.<span class="ident">call1</span>(<span class="kw-2">&amp;</span><span class="number">2</span>.<span class="ident">into</span>());
 <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">increment</span>.<span class="ident">call1</span>(<span class="kw-2">&amp;</span><span class="number">3</span>.<span class="ident">into</span>());
-<span class="macro">assert_eq!</span>(<span class="ident">result</span>.<span class="ident">into_f64</span>(), <span class="number">6.0</span>);</code></pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">result</span>.<span class="ident">to_f64</span>(), <span class="number">6.0</span>);</code></pre></div>
 </div></details><h2 id="macros" class="small-section-header"><a href="#macros">Macros</a></h2>
 <div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.BQN.html" title="cbqn::BQN macro">BQN</a></div><div class="item-right docblock-short"><p>Convenience macro for running BQN expressions</p>
 </div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>

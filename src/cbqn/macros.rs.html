@@ -107,6 +107,24 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
 </pre><pre class="rust"><code><span class="macro">macro_rules!</span> <span class="ident">impl_from_slice</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
         <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BQNValue</span> {
@@ -162,6 +180,23 @@
     };
 }
 
+<span class="macro">macro_rules!</span> <span class="ident">impl_from_vec</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
+        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BQNValue</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">arr</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>) -&gt; <span class="ident">BQNValue</span> {
+                <span class="ident"><span class="kw">crate</span>::INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
+                    <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
+                    <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
+                });
+
+                <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">len</span>();
+                <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
+                <span class="ident">BQNValue::new</span>(<span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">len</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(), <span class="ident">arr</span>.<span class="ident">as_ptr</span>()) })
+            }
+        }
+    };
+}
+
 <span class="doccomment">/// Convenience macro for running BQN expressions</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Takes a string of BQN code and optional left and right argument</span>
@@ -169,21 +204,21 @@
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// # use cbqn::{BQN, BQNValue, eval};</span>
 <span class="doccomment">/// let sum = BQN!(&quot;1+1&quot;);</span>
-<span class="doccomment">/// assert_eq!(sum.into_f64(), 2.0);</span>
+<span class="doccomment">/// assert_eq!(sum.to_f64(), 2.0);</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// # use cbqn::{BQN, BQNValue, eval};</span>
 <span class="doccomment">/// let bqn_is_anagram = BQN!(&quot;⌽≡⊢&quot;, &quot;BQN&quot;);</span>
-<span class="doccomment">/// assert_eq!(bqn_is_anagram.into_f64(), 0.0);</span>
+<span class="doccomment">/// assert_eq!(bqn_is_anagram.to_f64(), 0.0);</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// # use cbqn::{BQN, BQNValue, eval};</span>
 <span class="doccomment">/// let strs = BQN!(&#39; &#39;, &quot;(⊢-˜+`×¬)∘=⊔⊢&quot;, &quot;Rust ❤️ BQN&quot;)</span>
-<span class="doccomment">///     .into_bqnvalue_vec()</span>
-<span class="doccomment">///     .into_iter()</span>
-<span class="doccomment">///     .map(BQNValue::into_string)</span>
+<span class="doccomment">///     .to_bqnvalue_vec()</span>
+<span class="doccomment">///     .iter()</span>
+<span class="doccomment">///     .map(BQNValue::to_string)</span>
 <span class="doccomment">///     .collect::&lt;Vec&lt;String&gt;&gt;();</span>
 <span class="doccomment">/// assert_eq!(strs, [&quot;Rust&quot;, &quot;❤️&quot;, &quot;BQN&quot;]);</span>
 <span class="doccomment">/// ```</span>
@@ -191,7 +226,7 @@
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// # use cbqn::{BQN, BQNValue, eval};</span>
 <span class="doccomment">/// let strings = [&quot;join&quot;, &quot;these&quot;, &quot;please&quot;];</span>
-<span class="doccomment">/// assert_eq!(BQN!(&quot;∾&quot;, strings).into_string(), &quot;jointheseplease&quot;);</span>
+<span class="doccomment">/// assert_eq!(BQN!(&quot;∾&quot;, strings).to_string(), &quot;jointheseplease&quot;);</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">BQN</span> {
@@ -209,6 +244,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">impl_from_array</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">impl_from_iterator</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">impl_from_slice</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">impl_from_vec</span>;
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cbqn" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (420c970cb 2022-06-09)" ></div>
 </body></html>

@@ -505,43 +505,6 @@
 <span id="498">498</span>
 <span id="499">499</span>
 <span id="500">500</span>
-<span id="501">501</span>
-<span id="502">502</span>
-<span id="503">503</span>
-<span id="504">504</span>
-<span id="505">505</span>
-<span id="506">506</span>
-<span id="507">507</span>
-<span id="508">508</span>
-<span id="509">509</span>
-<span id="510">510</span>
-<span id="511">511</span>
-<span id="512">512</span>
-<span id="513">513</span>
-<span id="514">514</span>
-<span id="515">515</span>
-<span id="516">516</span>
-<span id="517">517</span>
-<span id="518">518</span>
-<span id="519">519</span>
-<span id="520">520</span>
-<span id="521">521</span>
-<span id="522">522</span>
-<span id="523">523</span>
-<span id="524">524</span>
-<span id="525">525</span>
-<span id="526">526</span>
-<span id="527">527</span>
-<span id="528">528</span>
-<span id="529">529</span>
-<span id="530">530</span>
-<span id="531">531</span>
-<span id="532">532</span>
-<span id="533">533</span>
-<span id="534">534</span>
-<span id="535">535</span>
-<span id="536">536</span>
-<span id="537">537</span>
 </pre><pre class="rust"><code><span class="doccomment">//! cbqn</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! A crate for running [BQN](https://mlochbaum.github.io/BQN) code within a Rust program using [CBQN](https://github.com/dzaima/CBQN) interpreter compiled as a shared object.</span>
@@ -782,25 +745,6 @@
         <span class="ident">ret</span>
     }
 
-    <span class="doccomment">/// Converts `BQNValue` into a vector of `i32`s</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function will do a lossy conversion from `f64` to `i32` for the values of the array.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">/// * If `self` isn&#39;t a BQN array containing numbers</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_i32_vec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_numeric_array_bounds_or_panic</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">b</span>);
-        <span class="kw">unsafe</span> {
-            <span class="ident">bqn_readI32Arr</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">ret</span>.<span class="ident">as_mut_ptr</span>());
-            <span class="ident">drop</span>(<span class="ident">l</span>);
-            <span class="ident">ret</span>.<span class="ident">set_len</span>(<span class="ident">b</span>);
-        }
-
-        <span class="ident">ret</span>
-    }
-
     <span class="doccomment">/// Converts `BQNValue` into a vector of `BQNValue`s</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Panics</span>
@@ -865,7 +809,7 @@
     <span class="doccomment">/// let add_three = BQNValue::fn1(|x| BQNValue::from(x.to_f64() + 3.0));</span>
     <span class="doccomment">/// assert_eq!(BQN!(3, &quot;{𝕏𝕨}&quot;, add_three).to_f64(), 6.0);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fn1</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">BQNValue</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fn1</span>(<span class="ident">f</span>: <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span> {
         <span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
             <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
@@ -879,7 +823,7 @@
             <span class="kw">while</span> <span class="ident">boundfns</span>.<span class="ident">boundfn_1</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">key</span> <span class="op">==</span> <span class="number">0</span> {
                 <span class="ident">key</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">gen</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>() <span class="op">&amp;</span> <span class="number">0xFFFFFFFF</span>;
             }
-            <span class="ident">boundfns</span>.<span class="ident">boundfn_1</span>.<span class="ident">insert</span>(<span class="ident">key</span>, <span class="ident">Box::new</span>(<span class="ident">f</span>));
+            <span class="ident">boundfns</span>.<span class="ident">boundfn_1</span>.<span class="ident">insert</span>(<span class="ident">key</span>, <span class="ident">f</span>);
         });
 
         <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">BQNValue::from</span>(<span class="ident">f64::from_bits</span>(<span class="ident">key</span>));
@@ -900,21 +844,21 @@
     <span class="doccomment">/// let multiply = BQNValue::fn2(|w, x| BQNValue::from(w.to_f64() * x.to_f64()));</span>
     <span class="doccomment">/// assert_eq!(BQN!(multiply, &quot;{𝕎´𝕩}&quot;, [1,2,3,4,5]).to_f64(), 120.0);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fn2</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>, <span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">BQNValue</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fn2</span>(<span class="ident">f</span>: <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>, <span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span> {
         <span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
             <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
         });
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">rand::thread_rng</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">gen</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>() <span class="op">&amp;</span> <span class="number">0xFFFFFFFF00000000</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key</span> <span class="op">=</span> (<span class="ident">rng</span>.<span class="ident">gen</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>() <span class="op">&amp;</span> <span class="number">0xFFFFFFFF</span>) <span class="op">|</span> <span class="number">0x100000000</span>;
         <span class="ident">FNS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">fns</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">boundfns</span> <span class="op">=</span> <span class="ident">fns</span>.<span class="ident">borrow_mut</span>();
             <span class="comment">// unlikely</span>
             <span class="kw">while</span> <span class="ident">boundfns</span>.<span class="ident">boundfn_2</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">key</span> <span class="op">==</span> <span class="number">0</span> {
-                <span class="ident">key</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">gen</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>() <span class="op">&amp;</span> <span class="number">0xFFFFFFFF00000000</span>;
+                <span class="ident">key</span> <span class="op">=</span> (<span class="ident">rng</span>.<span class="ident">gen</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>() <span class="op">&amp;</span> <span class="number">0xFFFFFFFF</span>) <span class="op">|</span> <span class="number">0x100000000</span>;
             }
-            <span class="ident">boundfns</span>.<span class="ident">boundfn_2</span>.<span class="ident">insert</span>(<span class="ident">key</span>, <span class="ident">Box::new</span>(<span class="ident">f</span>));
+            <span class="ident">boundfns</span>.<span class="ident">boundfn_2</span>.<span class="ident">insert</span>(<span class="ident">key</span>, <span class="ident">f</span>);
         });
 
         <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">BQNValue::from</span>(<span class="ident">f64::from_bits</span>(<span class="ident">key</span>));
@@ -929,7 +873,7 @@
         <span class="kw">unsafe</span> { <span class="ident">bqn_bound</span>(<span class="self">self</span>.<span class="ident">value</span>) <span class="kw">as</span> <span class="ident">usize</span> }
     }
 
-    <span class="kw">fn</span> <span class="ident">bqn_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BQNType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bqn_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BQNType</span> {
         <span class="ident">BQNType::try_from</span>(<span class="kw">unsafe</span> { <span class="ident">bqn_type</span>(<span class="self">self</span>.<span class="ident">value</span>) }).<span class="ident">expect</span>(<span class="string">&quot;expected to handle all types&quot;</span>)
     }
 
@@ -1010,8 +954,8 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
 <span class="kw">struct</span> <span class="ident">BoundFns</span> {
-    <span class="ident">boundfn_1</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">boundfn_2</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>, <span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">boundfn_1</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span><span class="op">&gt;</span>,
+    <span class="ident">boundfn_2</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>, <span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span><span class="op">&gt;</span>,
 }
 
 <span class="macro">thread_local!</span> {
@@ -1021,45 +965,27 @@
 <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">boundfn_1_wrapper</span>(<span class="ident">obj</span>: <span class="ident">BQNV</span>, <span class="ident">x</span>: <span class="ident">BQNV</span>) -&gt; <span class="ident">BQNV</span> {
     <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">BQNValue::new</span>(<span class="ident">obj</span>).<span class="ident">to_f64</span>().<span class="ident">to_bits</span>();
 
-    <span class="kw">let</span> <span class="ident">tgt</span> <span class="op">=</span> <span class="ident">FNS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">fns</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">boundfns</span> <span class="op">=</span> <span class="ident">fns</span>.<span class="ident">borrow_mut</span>();
-        <span class="ident">boundfns</span>.<span class="ident">boundfn_1</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>).<span class="ident">unwrap</span>()
-    });
-
-    <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">tgt</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue::new</span>(<span class="ident">x</span>));
-    <span class="ident">drop</span>(<span class="ident">l</span>);
-
     <span class="ident">FNS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">fns</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">boundfns</span> <span class="op">=</span> <span class="ident">fns</span>.<span class="ident">borrow_mut</span>();
-        <span class="ident">boundfns</span>.<span class="ident">boundfn_1</span>.<span class="ident">insert</span>(<span class="ident">key</span>, <span class="ident">Box::new</span>(<span class="ident">tgt</span>));
-    });
-
-    <span class="kw">let</span> <span class="ident">retval</span> <span class="op">=</span> <span class="ident">ret</span>.<span class="ident">value</span>;
-    <span class="ident">mem::forget</span>(<span class="ident">ret</span>);
-    <span class="ident">retval</span>
+        <span class="kw">let</span> <span class="ident">boundfns</span> <span class="op">=</span> <span class="ident">fns</span>.<span class="ident">borrow</span>();
+        <span class="kw">let</span> <span class="ident">tgt</span> <span class="op">=</span> <span class="ident">boundfns</span>.<span class="ident">boundfn_1</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">tgt</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue::new</span>(<span class="ident">x</span>));
+        <span class="kw">let</span> <span class="ident">retval</span> <span class="op">=</span> <span class="ident">ret</span>.<span class="ident">value</span>;
+        <span class="ident">mem::forget</span>(<span class="ident">ret</span>);
+        <span class="ident">retval</span>
+    })
 }
 
 <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">boundfn_2_wrapper</span>(<span class="ident">obj</span>: <span class="ident">BQNV</span>, <span class="ident">w</span>: <span class="ident">BQNV</span>, <span class="ident">x</span>: <span class="ident">BQNV</span>) -&gt; <span class="ident">BQNV</span> {
     <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">BQNValue::new</span>(<span class="ident">obj</span>).<span class="ident">to_f64</span>().<span class="ident">to_bits</span>();
 
-    <span class="kw">let</span> <span class="ident">tgt</span> <span class="op">=</span> <span class="ident">FNS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">fns</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">boundfns</span> <span class="op">=</span> <span class="ident">fns</span>.<span class="ident">borrow_mut</span>();
-        <span class="ident">boundfns</span>.<span class="ident">boundfn_2</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>).<span class="ident">unwrap</span>()
-    });
-
-    <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">tgt</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue::new</span>(<span class="ident">w</span>), <span class="kw-2">&amp;</span><span class="ident">BQNValue::new</span>(<span class="ident">x</span>));
-    <span class="ident">drop</span>(<span class="ident">l</span>);
-
     <span class="ident">FNS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">fns</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">boundfns</span> <span class="op">=</span> <span class="ident">fns</span>.<span class="ident">borrow_mut</span>();
-        <span class="ident">boundfns</span>.<span class="ident">boundfn_2</span>.<span class="ident">insert</span>(<span class="ident">key</span>, <span class="ident">Box::new</span>(<span class="ident">tgt</span>));
-    });
-
-    <span class="kw">let</span> <span class="ident">retval</span> <span class="op">=</span> <span class="ident">ret</span>.<span class="ident">value</span>;
-    <span class="ident">mem::forget</span>(<span class="ident">ret</span>);
-    <span class="ident">retval</span>
+        <span class="kw">let</span> <span class="ident">boundfns</span> <span class="op">=</span> <span class="ident">fns</span>.<span class="ident">borrow</span>();
+        <span class="kw">let</span> <span class="ident">tgt</span> <span class="op">=</span> <span class="ident">boundfns</span>.<span class="ident">boundfn_2</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">tgt</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue::new</span>(<span class="ident">w</span>), <span class="kw-2">&amp;</span><span class="ident">BQNValue::new</span>(<span class="ident">x</span>));
+        <span class="kw">let</span> <span class="ident">retval</span> <span class="op">=</span> <span class="ident">ret</span>.<span class="ident">value</span>;
+        <span class="ident">mem::forget</span>(<span class="ident">ret</span>);
+        <span class="ident">retval</span>
+    })
 }
 
 <span class="doccomment">/// Evaluates BQN code</span>

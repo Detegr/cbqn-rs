@@ -126,8 +126,7 @@ impl BQNValue {
     pub fn has_field(&self, field: &str) -> bool {
         let _l = LOCK.lock();
 
-        // CBQN requires the string to be all lowercase
-        if !field.chars().all(char::is_lowercase) {
+        if !BQNValue::is_valid_namespace_field(field) {
             return false;
         }
 
@@ -149,8 +148,7 @@ impl BQNValue {
     pub fn get_field(&self, field: &str) -> Option<BQNValue> {
         let _l = LOCK.lock();
 
-        // CBQN requires the string to be all lowercase
-        if !field.chars().all(char::is_lowercase) {
+        if !BQNValue::is_valid_namespace_field(field) {
             return None;
         }
 
@@ -262,6 +260,11 @@ impl BQNValue {
         }
 
         objarr.into_iter().map(BQNValue::new).collect()
+    }
+
+    fn is_valid_namespace_field(field: &str) -> bool {
+        // CBQN requires the string to be all lowercase and contain no underscores
+        field.chars().all(|c| c.is_lowercase() && c != '_')
     }
 
     fn to_char_container<T: FromIterator<char>>(&self) -> T {

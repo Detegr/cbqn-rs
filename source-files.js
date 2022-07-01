@@ -1,5 +1,5 @@
 var sourcesIndex = {};
-sourcesIndex["cbqn"] = {"name":"","files":["conversions.rs","lib.rs","macros.rs","typecheck.rs"]};
+sourcesIndex["cbqn"] = {"name":"","files":["bqntype.rs","conversions.rs","lib.rs","macros.rs"]};
 sourcesIndex["cbqn_sys"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["cfg_if"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["getrandom"] = {"name":"","files":["error.rs","error_impls.rs","lib.rs","linux_android.rs","use_file.rs","util.rs","util_libc.rs"]};

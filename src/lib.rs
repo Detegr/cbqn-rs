@@ -306,6 +306,10 @@ impl BQNValue {
     /// let add_three = BQNValue::fn1(|x| BQNValue::from(x.to_f64() + 3.0));
     /// assert_eq!(BQN!(3, "{𝕏𝕨}", add_three).to_f64(), 6.0);
     /// ```
+    ///
+    /// # Panics
+    ///
+    /// * If called from a BQNValue::fn1 or BQNValue::fn2 function
     pub fn fn1(f: fn(&BQNValue) -> BQNValue) -> BQNValue {
         INIT.call_once(|| {
             let _l = LOCK.lock();
@@ -336,6 +340,10 @@ impl BQNValue {
     /// let multiply = BQNValue::fn2(|w, x| BQNValue::from(w.to_f64() * x.to_f64()));
     /// assert_eq!(BQN!(multiply, "{𝕎´𝕩}", [1,2,3,4,5]).to_f64(), 120.0);
     /// ```
+    ///
+    /// # Panics
+    ///
+    /// * If called from a BQNValue::fn1 or BQNValue::fn2 function
     pub fn fn2(f: fn(&BQNValue, &BQNValue) -> BQNValue) -> BQNValue {
         INIT.call_once(|| {
             let _l = LOCK.lock();

@@ -1,7 +1,7 @@
 use super::*;
 
 #[test]
-fn test_fn1() {
+fn fn1() {
     let to_upper = BQNValue::fn1(|x| {
         let s = x.to_string();
         BQNValue::from(&s.to_uppercase()[..])
@@ -13,7 +13,7 @@ fn test_fn1() {
 }
 
 #[test]
-fn test_fn2() {
+fn fn2() {
     let split = BQNValue::fn2(|w, x| {
         x.to_string()
             .split(w.to_char().unwrap())
@@ -48,6 +48,24 @@ fn clone() {
     );
     assert_eq!(
         to_upper_2.call1(&"hello, world!".into()).to_string(),
+        "HELLO, WORLD!"
+    );
+}
+
+#[test]
+#[should_panic]
+fn fn_inside_fn() {
+    let to_upper = BQNValue::fn1(|x| {
+        let to_lower = BQNValue::fn1(|x| {
+            let s = x.to_string();
+            BQNValue::from(&s.to_lowercase()[..])
+        });
+        let lower_x = to_lower.call1(x);
+        let s = lower_x.to_string();
+        BQNValue::from(&s.to_uppercase()[..])
+    });
+    assert_eq!(
+        to_upper.call1(&"hello, world!".into()).to_string(),
         "HELLO, WORLD!"
     );
 }

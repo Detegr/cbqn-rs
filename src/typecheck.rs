@@ -1,12 +1,15 @@
 use cbqn_sys::*;
 
 #[derive(Debug, PartialEq)]
+/// BQN type enumeration
 pub enum BQNType {
     Array,
     Number,
     Character,
     Function,
+    /// 1-modifier
     Mod1,
+    /// 2-modifier
     Mod2,
     Namespace,
 }

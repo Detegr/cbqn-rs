@@ -82,6 +82,7 @@ mod conversions;
 mod macros;
 mod typecheck;
 
+pub use typecheck::BQNType;
 use typecheck::*;
 
 static LOCK: Lazy<ReentrantMutex<()>> = Lazy::new(|| ReentrantMutex::new(()));
@@ -177,6 +178,11 @@ impl BQNValue {
     pub fn call2(&self, w: &BQNValue, x: &BQNValue) -> BQNValue {
         let _l = LOCK.lock();
         unsafe { BQNValue::new(bqn_call2(self.value, w.value, x.value)) }
+    }
+
+    /// Returns the BQN type of the BQNValue
+    pub fn bqn_type(&self) -> BQNType {
+        BQNType::try_from(unsafe { bqn_type(self.value) }).expect("expected to handle all types")
     }
 
     /// Converts `BQNValue` into `f64`
@@ -364,10 +370,6 @@ impl BQNValue {
 
     fn bound(&self) -> usize {
         unsafe { bqn_bound(self.value) as usize }
-    }
-
-    pub fn bqn_type(&self) -> BQNType {
-        BQNType::try_from(unsafe { bqn_type(self.value) }).expect("expected to handle all types")
     }
 
     fn direct_arr_type(&self) -> u32 {

@@ -302,7 +302,7 @@ impl BQNValue {
     /// let add_three = BQNValue::fn1(|x| BQNValue::from(x.to_f64() + 3.0));
     /// assert_eq!(BQN!(3, "{𝕏𝕨}", add_three).to_f64(), 6.0);
     /// ```
-    pub fn fn1<F: Fn(&BQNValue) -> BQNValue + 'static>(f: F) -> BQNValue {
+    pub fn fn1(f: fn(&BQNValue) -> BQNValue) -> BQNValue {
         INIT.call_once(|| {
             let _l = LOCK.lock();
             unsafe { bqn_init() }
@@ -316,7 +316,7 @@ impl BQNValue {
             while boundfns.boundfn_1.contains_key(&key) || key == 0 {
                 key = rng.gen::<u64>() & 0xFFFFFFFF;
             }
-            boundfns.boundfn_1.insert(key, Box::new(f));
+            boundfns.boundfn_1.insert(key, f);
         });
 
         let obj = BQNValue::from(f64::from_bits(key));
@@ -337,7 +337,7 @@ impl BQNValue {
     /// let multiply = BQNValue::fn2(|w, x| BQNValue::from(w.to_f64() * x.to_f64()));
     /// assert_eq!(BQN!(multiply, "{𝕎´𝕩}", [1,2,3,4,5]).to_f64(), 120.0);
     /// ```
-    pub fn fn2<F: Fn(&BQNValue, &BQNValue) -> BQNValue + 'static>(f: F) -> BQNValue {
+    pub fn fn2(f: fn(&BQNValue, &BQNValue) -> BQNValue) -> BQNValue {
         INIT.call_once(|| {
             let _l = LOCK.lock();
             unsafe { bqn_init() }
@@ -351,7 +351,7 @@ impl BQNValue {
             while boundfns.boundfn_2.contains_key(&key) || key == 0 {
                 key = (rng.gen::<u64>() & 0xFFFFFFFF) | 0x100000000;
             }
-            boundfns.boundfn_2.insert(key, Box::new(f));
+            boundfns.boundfn_2.insert(key, f);
         });
 
         let obj = BQNValue::from(f64::from_bits(key));
@@ -447,8 +447,8 @@ impl Drop for BQNValue {
 
 #[derive(Default)]
 struct BoundFns {
-    boundfn_1: HashMap<u64, Box<dyn Fn(&BQNValue) -> BQNValue>>,
-    boundfn_2: HashMap<u64, Box<dyn Fn(&BQNValue, &BQNValue) -> BQNValue>>,
+    boundfn_1: HashMap<u64, fn(&BQNValue) -> BQNValue>,
+    boundfn_2: HashMap<u64, fn(&BQNValue, &BQNValue) -> BQNValue>,
 }
 
 thread_local! {

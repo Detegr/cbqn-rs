@@ -1,5 +1,3 @@
-use cbqn_sys::*;
-
 #[derive(Debug, PartialEq)]
 /// BQN type enumeration
 pub enum BQNType {
@@ -28,24 +26,4 @@ impl TryFrom<i32> for BQNType {
             _ => Err("Invalid type"),
         }
     }
-}
-
-pub const fn bqneltype_is_numeric(eltype: u32) -> bool {
-    #![allow(non_upper_case_globals)]
-    match eltype {
-        BQNElType_elt_f64 | BQNElType_elt_i32 | BQNElType_elt_i16 | BQNElType_elt_i8 => true,
-        _ => false,
-    }
-}
-
-pub const fn bqneltype_is_char(eltype: u32) -> bool {
-    #![allow(non_upper_case_globals)]
-    match eltype {
-        BQNElType_elt_c32 | BQNElType_elt_c16 | BQNElType_elt_c8 => true,
-        _ => false,
-    }
-}
-
-pub const fn bqneltype_is_unknown(eltype: u32) -> bool {
-    eltype == BQNElType_elt_unk
 }

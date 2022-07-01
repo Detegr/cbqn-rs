@@ -78,12 +78,11 @@ use std::{cell::RefCell, collections::HashMap, fmt, mem, sync::Once};
 #[cfg(test)]
 mod tests;
 
+mod bqntype;
 mod conversions;
 mod macros;
-mod typecheck;
 
-pub use typecheck::BQNType;
-use typecheck::*;
+pub use bqntype::BQNType;
 
 static LOCK: Lazy<ReentrantMutex<()>> = Lazy::new(|| ReentrantMutex::new(()));
 static INIT: Once = Once::new();
@@ -250,12 +249,8 @@ impl BQNValue {
     /// * If `self` isn't a BQN array that contains BQN objects
     pub fn to_bqnvalue_vec(&self) -> Vec<BQNValue> {
         let l = LOCK.lock();
-        if !bqneltype_is_unknown(self.direct_arr_type()) {
+        if self.bqn_type() != BQNType::Array {
             panic!("value isn't an object array");
-        } else {
-            if self.bqn_type() != BQNType::Array {
-                panic!("value isn't an object array");
-            }
         }
 
         let b = self.bound();
@@ -381,7 +376,7 @@ impl BQNValue {
             panic!("value isn't an array");
         }
         let b = self.bound();
-        if !bqneltype_is_char(self.direct_arr_type()) {
+        if !self.known_char_arr() {
             for i in 0..b {
                 let t = BQNType::try_from(unsafe {
                     let v = bqn_pick(self.value, i.try_into().unwrap());
@@ -404,7 +399,7 @@ impl BQNValue {
             panic!("value isn't an array");
         }
         let b = self.bound();
-        if !bqneltype_is_numeric(self.direct_arr_type()) {
+        if !self.known_f64_arr() {
             for i in 0..b {
                 let t = BQNType::try_from(unsafe {
                     let v = bqn_pick(self.value, i.try_into().unwrap());
@@ -415,11 +410,31 @@ impl BQNValue {
                 .expect("expected known type");
 
                 if t != BQNType::Number {
-                    panic!("value isn't a numeric array");
+                    panic!("value isn't a f64 array");
                 }
             }
         }
         b
+    }
+
+    // This function returns whether it's known that the array elements are of type f64
+    // Returns false if *it is not known* whether the array elements are of type f64 or not
+    fn known_f64_arr(&self) -> bool {
+        #![allow(non_upper_case_globals)]
+        match self.direct_arr_type() {
+            BQNElType_elt_f64 | BQNElType_elt_i32 | BQNElType_elt_i16 | BQNElType_elt_i8 => true,
+            _ => false,
+        }
+    }
+
+    // This function returns whether it's known that the array elements are of type char
+    // Returns false if *it is not known* whether the array elements are of type char or not
+    fn known_char_arr(&self) -> bool {
+        #![allow(non_upper_case_globals)]
+        match self.direct_arr_type() {
+            BQNElType_elt_c32 | BQNElType_elt_c16 | BQNElType_elt_c8 => true,
+            _ => false,
+        }
     }
 }
 

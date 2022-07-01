@@ -31,7 +31,12 @@ impl_from_string_like_vec!(String);
 
 impl<const N: usize> From<[&str; N]> for BQNValue {
     fn from(arr: [&str; N]) -> BQNValue {
+        crate::INIT.call_once(|| {
+            let _l = LOCK.lock();
+            unsafe { bqn_init() }
+        });
         let mut strs = Vec::with_capacity(N);
+        let _l = LOCK.lock();
         for s in arr {
             let str_bytes = s.as_bytes();
             strs.push(unsafe {
@@ -47,7 +52,12 @@ impl<const N: usize> From<[&str; N]> for BQNValue {
 
 impl<const N: usize> From<[String; N]> for BQNValue {
     fn from(arr: [String; N]) -> BQNValue {
+        crate::INIT.call_once(|| {
+            let _l = LOCK.lock();
+            unsafe { bqn_init() }
+        });
         let mut strs = Vec::with_capacity(N);
+        let _l = LOCK.lock();
         for s in arr {
             let str_bytes = s.as_bytes();
             strs.push(unsafe {

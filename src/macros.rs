@@ -2,6 +2,10 @@ macro_rules! impl_from_string_like {
     ($ty:ty) => {
         impl From<$ty> for BQNValue {
             fn from(v: $ty) -> BQNValue {
+                crate::INIT.call_once(|| {
+                    let _l = LOCK.lock();
+                    unsafe { bqn_init() }
+                });
                 let str_bytes = v.as_bytes();
                 let _l = LOCK.lock();
                 BQNValue::new(unsafe {
@@ -19,7 +23,12 @@ macro_rules! impl_from_string_like_vec {
     ($ty:ty) => {
         impl From<Vec<$ty>> for BQNValue {
             fn from(arr: Vec<$ty>) -> BQNValue {
+                crate::INIT.call_once(|| {
+                    let _l = LOCK.lock();
+                    unsafe { bqn_init() }
+                });
                 let mut strs = Vec::with_capacity(arr.len());
+                let _l = LOCK.lock();
                 for s in &arr {
                     let str_bytes = s.as_bytes();
                     strs.push(unsafe {

@@ -458,45 +458,27 @@ thread_local! {
 unsafe extern "C" fn boundfn_1_wrapper(obj: BQNV, x: BQNV) -> BQNV {
     let key = BQNValue::new(obj).to_f64().to_bits();
 
-    let tgt = FNS.with(|fns| {
-        let mut boundfns = fns.borrow_mut();
-        boundfns.boundfn_1.remove(&key).unwrap()
-    });
-
-    let l = LOCK.lock();
-    let ret = tgt(&BQNValue::new(x));
-    drop(l);
-
     FNS.with(|fns| {
-        let mut boundfns = fns.borrow_mut();
-        boundfns.boundfn_1.insert(key, Box::new(tgt));
-    });
-
-    let retval = ret.value;
-    mem::forget(ret);
-    retval
+        let boundfns = fns.borrow();
+        let tgt = boundfns.boundfn_1.get(&key).unwrap();
+        let ret = tgt(&BQNValue::new(x));
+        let retval = ret.value;
+        mem::forget(ret);
+        retval
+    })
 }
 
 unsafe extern "C" fn boundfn_2_wrapper(obj: BQNV, w: BQNV, x: BQNV) -> BQNV {
     let key = BQNValue::new(obj).to_f64().to_bits();
 
-    let tgt = FNS.with(|fns| {
-        let mut boundfns = fns.borrow_mut();
-        boundfns.boundfn_2.remove(&key).unwrap()
-    });
-
-    let l = LOCK.lock();
-    let ret = tgt(&BQNValue::new(w), &BQNValue::new(x));
-    drop(l);
-
     FNS.with(|fns| {
-        let mut boundfns = fns.borrow_mut();
-        boundfns.boundfn_2.insert(key, Box::new(tgt));
-    });
-
-    let retval = ret.value;
-    mem::forget(ret);
-    retval
+        let boundfns = fns.borrow();
+        let tgt = boundfns.boundfn_2.get(&key).unwrap();
+        let ret = tgt(&BQNValue::new(w), &BQNValue::new(x));
+        let retval = ret.value;
+        mem::forget(ret);
+        retval
+    })
 }
 
 /// Evaluates BQN code

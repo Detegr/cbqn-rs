@@ -34,3 +34,20 @@ fn test_fn2() {
         [vec!["Hello", "world!"], vec!["Rust", "❤️", "BQN"]]
     );
 }
+
+#[test]
+fn clone() {
+    let to_upper = BQNValue::fn1(|x| {
+        let s = x.to_string();
+        BQNValue::from(&s.to_uppercase()[..])
+    });
+    let to_upper_2 = to_upper.clone();
+    assert_eq!(
+        to_upper.call1(&"hello, world!".into()).to_string(),
+        "HELLO, WORLD!"
+    );
+    assert_eq!(
+        to_upper_2.call1(&"hello, world!".into()).to_string(),
+        "HELLO, WORLD!"
+    );
+}

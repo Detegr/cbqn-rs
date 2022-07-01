@@ -64,3 +64,9 @@ fn namespace() {
         Some(2.0)
     );
 }
+
+#[test]
+fn clone() {
+    let v = BQNValue::from("hello");
+    assert_eq!(BQN!(v.clone(), "≡", v).to_f64(), 1.0);
+}

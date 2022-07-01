@@ -312,14 +312,9 @@ impl BQNValue {
             unsafe { bqn_init() }
         });
 
-        let mut rng = rand::thread_rng();
-        let mut key = rng.gen::<u64>() & 0xFFFFFFFF;
+        let key = BQNValue::gen_boundfn_key(false);
         FNS.with(|fns| {
             let mut boundfns = fns.borrow_mut();
-            // unlikely
-            while boundfns.boundfn_1.contains_key(&key) || key == 0 {
-                key = rng.gen::<u64>() & 0xFFFFFFFF;
-            }
             boundfns.boundfn_1.insert(key, f);
         });
 
@@ -347,14 +342,9 @@ impl BQNValue {
             unsafe { bqn_init() }
         });
 
-        let mut rng = rand::thread_rng();
-        let mut key = (rng.gen::<u64>() & 0xFFFFFFFF) | 0x100000000;
+        let key = BQNValue::gen_boundfn_key(true);
         FNS.with(|fns| {
             let mut boundfns = fns.borrow_mut();
-            // unlikely
-            while boundfns.boundfn_2.contains_key(&key) || key == 0 {
-                key = (rng.gen::<u64>() & 0xFFFFFFFF) | 0x100000000;
-            }
             boundfns.boundfn_2.insert(key, f);
         });
 
@@ -439,6 +429,27 @@ impl BQNValue {
             _ => false,
         }
     }
+
+    fn gen_boundfn_key(fn2: bool) -> u64 {
+        let mut rng = rand::thread_rng();
+        let mark_fn2 = if fn2 { 0x100000000 } else { 0 };
+        let mut key = (rng.gen::<u64>() & 0xFFFFFFFF) | mark_fn2;
+        FNS.with(|fns| {
+            let boundfns = fns.borrow();
+            if fn2 {
+                // unlikely
+                while boundfns.boundfn_2.contains_key(&key) || key == 0 {
+                    key = (rng.gen::<u64>() & 0xFFFFFFFF) | mark_fn2;
+                }
+            } else {
+                // unlikely
+                while boundfns.boundfn_1.contains_key(&key) || key == 0 {
+                    key = rng.gen::<u64>() & 0xFFFFFFFF;
+                }
+            }
+        });
+        key
+    }
 }
 
 impl fmt::Debug for BQNValue {
@@ -446,6 +457,41 @@ impl fmt::Debug for BQNValue {
         let fmt = crate::eval("•Fmt");
         let formatted = fmt.call1(self);
         write!(f, "{}", formatted.to_string())
+    }
+}
+
+impl Clone for BQNValue {
+    fn clone(&self) -> BQNValue {
+        let l = LOCK.lock();
+        let mut v = BQNValue::new(unsafe { bqn_copy(self.value) });
+        drop(l);
+
+        if self.boundfn_key > 0 {
+            if self.boundfn_key <= 0xFFFFFFFF {
+                let key = BQNValue::gen_boundfn_key(false);
+                FNS.with(|fns| {
+                    let f = (*fns.borrow())
+                        .boundfn_1
+                        .get(&self.boundfn_key)
+                        .unwrap()
+                        .clone();
+                    (*fns.borrow_mut()).boundfn_1.insert(key, f);
+                });
+                v.boundfn_key = key;
+            } else {
+                let key = BQNValue::gen_boundfn_key(true);
+                FNS.with(|fns| {
+                    let f = (*fns.borrow())
+                        .boundfn_2
+                        .get(&self.boundfn_key)
+                        .unwrap()
+                        .clone();
+                    (*fns.borrow_mut()).boundfn_2.insert(key, f);
+                });
+                v.boundfn_key = key;
+            }
+        }
+        v
     }
 }
 

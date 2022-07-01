@@ -54,7 +54,7 @@ fn clone() {
 
 #[test]
 #[should_panic]
-fn fn_inside_fn() {
+fn boundfn_inside_boundfn() {
     let to_upper = BQNValue::fn1(|x| {
         let to_lower = BQNValue::fn1(|x| {
             let s = x.to_string();

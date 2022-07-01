@@ -505,6 +505,8 @@
 <span id="498">498</span>
 <span id="499">499</span>
 <span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
 </pre><pre class="rust"><code><span class="doccomment">//! cbqn</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! A crate for running [BQN](https://mlochbaum.github.io/BQN) code within a Rust program using [CBQN](https://github.com/dzaima/CBQN) interpreter compiled as a shared object.</span>
@@ -589,6 +591,7 @@
 <span class="kw">mod</span> <span class="ident">macros</span>;
 <span class="kw">mod</span> <span class="ident">typecheck</span>;
 
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">typecheck::BQNType</span>;
 <span class="kw">use</span> <span class="ident">typecheck</span>::<span class="kw-2">*</span>;
 
 <span class="kw">static</span> <span class="ident">LOCK</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">ReentrantMutex</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ReentrantMutex::new</span>(()));
@@ -684,6 +687,11 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call2</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="ident">BQNValue</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span> {
         <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
         <span class="kw">unsafe</span> { <span class="ident">BQNValue::new</span>(<span class="ident">bqn_call2</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">w</span>.<span class="ident">value</span>, <span class="ident">x</span>.<span class="ident">value</span>)) }
+    }
+
+    <span class="doccomment">/// Returns the BQN type of the BQNValue</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bqn_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BQNType</span> {
+        <span class="ident">BQNType::try_from</span>(<span class="kw">unsafe</span> { <span class="ident">bqn_type</span>(<span class="self">self</span>.<span class="ident">value</span>) }).<span class="ident">expect</span>(<span class="string">&quot;expected to handle all types&quot;</span>)
     }
 
     <span class="doccomment">/// Converts `BQNValue` into `f64`</span>
@@ -871,10 +879,6 @@
 
     <span class="kw">fn</span> <span class="ident">bound</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="ident">bqn_bound</span>(<span class="self">self</span>.<span class="ident">value</span>) <span class="kw">as</span> <span class="ident">usize</span> }
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bqn_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BQNType</span> {
-        <span class="ident">BQNType::try_from</span>(<span class="kw">unsafe</span> { <span class="ident">bqn_type</span>(<span class="self">self</span>.<span class="ident">value</span>) }).<span class="ident">expect</span>(<span class="string">&quot;expected to handle all types&quot;</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">direct_arr_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {

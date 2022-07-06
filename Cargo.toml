@@ -9,4 +9,3 @@ edition = "2021"
 cbqn-sys = { git = "https://github.com/Detegr/cbqn-sys.git" }
 once_cell = "1.12.0"
 parking_lot = "0.12.1"
-rand = "0.8.4"

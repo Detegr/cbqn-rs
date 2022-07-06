@@ -72,8 +72,7 @@
 use cbqn_sys::*;
 use once_cell::sync::Lazy;
 use parking_lot::ReentrantMutex;
-use rand::{self, prelude::*};
-use std::{cell::RefCell, collections::HashMap, fmt, mem, sync::Once};
+use std::{cell::RefCell, fmt, mem, sync::Once};
 
 #[cfg(test)]
 mod tests;
@@ -90,15 +89,11 @@ static INIT: Once = Once::new();
 /// Represents a BQN value
 pub struct BQNValue {
     value: BQNV,
-    boundfn_key: u64,
 }
 
 impl BQNValue {
     fn new(value: BQNV) -> BQNValue {
-        BQNValue {
-            value,
-            boundfn_key: 0,
-        }
+        BQNValue { value }
     }
 
     /// Constructs a BQN null value `@`
@@ -310,23 +305,38 @@ impl BQNValue {
     /// # Panics
     ///
     /// * If called from a BQNValue::fn1 or BQNValue::fn2 function
-    pub fn fn1(f: fn(&BQNValue) -> BQNValue) -> BQNValue {
+    ///
+    /// # Implementation note
+    ///
+    /// Calling this function will allocate memory that will last for the lifetime of the program.
+    /// Calling it with two identical closures, but with different lifetimes, will allocate the
+    /// memory multiple times.
+    pub fn fn1(func: fn(&BQNValue) -> BQNValue) -> BQNValue {
         INIT.call_once(|| {
             let _l = LOCK.lock();
             unsafe { bqn_init() }
         });
 
-        let key = BQNValue::gen_boundfn_key(false);
+        let mut key = 0;
         FNS.with(|fns| {
             let mut boundfns = fns.borrow_mut();
-            boundfns.boundfn_1.insert(key, f);
+            let mut exists = false;
+            for f in boundfns.boundfn_1.iter() {
+                if *f as usize == func as usize {
+                    exists = true;
+                    break;
+                }
+            }
+            if !exists {
+                boundfns.boundfn_1.push(func);
+                key = boundfns.boundfn_1.len() as u64 - 1;
+            }
         });
 
         let obj = BQNValue::from(f64::from_bits(key));
         let _l = LOCK.lock();
         BQNValue {
             value: unsafe { bqn_makeBoundFn1(Some(boundfn_1_wrapper), obj.value) },
-            boundfn_key: key,
         }
     }
 
@@ -344,23 +354,38 @@ impl BQNValue {
     /// # Panics
     ///
     /// * If called from a BQNValue::fn1 or BQNValue::fn2 function
-    pub fn fn2(f: fn(&BQNValue, &BQNValue) -> BQNValue) -> BQNValue {
+    ///
+    /// # Implementation note
+    ///
+    /// Calling this function will allocate memory that will last for the lifetime of the program.
+    /// Calling it with two identical closures, but with different lifetimes, will allocate the
+    /// memory multiple times.
+    pub fn fn2(func: fn(&BQNValue, &BQNValue) -> BQNValue) -> BQNValue {
         INIT.call_once(|| {
             let _l = LOCK.lock();
             unsafe { bqn_init() }
         });
 
-        let key = BQNValue::gen_boundfn_key(true);
+        let mut key = 0;
         FNS.with(|fns| {
             let mut boundfns = fns.borrow_mut();
-            boundfns.boundfn_2.insert(key, f);
+            let mut exists = false;
+            for f in boundfns.boundfn_2.iter() {
+                if *f as usize == func as usize {
+                    exists = true;
+                    break;
+                }
+            }
+            if !exists {
+                boundfns.boundfn_2.push(func);
+                key = boundfns.boundfn_2.len() as u64 - 1;
+            }
         });
 
         let obj = BQNValue::from(f64::from_bits(key));
         let _l = LOCK.lock();
         BQNValue {
             value: unsafe { bqn_makeBoundFn2(Some(boundfn_2_wrapper), obj.value) },
-            boundfn_key: key,
         }
     }
 
@@ -437,27 +462,6 @@ impl BQNValue {
             _ => false,
         }
     }
-
-    fn gen_boundfn_key(fn2: bool) -> u64 {
-        let mut rng = rand::thread_rng();
-        let mark_fn2 = if fn2 { 0x100000000 } else { 0 };
-        let mut key = (rng.gen::<u64>() & 0xFFFFFFFF) | mark_fn2;
-        FNS.with(|fns| {
-            let boundfns = fns.borrow();
-            if fn2 {
-                // unlikely
-                while boundfns.boundfn_2.contains_key(&key) || key == 0 {
-                    key = (rng.gen::<u64>() & 0xFFFFFFFF) | mark_fn2;
-                }
-            } else {
-                // unlikely
-                while boundfns.boundfn_1.contains_key(&key) || key == 0 {
-                    key = rng.gen::<u64>() & 0xFFFFFFFF;
-                }
-            }
-        });
-        key
-    }
 }
 
 impl fmt::Debug for BQNValue {
@@ -470,36 +474,10 @@ impl fmt::Debug for BQNValue {
 
 impl Clone for BQNValue {
     fn clone(&self) -> BQNValue {
-        let l = LOCK.lock();
-        let mut v = BQNValue::new(unsafe { bqn_copy(self.value) });
-        drop(l);
-
-        if self.boundfn_key > 0 {
-            if self.boundfn_key <= 0xFFFFFFFF {
-                let key = BQNValue::gen_boundfn_key(false);
-                FNS.with(|fns| {
-                    let f = (*fns.borrow())
-                        .boundfn_1
-                        .get(&self.boundfn_key)
-                        .unwrap()
-                        .clone();
-                    (*fns.borrow_mut()).boundfn_1.insert(key, f);
-                });
-                v.boundfn_key = key;
-            } else {
-                let key = BQNValue::gen_boundfn_key(true);
-                FNS.with(|fns| {
-                    let f = (*fns.borrow())
-                        .boundfn_2
-                        .get(&self.boundfn_key)
-                        .unwrap()
-                        .clone();
-                    (*fns.borrow_mut()).boundfn_2.insert(key, f);
-                });
-                v.boundfn_key = key;
-            }
+        let _l = LOCK.lock();
+        BQNValue {
+            value: unsafe { bqn_copy(self.value) },
         }
-        v
     }
 }
 
@@ -507,22 +485,13 @@ impl Drop for BQNValue {
     fn drop(&mut self) {
         let _l = LOCK.lock();
         unsafe { bqn_free(self.value) };
-        if self.boundfn_key > 0 {
-            FNS.with(|fns| {
-                if self.boundfn_key <= 0xFFFFFFFF {
-                    (*fns.borrow_mut()).boundfn_1.remove(&self.boundfn_key);
-                } else {
-                    (*fns.borrow_mut()).boundfn_2.remove(&self.boundfn_key);
-                }
-            })
-        }
     }
 }
 
 #[derive(Default)]
-struct BoundFns {
-    boundfn_1: HashMap<u64, fn(&BQNValue) -> BQNValue>,
-    boundfn_2: HashMap<u64, fn(&BQNValue, &BQNValue) -> BQNValue>,
+pub(crate) struct BoundFns {
+    boundfn_1: Vec<fn(&BQNValue) -> BQNValue>,
+    boundfn_2: Vec<fn(&BQNValue, &BQNValue) -> BQNValue>,
 }
 
 thread_local! {
@@ -530,11 +499,11 @@ thread_local! {
 }
 
 unsafe extern "C" fn boundfn_1_wrapper(obj: BQNV, x: BQNV) -> BQNV {
-    let key = BQNValue::new(obj).to_f64().to_bits();
+    let key = BQNValue::new(obj).to_f64().to_bits() as usize;
 
     FNS.with(|fns| {
         let boundfns = fns.borrow();
-        let tgt = boundfns.boundfn_1.get(&key).unwrap();
+        let tgt = &boundfns.boundfn_1[key];
         let ret = tgt(&BQNValue::new(x));
         let retval = ret.value;
         mem::forget(ret);
@@ -543,11 +512,11 @@ unsafe extern "C" fn boundfn_1_wrapper(obj: BQNV, x: BQNV) -> BQNV {
 }
 
 unsafe extern "C" fn boundfn_2_wrapper(obj: BQNV, w: BQNV, x: BQNV) -> BQNV {
-    let key = BQNValue::new(obj).to_f64().to_bits();
+    let key = BQNValue::new(obj).to_f64().to_bits() as usize;
 
     FNS.with(|fns| {
         let boundfns = fns.borrow();
-        let tgt = boundfns.boundfn_2.get(&key).unwrap();
+        let tgt = &boundfns.boundfn_2[key];
         let ret = tgt(&BQNValue::new(w), &BQNValue::new(x));
         let retval = ret.value;
         mem::forget(ret);

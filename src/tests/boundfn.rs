@@ -69,3 +69,44 @@ fn boundfn_inside_boundfn() {
         "HELLO, WORLD!"
     );
 }
+
+#[test]
+fn lifetime() {
+    fn boundfn() -> BQNValue {
+        let f = BQNValue::fn1(|x| BQNValue::from(x.to_f64() * 2.0));
+        BQN!("⊢", f)
+    }
+
+    let f = boundfn();
+    assert_eq!(f.call1(&1.0.into()).to_f64(), 2.0);
+}
+
+#[test]
+fn boundfn_count() {
+    fn times2(x: &BQNValue) -> BQNValue {
+        BQNValue::from(x.to_f64() * 2.0)
+    }
+
+    let closure = |x: &BQNValue| BQNValue::from(x.to_f64() * 2.0);
+
+    // 1
+    let _a = BQNValue::fn1(closure);
+    let _b = BQNValue::fn1(closure);
+    // 2
+    let _c = BQNValue::fn1(|x| BQNValue::from(x.to_f64() * 2.0));
+    // 3
+    let _d = BQNValue::fn1(|x| BQNValue::from(x.to_f64() * 2.0));
+    // 4
+    let _e = BQNValue::fn1(times2);
+    let _f = BQNValue::fn1(times2);
+
+    // 5
+    let _v = (0..5)
+        .map(|_| BQNValue::fn1(|x| x.clone()))
+        .collect::<Vec<BQNValue>>();
+
+    FNS.with(|fns| {
+        let fns = fns.borrow();
+        assert_eq!(fns.boundfn_1.len(), 5);
+    });
+}

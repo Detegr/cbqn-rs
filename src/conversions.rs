@@ -75,18 +75,72 @@ impl_from_array!(f64, bqn_makeF64Vec);
 impl_from_array!(i32, bqn_makeI32Vec);
 impl_from_array!(i16, bqn_makeI16Vec);
 impl_from_array!(i8, bqn_makeI8Vec);
+impl<const N: usize> From<[BQNValue; N]> for BQNValue {
+    fn from(arr: [BQNValue; N]) -> BQNValue {
+        crate::INIT.call_once(|| {
+            let _l = LOCK.lock();
+            unsafe { bqn_init() }
+        });
+        let elems = arr.into_iter().map(|v| v.value).collect::<Vec<_>>();
+        let len = elems.len();
+        let _l = LOCK.lock();
+        BQNValue::new(unsafe { bqn_makeObjVec(len.try_into().unwrap(), elems.as_ptr()) })
+    }
+}
 
 impl_from_slice!(&[f64], bqn_makeF64Vec);
 impl_from_slice!(&[i32], bqn_makeI32Vec);
 impl_from_slice!(&[i16], bqn_makeI16Vec);
 impl_from_slice!(&[i8], bqn_makeI8Vec);
+impl From<&[BQNValue]> for BQNValue {
+    fn from(arr: &[BQNValue]) -> BQNValue {
+        crate::INIT.call_once(|| {
+            let _l = LOCK.lock();
+            unsafe { bqn_init() }
+        });
+
+        let elems = arr.into_iter().map(|v| v.value).collect::<Vec<_>>();
+        let len = elems.len();
+        let _l = LOCK.lock();
+        BQNValue::new(unsafe { bqn_makeObjVec(len.try_into().unwrap(), elems.as_ptr()) })
+    }
+}
 
 impl_from_vec!(f64, bqn_makeF64Vec);
 impl_from_vec!(i32, bqn_makeI32Vec);
 impl_from_vec!(i16, bqn_makeI16Vec);
 impl_from_vec!(i8, bqn_makeI8Vec);
+impl From<Vec<BQNValue>> for BQNValue {
+    fn from(arr: Vec<BQNValue>) -> BQNValue {
+        crate::INIT.call_once(|| {
+            let _l = LOCK.lock();
+            unsafe { bqn_init() }
+        });
+
+        let elems = arr.into_iter().map(|v| v.value).collect::<Vec<_>>();
+        let len = elems.len();
+        let _l = LOCK.lock();
+        BQNValue::new(unsafe { bqn_makeObjVec(len.try_into().unwrap(), elems.as_ptr()) })
+    }
+}
 
 impl_from_iterator!(f64, bqn_makeF64Vec);
 impl_from_iterator!(i32, bqn_makeI32Vec);
 impl_from_iterator!(i16, bqn_makeI16Vec);
 impl_from_iterator!(i8, bqn_makeI8Vec);
+impl FromIterator<BQNValue> for BQNValue {
+    fn from_iter<T>(iter: T) -> BQNValue
+    where
+        T: IntoIterator<Item = BQNValue>,
+    {
+        crate::INIT.call_once(|| {
+            let _l = LOCK.lock();
+            unsafe { bqn_init() }
+        });
+
+        let elems = iter.into_iter().map(|v| v.value).collect::<Vec<_>>();
+        let len = elems.len();
+        let _l = LOCK.lock();
+        BQNValue::new(unsafe { bqn_makeObjVec(len.try_into().unwrap(), elems.as_ptr()) })
+    }
+}

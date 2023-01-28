@@ -1,6 +1,58 @@
 use super::*;
 
 #[test]
+fn from_iterator_bqnvalue() {
+    let fns = "≠≢"
+        .chars()
+        .map(|c| eval(&c.to_string()))
+        .collect::<BQNValue>();
+
+    let ret = &BQN!("{𝕏3‿3⥊0}¨", fns).to_bqnvalue_vec()[..];
+    assert_eq!(ret[0].to_f64(), 3.0);
+    let shape = ret[1].to_bqnvalue_vec();
+    assert_eq!(shape.len(), 2);
+    for v in shape {
+        assert_eq!(v.to_f64(), 3.0);
+    }
+}
+
+#[test]
+fn from_bqnvalue_vec() {
+    let fns = vec![eval("≠"), eval("≢")];
+    let ret = &BQN!("{𝕏3‿3⥊0}¨", fns).to_bqnvalue_vec()[..];
+    assert_eq!(ret[0].to_f64(), 3.0);
+    let shape = ret[1].to_bqnvalue_vec();
+    assert_eq!(shape.len(), 2);
+    for v in shape {
+        assert_eq!(v.to_f64(), 3.0);
+    }
+}
+
+#[test]
+fn from_bqnvalue_array() {
+    let fns = [eval("≠"), eval("≢")];
+    let ret = &BQN!("{𝕏3‿3⥊0}¨", fns).to_bqnvalue_vec()[..];
+    assert_eq!(ret[0].to_f64(), 3.0);
+    let shape = ret[1].to_bqnvalue_vec();
+    assert_eq!(shape.len(), 2);
+    for v in shape {
+        assert_eq!(v.to_f64(), 3.0);
+    }
+}
+
+#[test]
+fn from_bqnvalue_slice() {
+    let fns = &[eval("≠"), eval("≢")][..];
+    let ret = &BQN!("{𝕏3‿3⥊0}¨", fns).to_bqnvalue_vec()[..];
+    assert_eq!(ret[0].to_f64(), 3.0);
+    let shape = ret[1].to_bqnvalue_vec();
+    assert_eq!(shape.len(), 2);
+    for v in shape {
+        assert_eq!(v.to_f64(), 3.0);
+    }
+}
+
+#[test]
 fn from_iterator_f64() {
     let f = eval("+´");
     let ret = f.call1(&BQNValue::from_iter(

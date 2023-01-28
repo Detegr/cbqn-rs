@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/macros.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>macros.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../cbqn/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../cbqn/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../cbqn/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
-                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/macros.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>macros.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../cbqn/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -174,20 +168,20 @@
 <span id="168">168</span>
 <span id="169">169</span>
 <span id="170">170</span>
-</pre><pre class="rust"><code><span class="macro">macro_rules!</span> <span class="ident">impl_from_string_like</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>) =&gt; {
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BQNValue</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">v</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>) -&gt; <span class="ident">BQNValue</span> {
-                <span class="ident"><span class="kw">crate</span>::INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                    <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
+</pre><pre class="rust"><code><span class="macro">macro_rules! </span>impl_from_string_like {
+    (<span class="macro-nonterminal">$ty</span>:ty) =&gt; {
+        <span class="kw">impl </span>From&lt;<span class="macro-nonterminal">$ty</span>&gt; <span class="kw">for </span>BQNValue {
+            <span class="kw">fn </span>from(v: <span class="macro-nonterminal">$ty</span>) -&gt; BQNValue {
+                <span class="kw">crate</span>::INIT.call_once(|| {
+                    <span class="kw">let </span>_l = LOCK.lock();
+                    <span class="kw">unsafe </span>{ bqn_init() }
                 });
-                <span class="kw">let</span> <span class="ident">str_bytes</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">as_bytes</span>();
-                <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                <span class="ident">BQNValue::new</span>(<span class="kw">unsafe</span> {
-                    <span class="ident">bqn_makeUTF8Str</span>(
-                        <span class="ident">str_bytes</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                        <span class="ident">str_bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>,
+                <span class="kw">let </span>str_bytes = v.as_bytes();
+                <span class="kw">let </span>_l = LOCK.lock();
+                BQNValue::new(<span class="kw">unsafe </span>{
+                    bqn_makeUTF8Str(
+                        str_bytes.len().try_into().unwrap(),
+                        str_bytes.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>i8,
                     )
                 })
             }
@@ -195,155 +189,154 @@
     };
 }
 
-<span class="macro">macro_rules!</span> <span class="ident">impl_from_string_like_vec</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>) =&gt; {
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BQNValue</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">arr</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>) -&gt; <span class="ident">BQNValue</span> {
-                <span class="ident"><span class="kw">crate</span>::INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                    <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
+<span class="macro">macro_rules! </span>impl_from_string_like_vec {
+    (<span class="macro-nonterminal">$ty</span>:ty) =&gt; {
+        <span class="kw">impl </span>From&lt;Vec&lt;<span class="macro-nonterminal">$ty</span>&gt;&gt; <span class="kw">for </span>BQNValue {
+            <span class="kw">fn </span>from(arr: Vec&lt;<span class="macro-nonterminal">$ty</span>&gt;) -&gt; BQNValue {
+                <span class="kw">crate</span>::INIT.call_once(|| {
+                    <span class="kw">let </span>_l = LOCK.lock();
+                    <span class="kw">unsafe </span>{ bqn_init() }
                 });
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">strs</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">arr</span>.<span class="ident">len</span>());
-                <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                <span class="kw">for</span> <span class="ident">s</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">arr</span> {
-                    <span class="kw">let</span> <span class="ident">str_bytes</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">as_bytes</span>();
-                    <span class="ident">strs</span>.<span class="ident">push</span>(<span class="kw">unsafe</span> {
-                        <span class="ident">bqn_makeUTF8Str</span>(
-                            <span class="ident">str_bytes</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                            <span class="ident">str_bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>,
+                <span class="kw">let </span><span class="kw-2">mut </span>strs = Vec::with_capacity(arr.len());
+                <span class="kw">let </span>_l = LOCK.lock();
+                <span class="kw">for </span>s <span class="kw">in </span><span class="kw-2">&amp;</span>arr {
+                    <span class="kw">let </span>str_bytes = s.as_bytes();
+                    strs.push(<span class="kw">unsafe </span>{
+                        bqn_makeUTF8Str(
+                            str_bytes.len().try_into().unwrap(),
+                            str_bytes.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>i8,
                         )
                     });
                 }
-                <span class="ident">BQNValue::new</span>(<span class="kw">unsafe</span> {
-                    <span class="ident">bqn_makeObjVec</span>(<span class="ident">arr</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(), <span class="ident">strs</span>.<span class="ident">as_ptr</span>())
+                BQNValue::new(<span class="kw">unsafe </span>{
+                    bqn_makeObjVec(arr.len().try_into().unwrap(), strs.as_ptr())
                 })
             }
         }
     };
 }
 
-<span class="macro">macro_rules!</span> <span class="ident">impl_from_slice</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BQNValue</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">arr</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>) -&gt; <span class="ident">BQNValue</span> {
-                <span class="ident"><span class="kw">crate</span>::INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                    <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
+<span class="macro">macro_rules! </span>impl_from_slice {
+    (<span class="macro-nonterminal">$ty</span>:ty, <span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
+        <span class="kw">impl </span>From&lt;<span class="macro-nonterminal">$ty</span>&gt; <span class="kw">for </span>BQNValue {
+            <span class="kw">fn </span>from(arr: <span class="macro-nonterminal">$ty</span>) -&gt; BQNValue {
+                <span class="kw">crate</span>::INIT.call_once(|| {
+                    <span class="kw">let </span>_l = LOCK.lock();
+                    <span class="kw">unsafe </span>{ bqn_init() }
                 });
 
-                <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">len</span>();
-                <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                <span class="ident">BQNValue::new</span>(<span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">len</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(), <span class="ident">arr</span>.<span class="ident">as_ptr</span>()) })
+                <span class="kw">let </span>len = arr.len();
+                <span class="kw">let </span>_l = LOCK.lock();
+                BQNValue::new(<span class="kw">unsafe </span>{ <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">len</span>.try_into().unwrap(), arr.as_ptr()) })
             }
         }
     };
 }
 
-<span class="macro">macro_rules!</span> <span class="ident">impl_from_array</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
-        <span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span>[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>; <span class="ident">N</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BQNValue</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">arr</span>: [<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>; <span class="ident">N</span>]) -&gt; <span class="ident">BQNValue</span> {
-                <span class="ident"><span class="kw">crate</span>::INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                    <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
+<span class="macro">macro_rules! </span>impl_from_array {
+    (<span class="macro-nonterminal">$ty</span>:ty, <span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
+        <span class="kw">impl</span>&lt;<span class="kw">const </span>N: usize&gt; From&lt;[<span class="macro-nonterminal">$ty</span>; N]&gt; <span class="kw">for </span>BQNValue {
+            <span class="kw">fn </span>from(arr: [<span class="macro-nonterminal">$ty</span>; N]) -&gt; BQNValue {
+                <span class="kw">crate</span>::INIT.call_once(|| {
+                    <span class="kw">let </span>_l = LOCK.lock();
+                    <span class="kw">unsafe </span>{ bqn_init() }
                 });
 
-                <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">len</span>();
-                <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                <span class="ident">BQNValue::new</span>(<span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">len</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(), <span class="ident">arr</span>.<span class="ident">as_ptr</span>()) })
+                <span class="kw">let </span>len = arr.len();
+                <span class="kw">let </span>_l = LOCK.lock();
+                BQNValue::new(<span class="kw">unsafe </span>{ <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">len</span>.try_into().unwrap(), arr.as_ptr()) })
             }
         }
     };
 }
 
-<span class="macro">macro_rules!</span> <span class="ident">impl_from_iterator</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
-        <span class="kw">impl</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BQNValue</span> {
-            <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">T</span>) -&gt; <span class="ident">BQNValue</span>
-            <span class="kw">where</span>
-                <span class="ident">T</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>,
+<span class="macro">macro_rules! </span>impl_from_iterator {
+    (<span class="macro-nonterminal">$ty</span>:ty, <span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
+        <span class="kw">impl </span>FromIterator&lt;<span class="macro-nonterminal">$ty</span>&gt; <span class="kw">for </span>BQNValue {
+            <span class="kw">fn </span>from_iter&lt;T&gt;(iter: T) -&gt; BQNValue
+            <span class="kw">where
+                </span>T: IntoIterator&lt;Item = <span class="macro-nonterminal">$ty</span>&gt;,
             {
-                <span class="ident"><span class="kw">crate</span>::INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                    <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
+                <span class="kw">crate</span>::INIT.call_once(|| {
+                    <span class="kw">let </span>_l = LOCK.lock();
+                    <span class="kw">unsafe </span>{ bqn_init() }
                 });
 
-                <span class="kw">let</span> <span class="ident">elems</span> <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-                <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">elems</span>.<span class="ident">len</span>();
-                <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                <span class="ident">BQNValue::new</span>(<span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">len</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(), <span class="ident">elems</span>.<span class="ident">as_ptr</span>()) })
+                <span class="kw">let </span>elems = iter.into_iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+                <span class="kw">let </span>len = elems.len();
+                <span class="kw">let </span>_l = LOCK.lock();
+                BQNValue::new(<span class="kw">unsafe </span>{ <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">len</span>.try_into().unwrap(), elems.as_ptr()) })
             }
         }
     };
 }
 
-<span class="macro">macro_rules!</span> <span class="ident">impl_from_vec</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BQNValue</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">arr</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>) -&gt; <span class="ident">BQNValue</span> {
-                <span class="ident"><span class="kw">crate</span>::INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                    <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
+<span class="macro">macro_rules! </span>impl_from_vec {
+    (<span class="macro-nonterminal">$ty</span>:ty, <span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
+        <span class="kw">impl </span>From&lt;Vec&lt;<span class="macro-nonterminal">$ty</span>&gt;&gt; <span class="kw">for </span>BQNValue {
+            <span class="kw">fn </span>from(arr: Vec&lt;<span class="macro-nonterminal">$ty</span>&gt;) -&gt; BQNValue {
+                <span class="kw">crate</span>::INIT.call_once(|| {
+                    <span class="kw">let </span>_l = LOCK.lock();
+                    <span class="kw">unsafe </span>{ bqn_init() }
                 });
 
-                <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">len</span>();
-                <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-                <span class="ident">BQNValue::new</span>(<span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">len</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(), <span class="ident">arr</span>.<span class="ident">as_ptr</span>()) })
+                <span class="kw">let </span>len = arr.len();
+                <span class="kw">let </span>_l = LOCK.lock();
+                BQNValue::new(<span class="kw">unsafe </span>{ <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">len</span>.try_into().unwrap(), arr.as_ptr()) })
             }
         }
     };
 }
 
-<span class="doccomment">/// Convenience macro for running BQN expressions</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Takes a string of BQN code and optional left and right argument</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use cbqn::{BQN, BQNValue, eval};</span>
-<span class="doccomment">/// let sum = BQN!(&quot;1+1&quot;);</span>
-<span class="doccomment">/// assert_eq!(sum.to_f64(), 2.0);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use cbqn::{BQN, BQNValue, eval};</span>
-<span class="doccomment">/// let bqn_is_anagram = BQN!(&quot;⌽≡⊢&quot;, &quot;BQN&quot;);</span>
-<span class="doccomment">/// assert_eq!(bqn_is_anagram.to_f64(), 0.0);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use cbqn::{BQN, BQNValue, eval};</span>
-<span class="doccomment">/// let strs = BQN!(&#39; &#39;, &quot;(⊢-˜+`×¬)∘=⊔⊢&quot;, &quot;Rust ❤️ BQN&quot;)</span>
-<span class="doccomment">///     .to_bqnvalue_vec()</span>
-<span class="doccomment">///     .iter()</span>
-<span class="doccomment">///     .map(BQNValue::to_string)</span>
-<span class="doccomment">///     .collect::&lt;Vec&lt;String&gt;&gt;();</span>
-<span class="doccomment">/// assert_eq!(strs, [&quot;Rust&quot;, &quot;❤️&quot;, &quot;BQN&quot;]);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use cbqn::{BQN, BQNValue, eval};</span>
-<span class="doccomment">/// let strings = [&quot;join&quot;, &quot;these&quot;, &quot;please&quot;];</span>
-<span class="doccomment">/// assert_eq!(BQN!(&quot;∾&quot;, strings).to_string(), &quot;jointheseplease&quot;);</span>
-<span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules!</span> <span class="ident">BQN</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">expr</span>) =&gt; {
-        <span class="ident">eval</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>)
+<span class="doccomment">/// Convenience macro for running BQN expressions
+///
+/// Takes a string of BQN code and optional left and right argument
+/// # Examples
+/// ```
+/// # use cbqn::{BQN, BQNValue, eval};
+/// let sum = BQN!(&quot;1+1&quot;);
+/// assert_eq!(sum.to_f64(), 2.0);
+/// ```
+///
+/// ```
+/// # use cbqn::{BQN, BQNValue, eval};
+/// let bqn_is_anagram = BQN!(&quot;⌽≡⊢&quot;, &quot;BQN&quot;);
+/// assert_eq!(bqn_is_anagram.to_f64(), 0.0);
+/// ```
+///
+/// ```
+/// # use cbqn::{BQN, BQNValue, eval};
+/// let strs = BQN!(&#39; &#39;, &quot;(⊢-˜+`×¬)∘=⊔⊢&quot;, &quot;Rust ❤️ BQN&quot;)
+///     .to_bqnvalue_vec()
+///     .iter()
+///     .map(BQNValue::to_string)
+///     .collect::&lt;Vec&lt;String&gt;&gt;();
+/// assert_eq!(strs, [&quot;Rust&quot;, &quot;❤️&quot;, &quot;BQN&quot;]);
+/// ```
+///
+/// ```
+/// # use cbqn::{BQN, BQNValue, eval};
+/// let strings = [&quot;join&quot;, &quot;these&quot;, &quot;please&quot;];
+/// assert_eq!(BQN!(&quot;∾&quot;, strings).to_string(), &quot;jointheseplease&quot;);
+/// ```
+</span><span class="attribute">#[macro_export]
+</span><span class="macro">macro_rules! </span>BQN {
+    (<span class="macro-nonterminal">$code</span>:expr) =&gt; {
+        eval(<span class="macro-nonterminal">$code</span>)
     };
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">expr</span>) =&gt; {
-        <span class="ident">eval</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>).<span class="ident">call1</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue::from</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>))
+    (<span class="macro-nonterminal">$code</span>:expr, <span class="macro-nonterminal">$x</span>:expr) =&gt; {
+        eval(<span class="macro-nonterminal">$code</span>).call1(<span class="kw-2">&amp;</span>BQNValue::from(<span class="macro-nonterminal">$x</span>))
     };
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">w</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">expr</span>) =&gt; {
-        <span class="ident">eval</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>).<span class="ident">call2</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue::from</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">w</span>), <span class="kw-2">&amp;</span><span class="ident">BQNValue::from</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>))
+    (<span class="macro-nonterminal">$w</span>:expr, <span class="macro-nonterminal">$code</span>:expr, <span class="macro-nonterminal">$x</span>:expr) =&gt; {
+        eval(<span class="macro-nonterminal">$code</span>).call2(<span class="kw-2">&amp;</span>BQNValue::from(<span class="macro-nonterminal">$w</span>), <span class="kw-2">&amp;</span>BQNValue::from(<span class="macro-nonterminal">$x</span>))
     };
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">impl_from_array</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">impl_from_iterator</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">impl_from_slice</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">impl_from_string_like</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">impl_from_string_like_vec</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">impl_from_vec</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>impl_from_array;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>impl_from_iterator;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>impl_from_slice;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>impl_from_string_like;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>impl_from_string_like_vec;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>impl_from_vec;
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cbqn" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (7b46aa594 2022-07-05)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cbqn" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.1 (90743e729 2023-01-10)" ></div></body></html>

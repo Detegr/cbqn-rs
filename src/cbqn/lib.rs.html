@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../cbqn/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../cbqn/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../cbqn/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
-                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../cbqn/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -547,549 +541,548 @@
 <span id="541">541</span>
 <span id="542">542</span>
 <span id="543">543</span>
-</pre><pre class="rust"><code><span class="doccomment">//! cbqn</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! A crate for running [BQN](https://mlochbaum.github.io/BQN) code within a Rust program using [CBQN](https://github.com/dzaima/CBQN) interpreter compiled as a shared object.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Usage</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Simple expressions can be run with the `BQN!` convenience macro. For more advanced use, the</span>
-<span class="doccomment">//! methods of `BQNValue` provide the necessary functionality.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Examples using the BQN! macro</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//! # use cbqn::{BQN, BQNValue, eval};</span>
-<span class="doccomment">//! let sum = BQN!(&quot;1+1&quot;);</span>
-<span class="doccomment">//! assert_eq!(sum.to_f64(), 2.0);</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//! # use cbqn::{BQN, BQNValue, eval};</span>
-<span class="doccomment">//! assert_eq!(BQN!(&quot;⌽≡⊢&quot;, &quot;BQN&quot;).to_f64(), 0.0);</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//! # use cbqn::{BQN, BQNValue, eval};</span>
-<span class="doccomment">//! let strs = BQN!(&#39; &#39;, &quot;(⊢-˜+`×¬)∘=⊔⊢&quot;, &quot;Rust ❤️ BQN&quot;)</span>
-<span class="doccomment">//!     .to_bqnvalue_vec()</span>
-<span class="doccomment">//!     .iter()</span>
-<span class="doccomment">//!     .map(BQNValue::to_string)</span>
-<span class="doccomment">//!     .collect::&lt;Vec&lt;String&gt;&gt;();</span>
-<span class="doccomment">//! assert_eq!(strs, [&quot;Rust&quot;, &quot;❤️&quot;, &quot;BQN&quot;]);</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//! # use cbqn::{BQN, BQNValue, eval};</span>
-<span class="doccomment">//! let strings = [&quot;join&quot;, &quot;these&quot;, &quot;please&quot;];</span>
-<span class="doccomment">//! assert_eq!(BQN!(&quot;∾&quot;, strings).to_string(), &quot;jointheseplease&quot;);</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Examples using BQNValue</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//! # use cbqn::{BQNValue, eval};</span>
-<span class="doccomment">//! let sum = eval(&quot;1+1&quot;);</span>
-<span class="doccomment">//! assert_eq!(sum.to_f64(), 2.0);</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//! # use cbqn::{BQNValue, eval};</span>
-<span class="doccomment">//! let is_anagram = eval(&quot;⌽≡⊢&quot;);</span>
-<span class="doccomment">//! assert_eq!(is_anagram.call1(&amp;&quot;BQN&quot;.into()).to_f64(), 0.0);</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//! # use cbqn::{BQNValue, eval};</span>
-<span class="doccomment">//! let split = eval(&quot;(⊢-˜+`×¬)∘=⊔⊢&quot;);</span>
-<span class="doccomment">//! let strs = split.call2(&amp;&#39; &#39;.into(), &amp;&quot;Rust ❤️ BQN&quot;.into())</span>
-<span class="doccomment">//!     .to_bqnvalue_vec()</span>
-<span class="doccomment">//!     .iter()</span>
-<span class="doccomment">//!     .map(BQNValue::to_string)</span>
-<span class="doccomment">//!     .collect::&lt;Vec&lt;String&gt;&gt;();</span>
-<span class="doccomment">//! assert_eq!(strs, [&quot;Rust&quot;, &quot;❤️&quot;, &quot;BQN&quot;]);</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//! # use cbqn::{BQN, BQNValue, eval};</span>
-<span class="doccomment">//! let counter = BQN!(&quot;{v←0 ⋄ Inc⇐{v+↩𝕩}}&quot;);</span>
-<span class="doccomment">//! let increment = counter.get_field(&quot;inc&quot;).unwrap();</span>
-<span class="doccomment">//! increment.call1(&amp;1.into());</span>
-<span class="doccomment">//! increment.call1(&amp;2.into());</span>
-<span class="doccomment">//! let result = increment.call1(&amp;3.into());</span>
-<span class="doccomment">//! assert_eq!(result.to_f64(), 6.0);</span>
-<span class="doccomment">//! ```</span>
-<span class="kw">use</span> <span class="ident">cbqn_sys</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">once_cell::sync::Lazy</span>;
-<span class="kw">use</span> <span class="ident">parking_lot::ReentrantMutex</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cell::RefCell</span>, <span class="ident">fmt</span>, <span class="ident">mem</span>, <span class="ident">sync::Once</span>};
+</pre><pre class="rust"><code><span class="doccomment">//! cbqn
+//!
+//! A crate for running [BQN](https://mlochbaum.github.io/BQN) code within a Rust program using [CBQN](https://github.com/dzaima/CBQN) interpreter compiled as a shared object.
+//!
+//! # Usage
+//!
+//! Simple expressions can be run with the `BQN!` convenience macro. For more advanced use, the
+//! methods of `BQNValue` provide the necessary functionality.
+//!
+//! # Examples using the BQN! macro
+//! ```
+//! # use cbqn::{BQN, BQNValue, eval};
+//! let sum = BQN!(&quot;1+1&quot;);
+//! assert_eq!(sum.to_f64(), 2.0);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQN, BQNValue, eval};
+//! assert_eq!(BQN!(&quot;⌽≡⊢&quot;, &quot;BQN&quot;).to_f64(), 0.0);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQN, BQNValue, eval};
+//! let strs = BQN!(&#39; &#39;, &quot;(⊢-˜+`×¬)∘=⊔⊢&quot;, &quot;Rust ❤️ BQN&quot;)
+//!     .to_bqnvalue_vec()
+//!     .iter()
+//!     .map(BQNValue::to_string)
+//!     .collect::&lt;Vec&lt;String&gt;&gt;();
+//! assert_eq!(strs, [&quot;Rust&quot;, &quot;❤️&quot;, &quot;BQN&quot;]);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQN, BQNValue, eval};
+//! let strings = [&quot;join&quot;, &quot;these&quot;, &quot;please&quot;];
+//! assert_eq!(BQN!(&quot;∾&quot;, strings).to_string(), &quot;jointheseplease&quot;);
+//! ```
+//!
+//! # Examples using BQNValue
+//!
+//! ```
+//! # use cbqn::{BQNValue, eval};
+//! let sum = eval(&quot;1+1&quot;);
+//! assert_eq!(sum.to_f64(), 2.0);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQNValue, eval};
+//! let is_anagram = eval(&quot;⌽≡⊢&quot;);
+//! assert_eq!(is_anagram.call1(&amp;&quot;BQN&quot;.into()).to_f64(), 0.0);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQNValue, eval};
+//! let split = eval(&quot;(⊢-˜+`×¬)∘=⊔⊢&quot;);
+//! let strs = split.call2(&amp;&#39; &#39;.into(), &amp;&quot;Rust ❤️ BQN&quot;.into())
+//!     .to_bqnvalue_vec()
+//!     .iter()
+//!     .map(BQNValue::to_string)
+//!     .collect::&lt;Vec&lt;String&gt;&gt;();
+//! assert_eq!(strs, [&quot;Rust&quot;, &quot;❤️&quot;, &quot;BQN&quot;]);
+//! ```
+//!
+//! ```
+//! # use cbqn::{BQN, BQNValue, eval};
+//! let counter = BQN!(&quot;{v←0 ⋄ Inc⇐{v+↩𝕩}}&quot;);
+//! let increment = counter.get_field(&quot;inc&quot;).unwrap();
+//! increment.call1(&amp;1.into());
+//! increment.call1(&amp;2.into());
+//! let result = increment.call1(&amp;3.into());
+//! assert_eq!(result.to_f64(), 6.0);
+//! ```
+</span><span class="kw">use </span>cbqn_sys::<span class="kw-2">*</span>;
+<span class="kw">use </span>once_cell::sync::Lazy;
+<span class="kw">use </span>parking_lot::ReentrantMutex;
+<span class="kw">use </span>std::{cell::RefCell, fmt, mem, sync::Once};
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests;
 
-<span class="kw">mod</span> <span class="ident">bqntype</span>;
-<span class="kw">mod</span> <span class="ident">conversions</span>;
-<span class="kw">mod</span> <span class="ident">macros</span>;
+<span class="kw">mod </span>bqntype;
+<span class="kw">mod </span>conversions;
+<span class="kw">mod </span>macros;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">bqntype::BQNType</span>;
+<span class="kw">pub use </span>bqntype::BQNType;
 
-<span class="kw">static</span> <span class="ident">LOCK</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">ReentrantMutex</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ReentrantMutex::new</span>(()));
-<span class="kw">static</span> <span class="ident">INIT</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">Once::new</span>();
+<span class="kw">static </span>LOCK: Lazy&lt;ReentrantMutex&lt;()&gt;&gt; = Lazy::new(|| ReentrantMutex::new(()));
+<span class="kw">static </span>INIT: Once = Once::new();
 
-<span class="doccomment">/// Represents a BQN value</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BQNValue</span> {
-    <span class="ident">value</span>: <span class="ident">BQNV</span>,
+<span class="doccomment">/// Represents a BQN value
+</span><span class="kw">pub struct </span>BQNValue {
+    value: BQNV,
 }
 
-<span class="kw">impl</span> <span class="ident">BQNValue</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">value</span>: <span class="ident">BQNV</span>) -&gt; <span class="ident">BQNValue</span> {
-        <span class="ident">BQNValue</span> { <span class="ident">value</span> }
+<span class="kw">impl </span>BQNValue {
+    <span class="kw">fn </span>new(value: BQNV) -&gt; BQNValue {
+        BQNValue { value }
     }
 
-    <span class="doccomment">/// Constructs a BQN null value `@`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use cbqn::{BQN, BQNValue, eval};</span>
-    <span class="doccomment">/// BQN!(&#39;a&#39;, &quot;-&quot;, BQNValue::null());</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">null</span>() -&gt; <span class="ident">BQNValue</span> {
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="ident"><span class="kw">crate</span>::INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() });
-        <span class="ident">BQNValue::new</span>(<span class="kw">unsafe</span> { <span class="ident">bqn_makeChar</span>(<span class="number">0</span>) })
+    <span class="doccomment">/// Constructs a BQN null value `@`
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use cbqn::{BQN, BQNValue, eval};
+    /// BQN!(&#39;a&#39;, &quot;-&quot;, BQNValue::null());
+    /// ```
+    </span><span class="kw">pub fn </span>null() -&gt; BQNValue {
+        <span class="kw">let </span>_l = LOCK.lock();
+        <span class="kw">crate</span>::INIT.call_once(|| <span class="kw">unsafe </span>{ bqn_init() });
+        BQNValue::new(<span class="kw">unsafe </span>{ bqn_makeChar(<span class="number">0</span>) })
     }
 
-    <span class="doccomment">/// Returns a boolean value indicating whether `field` exists in a BQN namespace</span>
-    <span class="doccomment">/// As CBQN requires the searched field name to be in a string with all lowercase letters, this</span>
-    <span class="doccomment">/// function returns `false` if it is supplied with a `field` string that contains uppercase</span>
-    <span class="doccomment">/// characters.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// * If `self` isn&#39;t a namespace.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_field</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">field</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
+    <span class="doccomment">/// Returns a boolean value indicating whether `field` exists in a BQN namespace
+    /// As CBQN requires the searched field name to be in a string with all lowercase letters, this
+    /// function returns `false` if it is supplied with a `field` string that contains uppercase
+    /// characters.
+    ///
+    /// # Panics
+    ///
+    /// * If `self` isn&#39;t a namespace.
+    </span><span class="kw">pub fn </span>has_field(<span class="kw-2">&amp;</span><span class="self">self</span>, field: <span class="kw-2">&amp;</span>str) -&gt; bool {
+        <span class="kw">let </span>_l = LOCK.lock();
 
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">BQNValue::is_valid_namespace_field</span>(<span class="ident">field</span>) {
-            <span class="kw">return</span> <span class="bool-val">false</span>;
+        <span class="kw">if </span>!BQNValue::is_valid_namespace_field(field) {
+            <span class="kw">return </span><span class="bool-val">false</span>;
         }
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">bqn_type</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">BQNType::Namespace</span> {
+        <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Namespace {
             <span class="macro">panic!</span>(<span class="string">&quot;value isn&#39;t a namespace&quot;</span>);
         }
-        <span class="kw">unsafe</span> { <span class="ident">bqn_hasField</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">BQNValue::from</span>(<span class="ident">field</span>).<span class="ident">value</span>) }
+        <span class="kw">unsafe </span>{ bqn_hasField(<span class="self">self</span>.value, BQNValue::from(field).value) }
     }
 
-    <span class="doccomment">/// Returns `field` from a BQN namespace as `BQNValue`. Returns `None` if the field cannot be</span>
-    <span class="doccomment">/// found.</span>
-    <span class="doccomment">/// As CBQN requires the searched field name to be in a string with all lowercase letters, this</span>
-    <span class="doccomment">/// function returns `None` if it is supplied with a `field` string that contains uppercase</span>
-    <span class="doccomment">/// characters.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// * If `self` isn&#39;t a namespace.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_field</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">field</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BQNValue</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
+    <span class="doccomment">/// Returns `field` from a BQN namespace as `BQNValue`. Returns `None` if the field cannot be
+    /// found.
+    /// As CBQN requires the searched field name to be in a string with all lowercase letters, this
+    /// function returns `None` if it is supplied with a `field` string that contains uppercase
+    /// characters.
+    ///
+    /// # Panics
+    ///
+    /// * If `self` isn&#39;t a namespace.
+    </span><span class="kw">pub fn </span>get_field(<span class="kw-2">&amp;</span><span class="self">self</span>, field: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;BQNValue&gt; {
+        <span class="kw">let </span>_l = LOCK.lock();
 
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">BQNValue::is_valid_namespace_field</span>(<span class="ident">field</span>) {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+        <span class="kw">if </span>!BQNValue::is_valid_namespace_field(field) {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">bqn_type</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">BQNType::Namespace</span> {
+        <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Namespace {
             <span class="macro">panic!</span>(<span class="string">&quot;value isn&#39;t a namespace&quot;</span>);
         }
-        <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">BQNValue::from</span>(<span class="ident">field</span>);
-        <span class="kw">unsafe</span> {
-            <span class="kw">if</span> <span class="ident">bqn_hasField</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">f</span>.<span class="ident">value</span>) {
-                <span class="prelude-val">Some</span>(<span class="ident">BQNValue::new</span>(<span class="ident">bqn_getField</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">f</span>.<span class="ident">value</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">None</span>
-            }
+        <span class="kw">let </span>f = BQNValue::from(field);
+        <span class="kw">unsafe </span>{
+            <span class="kw">if </span>bqn_hasField(<span class="self">self</span>.value, f.value) {
+                <span class="prelude-val">Some</span>(BQNValue::new(bqn_getField(<span class="self">self</span>.value, f.value)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">None
+            </span>}
         }
     }
 
-    <span class="doccomment">/// Calls `BQNValue` as a function with one argument</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call1</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span> {
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="ident">BQNValue::new</span>(<span class="kw">unsafe</span> { <span class="ident">bqn_call1</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">x</span>.<span class="ident">value</span>) })
+    <span class="doccomment">/// Calls `BQNValue` as a function with one argument
+    </span><span class="kw">pub fn </span>call1(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <span class="kw-2">&amp;</span>BQNValue) -&gt; BQNValue {
+        <span class="kw">let </span>_l = LOCK.lock();
+        BQNValue::new(<span class="kw">unsafe </span>{ bqn_call1(<span class="self">self</span>.value, x.value) })
     }
 
-    <span class="doccomment">/// Calls `BQNValue` as a function with two arguments</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call2</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="ident">BQNValue</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span> {
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="kw">unsafe</span> { <span class="ident">BQNValue::new</span>(<span class="ident">bqn_call2</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">w</span>.<span class="ident">value</span>, <span class="ident">x</span>.<span class="ident">value</span>)) }
+    <span class="doccomment">/// Calls `BQNValue` as a function with two arguments
+    </span><span class="kw">pub fn </span>call2(<span class="kw-2">&amp;</span><span class="self">self</span>, w: <span class="kw-2">&amp;</span>BQNValue, x: <span class="kw-2">&amp;</span>BQNValue) -&gt; BQNValue {
+        <span class="kw">let </span>_l = LOCK.lock();
+        <span class="kw">unsafe </span>{ BQNValue::new(bqn_call2(<span class="self">self</span>.value, w.value, x.value)) }
     }
 
-    <span class="doccomment">/// Returns the BQN type of the BQNValue</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bqn_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BQNType</span> {
-        <span class="ident">BQNType::try_from</span>(<span class="kw">unsafe</span> { <span class="ident">bqn_type</span>(<span class="self">self</span>.<span class="ident">value</span>) }).<span class="ident">expect</span>(<span class="string">&quot;expected to handle all types&quot;</span>)
+    <span class="doccomment">/// Returns the BQN type of the BQNValue
+    </span><span class="kw">pub fn </span>bqn_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; BQNType {
+        BQNType::try_from(<span class="kw">unsafe </span>{ bqn_type(<span class="self">self</span>.value) }).expect(<span class="string">&quot;expected to handle all types&quot;</span>)
     }
 
-    <span class="doccomment">/// Converts `BQNValue` into `f64`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">/// * If `self` isn&#39;t a number</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_f64</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">f64</span> {
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">bqn_type</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">BQNType::Number</span> {
+    <span class="doccomment">/// Converts `BQNValue` into `f64`
+    ///
+    /// # Panics
+    /// * If `self` isn&#39;t a number
+    </span><span class="kw">pub fn </span>to_f64(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f64 {
+        <span class="kw">let </span>_l = LOCK.lock();
+        <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Number {
             <span class="macro">panic!</span>(<span class="string">&quot;value isn&#39;t a number&quot;</span>);
         }
-        <span class="kw">unsafe</span> { <span class="ident">bqn_readF64</span>(<span class="self">self</span>.<span class="ident">value</span>) }
+        <span class="kw">unsafe </span>{ bqn_readF64(<span class="self">self</span>.value) }
     }
 
-    <span class="doccomment">/// Converts `BQNValue` into `char`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `None` if the value is not an Unicode scalar value. Rust `char`s cannot represent</span>
-    <span class="doccomment">/// characters that are not Unicode scalar values.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">/// * If `self` isn&#39;t a BQN character</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_char</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">bqn_type</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">BQNType::Character</span> {
+    <span class="doccomment">/// Converts `BQNValue` into `char`
+    ///
+    /// Returns `None` if the value is not an Unicode scalar value. Rust `char`s cannot represent
+    /// characters that are not Unicode scalar values.
+    ///
+    /// # Panics
+    /// * If `self` isn&#39;t a BQN character
+    </span><span class="kw">pub fn </span>to_char(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;char&gt; {
+        <span class="kw">let </span>_l = LOCK.lock();
+        <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Character {
             <span class="macro">panic!</span>(<span class="string">&quot;value isn&#39;t a character&quot;</span>);
         }
-        <span class="kw">unsafe</span> { <span class="ident">char::from_u32</span>(<span class="ident">bqn_readChar</span>(<span class="self">self</span>.<span class="ident">value</span>)) }
+        <span class="kw">unsafe </span>{ char::from_u32(bqn_readChar(<span class="self">self</span>.value)) }
     }
 
-    <span class="doccomment">/// Converts `BQNValue` into `u32`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// BQN characters can contain values that aren&#39;t Unicode scalar values. Those characters can</span>
-    <span class="doccomment">/// be converted into a Rust type `u32` using this function.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">/// * If `self` isn&#39;t a BQN character</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_u32</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">bqn_type</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">BQNType::Character</span> {
+    <span class="doccomment">/// Converts `BQNValue` into `u32`
+    ///
+    /// BQN characters can contain values that aren&#39;t Unicode scalar values. Those characters can
+    /// be converted into a Rust type `u32` using this function.
+    ///
+    /// # Panics
+    /// * If `self` isn&#39;t a BQN character
+    </span><span class="kw">pub fn </span>to_u32(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="kw">let </span>_l = LOCK.lock();
+        <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Character {
             <span class="macro">panic!</span>(<span class="string">&quot;value isn&#39;t a character&quot;</span>);
         }
-        <span class="kw">unsafe</span> { <span class="ident">bqn_readChar</span>(<span class="self">self</span>.<span class="ident">value</span>) }
+        <span class="kw">unsafe </span>{ bqn_readChar(<span class="self">self</span>.value) }
     }
 
-    <span class="doccomment">/// Converts `BQNValue` into a vector of `f64`s</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">/// * If `self` isn&#39;t a BQN array containing numbers</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_f64_vec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_numeric_array_bounds_or_panic</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">b</span>);
-        <span class="kw">unsafe</span> {
-            <span class="ident">bqn_readF64Arr</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">ret</span>.<span class="ident">as_mut_ptr</span>());
-            <span class="ident">drop</span>(<span class="ident">l</span>);
-            <span class="ident">ret</span>.<span class="ident">set_len</span>(<span class="ident">b</span>);
+    <span class="doccomment">/// Converts `BQNValue` into a vector of `f64`s
+    ///
+    /// # Panics
+    /// * If `self` isn&#39;t a BQN array containing numbers
+    </span><span class="kw">pub fn </span>to_f64_vec(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;f64&gt; {
+        <span class="kw">let </span>l = LOCK.lock();
+        <span class="kw">let </span>b = <span class="self">self</span>.get_numeric_array_bounds_or_panic();
+        <span class="kw">let </span><span class="kw-2">mut </span>ret = Vec::with_capacity(b);
+        <span class="kw">unsafe </span>{
+            bqn_readF64Arr(<span class="self">self</span>.value, ret.as_mut_ptr());
+            drop(l);
+            ret.set_len(b);
         }
 
-        <span class="ident">ret</span>
+        ret
     }
 
-    <span class="doccomment">/// Converts `BQNValue` into a vector of `BQNValue`s</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">/// * If `self` isn&#39;t a BQN array that contains BQN objects</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_bqnvalue_vec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BQNValue</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">bqn_type</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">BQNType::Array</span> {
+    <span class="doccomment">/// Converts `BQNValue` into a vector of `BQNValue`s
+    ///
+    /// # Panics
+    /// * If `self` isn&#39;t a BQN array that contains BQN objects
+    </span><span class="kw">pub fn </span>to_bqnvalue_vec(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;BQNValue&gt; {
+        <span class="kw">let </span>l = LOCK.lock();
+        <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Array {
             <span class="macro">panic!</span>(<span class="string">&quot;value isn&#39;t an object array&quot;</span>);
         }
 
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bound</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">objarr</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">b</span>);
-        <span class="kw">unsafe</span> {
-            <span class="ident">bqn_readObjArr</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">objarr</span>.<span class="ident">as_mut_ptr</span>());
-            <span class="ident">drop</span>(<span class="ident">l</span>);
-            <span class="ident">objarr</span>.<span class="ident">set_len</span>(<span class="ident">b</span>);
+        <span class="kw">let </span>b = <span class="self">self</span>.bound();
+        <span class="kw">let </span><span class="kw-2">mut </span>objarr = Vec::with_capacity(b);
+        <span class="kw">unsafe </span>{
+            bqn_readObjArr(<span class="self">self</span>.value, objarr.as_mut_ptr());
+            drop(l);
+            objarr.set_len(b);
         }
 
-        <span class="ident">objarr</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="ident">BQNValue::new</span>).<span class="ident">collect</span>()
+        objarr.into_iter().map(BQNValue::new).collect()
     }
 
-    <span class="kw">fn</span> <span class="ident">is_valid_namespace_field</span>(<span class="ident">field</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="comment">// CBQN requires the string to be all lowercase and contain no underscores</span>
-        <span class="ident">field</span>.<span class="ident">chars</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span>.<span class="ident">is_lowercase</span>() <span class="op">&amp;&amp;</span> <span class="ident">c</span> <span class="op">!</span><span class="op">=</span> <span class="string">&#39;_&#39;</span>)
+    <span class="kw">fn </span>is_valid_namespace_field(field: <span class="kw-2">&amp;</span>str) -&gt; bool {
+        <span class="comment">// CBQN requires the string to be all lowercase and contain no underscores
+        </span>field.chars().all(|c| c.is_lowercase() &amp;&amp; c != <span class="string">&#39;_&#39;</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">to_char_container</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">T</span> {
-        <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_character_array_bounds_or_panic</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">u32s</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">b</span>);
-        <span class="kw">unsafe</span> {
-            <span class="ident">bqn_readC32Arr</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">u32s</span>.<span class="ident">as_mut_ptr</span>());
-            <span class="ident">drop</span>(<span class="ident">l</span>);
-            <span class="ident">u32s</span>.<span class="ident">set_len</span>(<span class="ident">b</span>);
+    <span class="kw">fn </span>to_char_container&lt;T: FromIterator&lt;char&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; T {
+        <span class="kw">let </span>l = LOCK.lock();
+        <span class="kw">let </span>b = <span class="self">self</span>.get_character_array_bounds_or_panic();
+        <span class="kw">let </span><span class="kw-2">mut </span>u32s = Vec::with_capacity(b);
+        <span class="kw">unsafe </span>{
+            bqn_readC32Arr(<span class="self">self</span>.value, u32s.as_mut_ptr());
+            drop(l);
+            u32s.set_len(b);
         }
 
-        <span class="ident">u32s</span>.<span class="ident">into_iter</span>().<span class="ident">filter_map</span>(<span class="ident">char::from_u32</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()
+        u32s.into_iter().filter_map(char::from_u32).collect::&lt;T&gt;()
     }
 
-    <span class="doccomment">/// Converts `BQNValue` into vector of `char`s</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">/// * If `self` isn&#39;t a BQN array that contains characters</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_char_vec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">to_char_container</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span><span class="op">&gt;</span>()
+    <span class="doccomment">/// Converts `BQNValue` into vector of `char`s
+    ///
+    /// # Panics
+    /// * If `self` isn&#39;t a BQN array that contains characters
+    </span><span class="kw">pub fn </span>to_char_vec(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;char&gt; {
+        <span class="self">self</span>.to_char_container::&lt;Vec&lt;char&gt;&gt;()
     }
 
-    <span class="doccomment">/// Converts `BQNValue` into a `String`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">/// * If `self` isn&#39;t a BQN array that contains characters</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="self">self</span>.<span class="ident">to_char_container</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>()
+    <span class="doccomment">/// Converts `BQNValue` into a `String`
+    ///
+    /// # Panics
+    /// * If `self` isn&#39;t a BQN array that contains characters
+    </span><span class="kw">pub fn </span>to_string(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="self">self</span>.to_char_container::&lt;String&gt;()
     }
 
-    <span class="doccomment">/// Generates a BQNValue from a Rust function</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The function receives one argument.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use cbqn::{BQN, BQNValue, eval};</span>
-    <span class="doccomment">/// let add_three = BQNValue::fn1(|x| BQNValue::from(x.to_f64() + 3.0));</span>
-    <span class="doccomment">/// assert_eq!(BQN!(3, &quot;{𝕏𝕨}&quot;, add_three).to_f64(), 6.0);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// * If called from a BQNValue::fn1 or BQNValue::fn2 function</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implementation note</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Calling this function will allocate memory that will last for the lifetime of the program.</span>
-    <span class="doccomment">/// Calling it with two identical closures, but with different lifetimes, will allocate the</span>
-    <span class="doccomment">/// memory multiple times.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fn1</span>(<span class="ident">func</span>: <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span> {
-        <span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-            <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
+    <span class="doccomment">/// Generates a BQNValue from a Rust function
+    ///
+    /// The function receives one argument.
+    ///
+    /// # Examples
+    /// ```
+    /// # use cbqn::{BQN, BQNValue, eval};
+    /// let add_three = BQNValue::fn1(|x| BQNValue::from(x.to_f64() + 3.0));
+    /// assert_eq!(BQN!(3, &quot;{𝕏𝕨}&quot;, add_three).to_f64(), 6.0);
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// * If called from a BQNValue::fn1 or BQNValue::fn2 function
+    ///
+    /// # Implementation note
+    ///
+    /// Calling this function will allocate memory that will last for the lifetime of the program.
+    /// Calling it with two identical closures, but with different lifetimes, will allocate the
+    /// memory multiple times.
+    </span><span class="kw">pub fn </span>fn1(func: <span class="kw">fn</span>(<span class="kw-2">&amp;</span>BQNValue) -&gt; BQNValue) -&gt; BQNValue {
+        INIT.call_once(|| {
+            <span class="kw">let </span>_l = LOCK.lock();
+            <span class="kw">unsafe </span>{ bqn_init() }
         });
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="ident">FNS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">fns</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">boundfns</span> <span class="op">=</span> <span class="ident">fns</span>.<span class="ident">borrow_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exists</span> <span class="op">=</span> <span class="bool-val">false</span>;
-            <span class="kw">for</span> <span class="ident">f</span> <span class="kw">in</span> <span class="ident">boundfns</span>.<span class="ident">boundfn_1</span>.<span class="ident">iter</span>() {
-                <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">f</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">==</span> <span class="ident">func</span> <span class="kw">as</span> <span class="ident">usize</span> {
-                    <span class="ident">exists</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>key = <span class="number">0</span>;
+        FNS.with(|fns| {
+            <span class="kw">let </span><span class="kw-2">mut </span>boundfns = fns.borrow_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>exists = <span class="bool-val">false</span>;
+            <span class="kw">for </span>f <span class="kw">in </span>boundfns.boundfn_1.iter() {
+                <span class="kw">if </span><span class="kw-2">*</span>f <span class="kw">as </span>usize == func <span class="kw">as </span>usize {
+                    exists = <span class="bool-val">true</span>;
                     <span class="kw">break</span>;
                 }
             }
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">exists</span> {
-                <span class="ident">boundfns</span>.<span class="ident">boundfn_1</span>.<span class="ident">push</span>(<span class="ident">func</span>);
-                <span class="ident">key</span> <span class="op">=</span> <span class="ident">boundfns</span>.<span class="ident">boundfn_1</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">-</span> <span class="number">1</span>;
+            <span class="kw">if </span>!exists {
+                boundfns.boundfn_1.push(func);
+                key = boundfns.boundfn_1.len() <span class="kw">as </span>u64 - <span class="number">1</span>;
             }
         });
 
-        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">BQNValue::from</span>(<span class="ident">f64::from_bits</span>(<span class="ident">key</span>));
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="ident">BQNValue</span> {
-            <span class="ident">value</span>: <span class="kw">unsafe</span> { <span class="ident">bqn_makeBoundFn1</span>(<span class="prelude-val">Some</span>(<span class="ident">boundfn_1_wrapper</span>), <span class="ident">obj</span>.<span class="ident">value</span>) },
+        <span class="kw">let </span>obj = BQNValue::from(f64::from_bits(key));
+        <span class="kw">let </span>_l = LOCK.lock();
+        BQNValue {
+            value: <span class="kw">unsafe </span>{ bqn_makeBoundFn1(<span class="prelude-val">Some</span>(boundfn_1_wrapper), obj.value) },
         }
     }
 
-    <span class="doccomment">/// Generates a BQNValue from a Rust function</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The function receives two arguments.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use cbqn::{BQN, BQNValue, eval};</span>
-    <span class="doccomment">/// let multiply = BQNValue::fn2(|w, x| BQNValue::from(w.to_f64() * x.to_f64()));</span>
-    <span class="doccomment">/// assert_eq!(BQN!(multiply, &quot;{𝕎´𝕩}&quot;, [1,2,3,4,5]).to_f64(), 120.0);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// * If called from a BQNValue::fn1 or BQNValue::fn2 function</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implementation note</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Calling this function will allocate memory that will last for the lifetime of the program.</span>
-    <span class="doccomment">/// Calling it with two identical closures, but with different lifetimes, will allocate the</span>
-    <span class="doccomment">/// memory multiple times.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fn2</span>(<span class="ident">func</span>: <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>, <span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span> {
-        <span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-            <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
+    <span class="doccomment">/// Generates a BQNValue from a Rust function
+    ///
+    /// The function receives two arguments.
+    ///
+    /// # Examples
+    /// ```
+    /// # use cbqn::{BQN, BQNValue, eval};
+    /// let multiply = BQNValue::fn2(|w, x| BQNValue::from(w.to_f64() * x.to_f64()));
+    /// assert_eq!(BQN!(multiply, &quot;{𝕎´𝕩}&quot;, [1,2,3,4,5]).to_f64(), 120.0);
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// * If called from a BQNValue::fn1 or BQNValue::fn2 function
+    ///
+    /// # Implementation note
+    ///
+    /// Calling this function will allocate memory that will last for the lifetime of the program.
+    /// Calling it with two identical closures, but with different lifetimes, will allocate the
+    /// memory multiple times.
+    </span><span class="kw">pub fn </span>fn2(func: <span class="kw">fn</span>(<span class="kw-2">&amp;</span>BQNValue, <span class="kw-2">&amp;</span>BQNValue) -&gt; BQNValue) -&gt; BQNValue {
+        INIT.call_once(|| {
+            <span class="kw">let </span>_l = LOCK.lock();
+            <span class="kw">unsafe </span>{ bqn_init() }
         });
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="ident">FNS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">fns</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">boundfns</span> <span class="op">=</span> <span class="ident">fns</span>.<span class="ident">borrow_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exists</span> <span class="op">=</span> <span class="bool-val">false</span>;
-            <span class="kw">for</span> <span class="ident">f</span> <span class="kw">in</span> <span class="ident">boundfns</span>.<span class="ident">boundfn_2</span>.<span class="ident">iter</span>() {
-                <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">f</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">==</span> <span class="ident">func</span> <span class="kw">as</span> <span class="ident">usize</span> {
-                    <span class="ident">exists</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>key = <span class="number">0</span>;
+        FNS.with(|fns| {
+            <span class="kw">let </span><span class="kw-2">mut </span>boundfns = fns.borrow_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>exists = <span class="bool-val">false</span>;
+            <span class="kw">for </span>f <span class="kw">in </span>boundfns.boundfn_2.iter() {
+                <span class="kw">if </span><span class="kw-2">*</span>f <span class="kw">as </span>usize == func <span class="kw">as </span>usize {
+                    exists = <span class="bool-val">true</span>;
                     <span class="kw">break</span>;
                 }
             }
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">exists</span> {
-                <span class="ident">boundfns</span>.<span class="ident">boundfn_2</span>.<span class="ident">push</span>(<span class="ident">func</span>);
-                <span class="ident">key</span> <span class="op">=</span> <span class="ident">boundfns</span>.<span class="ident">boundfn_2</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">-</span> <span class="number">1</span>;
+            <span class="kw">if </span>!exists {
+                boundfns.boundfn_2.push(func);
+                key = boundfns.boundfn_2.len() <span class="kw">as </span>u64 - <span class="number">1</span>;
             }
         });
 
-        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">BQNValue::from</span>(<span class="ident">f64::from_bits</span>(<span class="ident">key</span>));
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="ident">BQNValue</span> {
-            <span class="ident">value</span>: <span class="kw">unsafe</span> { <span class="ident">bqn_makeBoundFn2</span>(<span class="prelude-val">Some</span>(<span class="ident">boundfn_2_wrapper</span>), <span class="ident">obj</span>.<span class="ident">value</span>) },
+        <span class="kw">let </span>obj = BQNValue::from(f64::from_bits(key));
+        <span class="kw">let </span>_l = LOCK.lock();
+        BQNValue {
+            value: <span class="kw">unsafe </span>{ bqn_makeBoundFn2(<span class="prelude-val">Some</span>(boundfn_2_wrapper), obj.value) },
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">bound</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bqn_bound</span>(<span class="self">self</span>.<span class="ident">value</span>) <span class="kw">as</span> <span class="ident">usize</span> }
+    <span class="kw">fn </span>bound(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">unsafe </span>{ bqn_bound(<span class="self">self</span>.value) <span class="kw">as </span>usize }
     }
 
-    <span class="kw">fn</span> <span class="ident">direct_arr_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bqn_directArrType</span>(<span class="self">self</span>.<span class="ident">value</span>) }
+    <span class="kw">fn </span>direct_arr_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="kw">unsafe </span>{ bqn_directArrType(<span class="self">self</span>.value) }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_character_array_bounds_or_panic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">bqn_type</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">BQNType::Array</span> {
+    <span class="kw">fn </span>get_character_array_bounds_or_panic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Array {
             <span class="macro">panic!</span>(<span class="string">&quot;value isn&#39;t an array&quot;</span>);
         }
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bound</span>();
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">known_char_arr</span>() {
-            <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">b</span> {
-                <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">BQNType::try_from</span>(<span class="kw">unsafe</span> {
-                    <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">bqn_pick</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">i</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>());
-                    <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">bqn_type</span>(<span class="ident">v</span>);
-                    <span class="ident">bqn_free</span>(<span class="ident">v</span>);
-                    <span class="ident">t</span>
+        <span class="kw">let </span>b = <span class="self">self</span>.bound();
+        <span class="kw">if </span>!<span class="self">self</span>.known_char_arr() {
+            <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..b {
+                <span class="kw">let </span>t = BQNType::try_from(<span class="kw">unsafe </span>{
+                    <span class="kw">let </span>v = bqn_pick(<span class="self">self</span>.value, i.try_into().unwrap());
+                    <span class="kw">let </span>t = bqn_type(v);
+                    bqn_free(v);
+                    t
                 })
-                .<span class="ident">expect</span>(<span class="string">&quot;expected known type&quot;</span>);
+                .expect(<span class="string">&quot;expected known type&quot;</span>);
 
-                <span class="kw">if</span> <span class="ident">t</span> <span class="op">!</span><span class="op">=</span> <span class="ident">BQNType::Character</span> {
+                <span class="kw">if </span>t != BQNType::Character {
                     <span class="macro">panic!</span>(<span class="string">&quot;value isn&#39;t a character array&quot;</span>);
                 }
             }
         }
-        <span class="ident">b</span>
+        b
     }
 
-    <span class="kw">fn</span> <span class="ident">get_numeric_array_bounds_or_panic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">bqn_type</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">BQNType::Array</span> {
+    <span class="kw">fn </span>get_numeric_array_bounds_or_panic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Array {
             <span class="macro">panic!</span>(<span class="string">&quot;value isn&#39;t an array&quot;</span>);
         }
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bound</span>();
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">known_f64_arr</span>() {
-            <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">b</span> {
-                <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">BQNType::try_from</span>(<span class="kw">unsafe</span> {
-                    <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">bqn_pick</span>(<span class="self">self</span>.<span class="ident">value</span>, <span class="ident">i</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>());
-                    <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">bqn_type</span>(<span class="ident">v</span>);
-                    <span class="ident">bqn_free</span>(<span class="ident">v</span>);
-                    <span class="ident">t</span>
+        <span class="kw">let </span>b = <span class="self">self</span>.bound();
+        <span class="kw">if </span>!<span class="self">self</span>.known_f64_arr() {
+            <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..b {
+                <span class="kw">let </span>t = BQNType::try_from(<span class="kw">unsafe </span>{
+                    <span class="kw">let </span>v = bqn_pick(<span class="self">self</span>.value, i.try_into().unwrap());
+                    <span class="kw">let </span>t = bqn_type(v);
+                    bqn_free(v);
+                    t
                 })
-                .<span class="ident">expect</span>(<span class="string">&quot;expected known type&quot;</span>);
+                .expect(<span class="string">&quot;expected known type&quot;</span>);
 
-                <span class="kw">if</span> <span class="ident">t</span> <span class="op">!</span><span class="op">=</span> <span class="ident">BQNType::Number</span> {
+                <span class="kw">if </span>t != BQNType::Number {
                     <span class="macro">panic!</span>(<span class="string">&quot;value isn&#39;t a f64 array&quot;</span>);
                 }
             }
         }
-        <span class="ident">b</span>
+        b
     }
 
-    <span class="comment">// This function returns whether it&#39;s known that the array elements are of type f64</span>
-    <span class="comment">// Returns false if *it is not known* whether the array elements are of type f64 or not</span>
-    <span class="kw">fn</span> <span class="ident">known_f64_arr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">non_upper_case_globals</span>)]</span>
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">direct_arr_type</span>() {
-            <span class="ident">BQNElType_elt_f64</span> <span class="op">|</span> <span class="ident">BQNElType_elt_i32</span> <span class="op">|</span> <span class="ident">BQNElType_elt_i16</span> <span class="op">|</span> <span class="ident">BQNElType_elt_i8</span> =&gt; <span class="bool-val">true</span>,
-            <span class="kw">_</span> =&gt; <span class="bool-val">false</span>,
+    <span class="comment">// This function returns whether it&#39;s known that the array elements are of type f64
+    // Returns false if *it is not known* whether the array elements are of type f64 or not
+    </span><span class="kw">fn </span>known_f64_arr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="attribute">#![allow(non_upper_case_globals)]
+        </span><span class="kw">match </span><span class="self">self</span>.direct_arr_type() {
+            BQNElType_elt_f64 | BQNElType_elt_i32 | BQNElType_elt_i16 | BQNElType_elt_i8 =&gt; <span class="bool-val">true</span>,
+            <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
         }
     }
 
-    <span class="comment">// This function returns whether it&#39;s known that the array elements are of type char</span>
-    <span class="comment">// Returns false if *it is not known* whether the array elements are of type char or not</span>
-    <span class="kw">fn</span> <span class="ident">known_char_arr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">non_upper_case_globals</span>)]</span>
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">direct_arr_type</span>() {
-            <span class="ident">BQNElType_elt_c32</span> <span class="op">|</span> <span class="ident">BQNElType_elt_c16</span> <span class="op">|</span> <span class="ident">BQNElType_elt_c8</span> =&gt; <span class="bool-val">true</span>,
-            <span class="kw">_</span> =&gt; <span class="bool-val">false</span>,
-        }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">BQNValue</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="kw">let</span> <span class="ident">fmt</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::eval</span>(<span class="string">&quot;•Fmt&quot;</span>);
-        <span class="kw">let</span> <span class="ident">formatted</span> <span class="op">=</span> <span class="ident">fmt</span>.<span class="ident">call1</span>(<span class="self">self</span>);
-        <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">formatted</span>.<span class="ident">to_string</span>())
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">BQNValue</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BQNValue</span> {
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="ident">BQNValue</span> {
-            <span class="ident">value</span>: <span class="kw">unsafe</span> { <span class="ident">bqn_copy</span>(<span class="self">self</span>.<span class="ident">value</span>) },
+    <span class="comment">// This function returns whether it&#39;s known that the array elements are of type char
+    // Returns false if *it is not known* whether the array elements are of type char or not
+    </span><span class="kw">fn </span>known_char_arr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="attribute">#![allow(non_upper_case_globals)]
+        </span><span class="kw">match </span><span class="self">self</span>.direct_arr_type() {
+            BQNElType_elt_c32 | BQNElType_elt_c16 | BQNElType_elt_c8 =&gt; <span class="bool-val">true</span>,
+            <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">BQNValue</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="kw">unsafe</span> { <span class="ident">bqn_free</span>(<span class="self">self</span>.<span class="ident">value</span>) };
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>BQNValue {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        <span class="kw">let </span>fmt = <span class="kw">crate</span>::eval(<span class="string">&quot;•Fmt&quot;</span>);
+        <span class="kw">let </span>formatted = fmt.call1(<span class="self">self</span>);
+        <span class="macro">write!</span>(f, <span class="string">&quot;{}&quot;</span>, formatted.to_string())
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">BoundFns</span> {
-    <span class="ident">boundfn_1</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span><span class="op">&gt;</span>,
-    <span class="ident">boundfn_2</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue</span>, <span class="kw-2">&amp;</span><span class="ident">BQNValue</span>) -&gt; <span class="ident">BQNValue</span><span class="op">&gt;</span>,
+<span class="kw">impl </span>Clone <span class="kw">for </span>BQNValue {
+    <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; BQNValue {
+        <span class="kw">let </span>_l = LOCK.lock();
+        BQNValue {
+            value: <span class="kw">unsafe </span>{ bqn_copy(<span class="self">self</span>.value) },
+        }
+    }
 }
 
-<span class="macro">thread_local!</span> {
-    <span class="kw">static</span> <span class="ident">FNS</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">BoundFns</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">RefCell::new</span>(<span class="ident">BoundFns::default</span>());
+<span class="kw">impl </span>Drop <span class="kw">for </span>BQNValue {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span>_l = LOCK.lock();
+        <span class="kw">unsafe </span>{ bqn_free(<span class="self">self</span>.value) };
+    }
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">boundfn_1_wrapper</span>(<span class="ident">obj</span>: <span class="ident">BQNV</span>, <span class="ident">x</span>: <span class="ident">BQNV</span>) -&gt; <span class="ident">BQNV</span> {
-    <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">BQNValue::new</span>(<span class="ident">obj</span>).<span class="ident">to_f64</span>().<span class="ident">to_bits</span>() <span class="kw">as</span> <span class="ident">usize</span>;
+<span class="attribute">#[derive(Default)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>BoundFns {
+    boundfn_1: Vec&lt;<span class="kw">fn</span>(<span class="kw-2">&amp;</span>BQNValue) -&gt; BQNValue&gt;,
+    boundfn_2: Vec&lt;<span class="kw">fn</span>(<span class="kw-2">&amp;</span>BQNValue, <span class="kw-2">&amp;</span>BQNValue) -&gt; BQNValue&gt;,
+}
 
-    <span class="ident">FNS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">fns</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="ident">boundfns</span> <span class="op">=</span> <span class="ident">fns</span>.<span class="ident">borrow</span>();
-        <span class="kw">let</span> <span class="ident">tgt</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">boundfns</span>.<span class="ident">boundfn_1</span>[<span class="ident">key</span>];
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">tgt</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue::new</span>(<span class="ident">x</span>));
-        <span class="kw">let</span> <span class="ident">retval</span> <span class="op">=</span> <span class="ident">ret</span>.<span class="ident">value</span>;
-        <span class="ident">mem::forget</span>(<span class="ident">ret</span>);
-        <span class="ident">retval</span>
+<span class="macro">thread_local! </span>{
+    <span class="kw">static </span>FNS: RefCell&lt;BoundFns&gt; = RefCell::new(BoundFns::default());
+}
+
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>boundfn_1_wrapper(obj: BQNV, x: BQNV) -&gt; BQNV {
+    <span class="kw">let </span>key = BQNValue::new(obj).to_f64().to_bits() <span class="kw">as </span>usize;
+
+    FNS.with(|fns| {
+        <span class="kw">let </span>boundfns = fns.borrow();
+        <span class="kw">let </span>tgt = <span class="kw-2">&amp;</span>boundfns.boundfn_1[key];
+        <span class="kw">let </span>ret = tgt(<span class="kw-2">&amp;</span>BQNValue::new(x));
+        <span class="kw">let </span>retval = ret.value;
+        mem::forget(ret);
+        retval
     })
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">boundfn_2_wrapper</span>(<span class="ident">obj</span>: <span class="ident">BQNV</span>, <span class="ident">w</span>: <span class="ident">BQNV</span>, <span class="ident">x</span>: <span class="ident">BQNV</span>) -&gt; <span class="ident">BQNV</span> {
-    <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">BQNValue::new</span>(<span class="ident">obj</span>).<span class="ident">to_f64</span>().<span class="ident">to_bits</span>() <span class="kw">as</span> <span class="ident">usize</span>;
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>boundfn_2_wrapper(obj: BQNV, w: BQNV, x: BQNV) -&gt; BQNV {
+    <span class="kw">let </span>key = BQNValue::new(obj).to_f64().to_bits() <span class="kw">as </span>usize;
 
-    <span class="ident">FNS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">fns</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="ident">boundfns</span> <span class="op">=</span> <span class="ident">fns</span>.<span class="ident">borrow</span>();
-        <span class="kw">let</span> <span class="ident">tgt</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">boundfns</span>.<span class="ident">boundfn_2</span>[<span class="ident">key</span>];
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">tgt</span>(<span class="kw-2">&amp;</span><span class="ident">BQNValue::new</span>(<span class="ident">w</span>), <span class="kw-2">&amp;</span><span class="ident">BQNValue::new</span>(<span class="ident">x</span>));
-        <span class="kw">let</span> <span class="ident">retval</span> <span class="op">=</span> <span class="ident">ret</span>.<span class="ident">value</span>;
-        <span class="ident">mem::forget</span>(<span class="ident">ret</span>);
-        <span class="ident">retval</span>
+    FNS.with(|fns| {
+        <span class="kw">let </span>boundfns = fns.borrow();
+        <span class="kw">let </span>tgt = <span class="kw-2">&amp;</span>boundfns.boundfn_2[key];
+        <span class="kw">let </span>ret = tgt(<span class="kw-2">&amp;</span>BQNValue::new(w), <span class="kw-2">&amp;</span>BQNValue::new(x));
+        <span class="kw">let </span>retval = ret.value;
+        mem::forget(ret);
+        retval
     })
 }
 
-<span class="doccomment">/// Evaluates BQN code</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use cbqn::eval;</span>
-<span class="doccomment">/// let bqnv = eval(&quot;1+1&quot;);</span>
-<span class="doccomment">/// let bqnfn = eval(&quot;{𝕩×10}&quot;);</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">eval</span>(<span class="ident">bqn</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">BQNValue</span> {
-    <span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-        <span class="kw">unsafe</span> { <span class="ident">bqn_init</span>() }
+<span class="doccomment">/// Evaluates BQN code
+///
+/// # Examples
+/// ```
+/// # use cbqn::eval;
+/// let bqnv = eval(&quot;1+1&quot;);
+/// let bqnfn = eval(&quot;{𝕩×10}&quot;);
+/// ```
+</span><span class="kw">pub fn </span>eval(bqn: <span class="kw-2">&amp;</span>str) -&gt; BQNValue {
+    INIT.call_once(|| {
+        <span class="kw">let </span>_l = LOCK.lock();
+        <span class="kw">unsafe </span>{ bqn_init() }
     });
-    <span class="kw">let</span> <span class="ident">_l</span> <span class="op">=</span> <span class="ident">LOCK</span>.<span class="ident">lock</span>();
-    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">BQNValue::new</span>(<span class="kw">unsafe</span> { <span class="ident">bqn_eval</span>(<span class="ident">BQNValue::from</span>(<span class="ident">bqn</span>).<span class="ident">value</span>) });
-    <span class="ident">ret</span>
+    <span class="kw">let </span>_l = LOCK.lock();
+    <span class="kw">let </span>ret = BQNValue::new(<span class="kw">unsafe </span>{ bqn_eval(BQNValue::from(bqn).value) });
+    ret
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cbqn" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (7b46aa594 2022-07-05)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cbqn" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.1 (90743e729 2023-01-10)" ></div></body></html>

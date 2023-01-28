@@ -1,12 +1,13 @@
-var sourcesIndex = {};
-sourcesIndex["cbqn"] = {"name":"","files":["bqntype.rs","conversions.rs","lib.rs","macros.rs"]};
-sourcesIndex["cbqn_sys"] = {"name":"","files":["lib.rs"]};
-sourcesIndex["cfg_if"] = {"name":"","files":["lib.rs"]};
-sourcesIndex["libc"] = {"name":"","dirs":[{"name":"unix","dirs":[{"name":"linux_like","dirs":[{"name":"linux","dirs":[{"name":"arch","dirs":[{"name":"generic","files":["mod.rs"]}],"files":["mod.rs"]},{"name":"gnu","dirs":[{"name":"b64","dirs":[{"name":"x86_64","files":["align.rs","mod.rs","not_x32.rs"]}],"files":["mod.rs"]}],"files":["align.rs","mod.rs"]}],"files":["align.rs","mod.rs","non_exhaustive.rs"]}],"files":["mod.rs"]}],"files":["align.rs","mod.rs"]}],"files":["fixed_width_ints.rs","lib.rs","macros.rs"]};
-sourcesIndex["lock_api"] = {"name":"","files":["lib.rs","mutex.rs","remutex.rs","rwlock.rs"]};
-sourcesIndex["once_cell"] = {"name":"","files":["imp_std.rs","lib.rs","race.rs"]};
-sourcesIndex["parking_lot"] = {"name":"","files":["condvar.rs","deadlock.rs","elision.rs","fair_mutex.rs","lib.rs","mutex.rs","once.rs","raw_fair_mutex.rs","raw_mutex.rs","raw_rwlock.rs","remutex.rs","rwlock.rs","util.rs"]};
-sourcesIndex["parking_lot_core"] = {"name":"","dirs":[{"name":"thread_parker","files":["linux.rs","mod.rs"]}],"files":["lib.rs","parking_lot.rs","spinwait.rs","util.rs","word_lock.rs"]};
-sourcesIndex["scopeguard"] = {"name":"","files":["lib.rs"]};
-sourcesIndex["smallvec"] = {"name":"","files":["lib.rs"]};
+var sourcesIndex = JSON.parse('{\
+"cbqn":["",[],["bqntype.rs","conversions.rs","lib.rs","macros.rs"]],\
+"cbqn_sys":["",[],["lib.rs"]],\
+"cfg_if":["",[],["lib.rs"]],\
+"libc":["",[["unix",[["linux_like",[["linux",[["arch",[["generic",[],["mod.rs"]]],["mod.rs"]],["gnu",[["b64",[["x86_64",[],["align.rs","mod.rs","not_x32.rs"]]],["mod.rs"]]],["align.rs","mod.rs"]]],["align.rs","mod.rs","non_exhaustive.rs"]]],["mod.rs"]]],["align.rs","mod.rs"]]],["fixed_width_ints.rs","lib.rs","macros.rs"]],\
+"lock_api":["",[],["lib.rs","mutex.rs","remutex.rs","rwlock.rs"]],\
+"once_cell":["",[],["imp_std.rs","lib.rs","race.rs"]],\
+"parking_lot":["",[],["condvar.rs","deadlock.rs","elision.rs","fair_mutex.rs","lib.rs","mutex.rs","once.rs","raw_fair_mutex.rs","raw_mutex.rs","raw_rwlock.rs","remutex.rs","rwlock.rs","util.rs"]],\
+"parking_lot_core":["",[["thread_parker",[],["linux.rs","mod.rs"]]],["lib.rs","parking_lot.rs","spinwait.rs","util.rs","word_lock.rs"]],\
+"scopeguard":["",[],["lib.rs"]],\
+"smallvec":["",[],["lib.rs"]]\
+}');
 createSourceSidebar();

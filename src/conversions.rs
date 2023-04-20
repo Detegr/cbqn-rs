@@ -1,24 +1,23 @@
-use crate::{macros::*, BQNValue, LOCK};
-use cbqn_sys::*;
+use crate::{backend::*, macros::*, BQNValue, LOCK};
 
 impl From<f64> for BQNValue {
     fn from(v: f64) -> BQNValue {
         let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeF64(v) })
+        BQNValue::new(bqn_makeF64(v).unwrap())
     }
 }
 
 impl From<i32> for BQNValue {
     fn from(v: i32) -> BQNValue {
         let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeF64(v as f64) })
+        BQNValue::new(bqn_makeF64(v as f64).unwrap())
     }
 }
 
 impl From<char> for BQNValue {
     fn from(v: char) -> BQNValue {
         let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeChar(v as u32) })
+        BQNValue::new(bqn_makeChar(v as u32).unwrap())
     }
 }
 
@@ -33,20 +32,14 @@ impl<const N: usize> From<[&str; N]> for BQNValue {
     fn from(arr: [&str; N]) -> BQNValue {
         crate::INIT.call_once(|| {
             let _l = LOCK.lock();
-            unsafe { bqn_init() }
+            bqn_init().unwrap()
         });
         let mut strs = Vec::with_capacity(N);
         let _l = LOCK.lock();
         for s in arr {
-            let str_bytes = s.as_bytes();
-            strs.push(unsafe {
-                bqn_makeUTF8Str(
-                    str_bytes.len().try_into().unwrap(),
-                    str_bytes.as_ptr() as *const i8,
-                )
-            });
+            strs.push(bqn_makeUTF8Str(s).unwrap());
         }
-        BQNValue::new(unsafe { bqn_makeObjVec(N as u64, strs.as_ptr()) })
+        BQNValue::new(bqn_makeObjVec(&strs).unwrap())
     }
 }
 
@@ -54,20 +47,14 @@ impl<const N: usize> From<[String; N]> for BQNValue {
     fn from(arr: [String; N]) -> BQNValue {
         crate::INIT.call_once(|| {
             let _l = LOCK.lock();
-            unsafe { bqn_init() }
+            bqn_init().unwrap();
         });
         let mut strs = Vec::with_capacity(N);
         let _l = LOCK.lock();
         for s in arr {
-            let str_bytes = s.as_bytes();
-            strs.push(unsafe {
-                bqn_makeUTF8Str(
-                    str_bytes.len().try_into().unwrap(),
-                    str_bytes.as_ptr() as *const i8,
-                )
-            });
+            strs.push(bqn_makeUTF8Str(&s).unwrap());
         }
-        BQNValue::new(unsafe { bqn_makeObjVec(N as u64, strs.as_ptr()) })
+        BQNValue::new(bqn_makeObjVec(&strs).unwrap())
     }
 }
 
@@ -79,12 +66,11 @@ impl<const N: usize> From<[BQNValue; N]> for BQNValue {
     fn from(arr: [BQNValue; N]) -> BQNValue {
         crate::INIT.call_once(|| {
             let _l = LOCK.lock();
-            unsafe { bqn_init() }
+            bqn_init().unwrap()
         });
         let elems = arr.into_iter().map(|v| v.value).collect::<Vec<_>>();
-        let len = elems.len();
         let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeObjVec(len.try_into().unwrap(), elems.as_ptr()) })
+        BQNValue::new(bqn_makeObjVec(&elems).unwrap())
     }
 }
 
@@ -96,13 +82,12 @@ impl From<&[BQNValue]> for BQNValue {
     fn from(arr: &[BQNValue]) -> BQNValue {
         crate::INIT.call_once(|| {
             let _l = LOCK.lock();
-            unsafe { bqn_init() }
+            bqn_init().unwrap()
         });
 
         let elems = arr.into_iter().map(|v| v.value).collect::<Vec<_>>();
-        let len = elems.len();
         let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeObjVec(len.try_into().unwrap(), elems.as_ptr()) })
+        BQNValue::new(bqn_makeObjVec(&elems).unwrap())
     }
 }
 
@@ -114,13 +99,12 @@ impl From<Vec<BQNValue>> for BQNValue {
     fn from(arr: Vec<BQNValue>) -> BQNValue {
         crate::INIT.call_once(|| {
             let _l = LOCK.lock();
-            unsafe { bqn_init() }
+            bqn_init().unwrap();
         });
 
         let elems = arr.into_iter().map(|v| v.value).collect::<Vec<_>>();
-        let len = elems.len();
         let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeObjVec(len.try_into().unwrap(), elems.as_ptr()) })
+        BQNValue::new(bqn_makeObjVec(&elems).unwrap())
     }
 }
 
@@ -135,12 +119,11 @@ impl FromIterator<BQNValue> for BQNValue {
     {
         crate::INIT.call_once(|| {
             let _l = LOCK.lock();
-            unsafe { bqn_init() }
+            bqn_init().unwrap();
         });
 
         let elems = iter.into_iter().map(|v| v.value).collect::<Vec<_>>();
-        let len = elems.len();
         let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_makeObjVec(len.try_into().unwrap(), elems.as_ptr()) })
+        BQNValue::new(bqn_makeObjVec(&elems).unwrap())
     }
 }

@@ -1,4 +1,5 @@
 mod arrconv;
+#[cfg(not(feature = "wasi-backend"))]
 mod boundfn;
 mod from;
 mod gen;
@@ -26,11 +27,13 @@ fn call2() {
 #[test]
 fn fixed_size_array() {
     let f = eval("+´");
-    f.call1(&[0.0, 1.0, 2.0, 3.0, 4.0].into());
+    let ret = f.call1(&[0.0, 1.0, 2.0, 3.0, 4.0].into());
+    assert_eq!(ret.to_f64(), 10.0);
 }
 
 #[test]
 fn bqn_macro() {
+    assert_eq!(BQN!("3").to_f64(), 3.0);
     assert_eq!(BQN!("+´", [1, 2, 3]).to_f64(), 6.0);
     assert_eq!(BQN!('a', "+", 1).to_char(), Some('b'));
     let arr = BQN!("+`", [1, 2, 3]);

@@ -4,16 +4,10 @@ macro_rules! impl_from_string_like {
             fn from(v: $ty) -> BQNValue {
                 crate::INIT.call_once(|| {
                     let _l = LOCK.lock();
-                    unsafe { bqn_init() }
+                    bqn_init().unwrap();
                 });
-                let str_bytes = v.as_bytes();
                 let _l = LOCK.lock();
-                BQNValue::new(unsafe {
-                    bqn_makeUTF8Str(
-                        str_bytes.len().try_into().unwrap(),
-                        str_bytes.as_ptr() as *const i8,
-                    )
-                })
+                BQNValue::new(bqn_makeUTF8Str(&v).unwrap())
             }
         }
     };
@@ -25,22 +19,14 @@ macro_rules! impl_from_string_like_vec {
             fn from(arr: Vec<$ty>) -> BQNValue {
                 crate::INIT.call_once(|| {
                     let _l = LOCK.lock();
-                    unsafe { bqn_init() }
+                    bqn_init().unwrap();
                 });
                 let mut strs = Vec::with_capacity(arr.len());
                 let _l = LOCK.lock();
                 for s in &arr {
-                    let str_bytes = s.as_bytes();
-                    strs.push(unsafe {
-                        bqn_makeUTF8Str(
-                            str_bytes.len().try_into().unwrap(),
-                            str_bytes.as_ptr() as *const i8,
-                        )
-                    });
+                    strs.push(bqn_makeUTF8Str(&s).unwrap());
                 }
-                BQNValue::new(unsafe {
-                    bqn_makeObjVec(arr.len().try_into().unwrap(), strs.as_ptr())
-                })
+                BQNValue::new(bqn_makeObjVec(&strs).unwrap())
             }
         }
     };
@@ -52,12 +38,11 @@ macro_rules! impl_from_slice {
             fn from(arr: $ty) -> BQNValue {
                 crate::INIT.call_once(|| {
                     let _l = LOCK.lock();
-                    unsafe { bqn_init() }
+                    bqn_init().unwrap();
                 });
 
-                let len = arr.len();
                 let _l = LOCK.lock();
-                BQNValue::new(unsafe { $fn(len.try_into().unwrap(), arr.as_ptr()) })
+                BQNValue::new($fn(&arr).unwrap())
             }
         }
     };
@@ -69,12 +54,11 @@ macro_rules! impl_from_array {
             fn from(arr: [$ty; N]) -> BQNValue {
                 crate::INIT.call_once(|| {
                     let _l = LOCK.lock();
-                    unsafe { bqn_init() }
+                    bqn_init().unwrap();
                 });
 
-                let len = arr.len();
                 let _l = LOCK.lock();
-                BQNValue::new(unsafe { $fn(len.try_into().unwrap(), arr.as_ptr()) })
+                BQNValue::new($fn(&arr).unwrap())
             }
         }
     };
@@ -89,13 +73,12 @@ macro_rules! impl_from_iterator {
             {
                 crate::INIT.call_once(|| {
                     let _l = LOCK.lock();
-                    unsafe { bqn_init() }
+                    bqn_init().unwrap();
                 });
 
                 let elems = iter.into_iter().collect::<Vec<_>>();
-                let len = elems.len();
                 let _l = LOCK.lock();
-                BQNValue::new(unsafe { $fn(len.try_into().unwrap(), elems.as_ptr()) })
+                BQNValue::new($fn(&elems).unwrap())
             }
         }
     };
@@ -107,12 +90,11 @@ macro_rules! impl_from_vec {
             fn from(arr: Vec<$ty>) -> BQNValue {
                 crate::INIT.call_once(|| {
                     let _l = LOCK.lock();
-                    unsafe { bqn_init() }
+                    bqn_init().unwrap();
                 });
 
-                let len = arr.len();
                 let _l = LOCK.lock();
-                BQNValue::new(unsafe { $fn(len.try_into().unwrap(), arr.as_ptr()) })
+                BQNValue::new($fn(&arr).unwrap())
             }
         }
     };

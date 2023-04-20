@@ -13,6 +13,14 @@ documentation = "https://detegr.github.io/cbqn-rs/cbqn"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cbqn-sys = "0.0.8"
+anyhow = { version = "1.0.70" }
+cbqn-sys = { path = "../cbqn-sys", default-features = false }
 once_cell = "1.17.0"
 parking_lot = "0.12.1"
+wasmer = { version = "3.1.1", optional = true }
+wasmer-wasi = { version = "3.1.1", optional = true }
+
+[features]
+default = ["native-backend"]
+native-backend = ["cbqn-sys/shared-object"]
+wasi-backend = ["dep:wasmer", "dep:wasmer-wasi"]

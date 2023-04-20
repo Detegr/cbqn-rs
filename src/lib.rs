@@ -1,3 +1,4 @@
+/*
 //! cbqn
 //!
 //! A crate for running [BQN](https://mlochbaum.github.io/BQN) code within a Rust program using [CBQN](https://github.com/dzaima/CBQN) interpreter compiled as a shared object.
@@ -69,7 +70,11 @@
 //! let result = increment.call1(&3.into());
 //! assert_eq!(result.to_f64(), 6.0);
 //! ```
-use cbqn_sys::*;
+*/
+
+mod backend;
+use backend::*;
+
 use once_cell::sync::Lazy;
 use parking_lot::ReentrantMutex;
 use std::{cell::RefCell, fmt, mem, sync::Once};
@@ -106,8 +111,8 @@ impl BQNValue {
     /// ```
     pub fn null() -> BQNValue {
         let _l = LOCK.lock();
-        crate::INIT.call_once(|| unsafe { bqn_init() });
-        BQNValue::new(unsafe { bqn_makeChar(0) })
+        crate::INIT.call_once(|| bqn_init().unwrap());
+        BQNValue::new(bqn_makeChar(0).unwrap())
     }
 
     /// Returns a boolean value indicating whether `field` exists in a BQN namespace
@@ -128,7 +133,7 @@ impl BQNValue {
         if self.bqn_type() != BQNType::Namespace {
             panic!("value isn't a namespace");
         }
-        unsafe { bqn_hasField(self.value, BQNValue::from(field).value) }
+        bqn_hasField(self.value, BQNValue::from(field).value).unwrap()
     }
 
     /// Returns `field` from a BQN namespace as `BQNValue`. Returns `None` if the field cannot be
@@ -151,30 +156,28 @@ impl BQNValue {
             panic!("value isn't a namespace");
         }
         let f = BQNValue::from(field);
-        unsafe {
-            if bqn_hasField(self.value, f.value) {
-                Some(BQNValue::new(bqn_getField(self.value, f.value)))
-            } else {
-                None
-            }
+        if bqn_hasField(self.value, f.value).unwrap() {
+            Some(BQNValue::new(bqn_getField(self.value, f.value).unwrap()))
+        } else {
+            None
         }
     }
 
     /// Calls `BQNValue` as a function with one argument
     pub fn call1(&self, x: &BQNValue) -> BQNValue {
         let _l = LOCK.lock();
-        BQNValue::new(unsafe { bqn_call1(self.value, x.value) })
+        BQNValue::new(bqn_call1(self.value, x.value).unwrap())
     }
 
     /// Calls `BQNValue` as a function with two arguments
     pub fn call2(&self, w: &BQNValue, x: &BQNValue) -> BQNValue {
         let _l = LOCK.lock();
-        unsafe { BQNValue::new(bqn_call2(self.value, w.value, x.value)) }
+        BQNValue::new(bqn_call2(self.value, w.value, x.value).unwrap())
     }
 
     /// Returns the BQN type of the BQNValue
     pub fn bqn_type(&self) -> BQNType {
-        BQNType::try_from(unsafe { bqn_type(self.value) }).expect("expected to handle all types")
+        BQNType::try_from(bqn_type(self.value).unwrap()).expect("expected to handle all types")
     }
 
     /// Converts `BQNValue` into `f64`
@@ -186,7 +189,7 @@ impl BQNValue {
         if self.bqn_type() != BQNType::Number {
             panic!("value isn't a number");
         }
-        unsafe { bqn_readF64(self.value) }
+        bqn_readF64(self.value).unwrap()
     }
 
     /// Converts `BQNValue` into `char`
@@ -201,7 +204,7 @@ impl BQNValue {
         if self.bqn_type() != BQNType::Character {
             panic!("value isn't a character");
         }
-        unsafe { char::from_u32(bqn_readChar(self.value)) }
+        char::from_u32(bqn_readChar(self.value).unwrap())
     }
 
     /// Converts `BQNValue` into `u32`
@@ -216,7 +219,7 @@ impl BQNValue {
         if self.bqn_type() != BQNType::Character {
             panic!("value isn't a character");
         }
-        unsafe { bqn_readChar(self.value) }
+        bqn_readChar(self.value).unwrap()
     }
 
     /// Converts `BQNValue` into a vector of `f64`s
@@ -227,11 +230,15 @@ impl BQNValue {
         let l = LOCK.lock();
         let b = self.get_numeric_array_bounds_or_panic();
         let mut ret = Vec::with_capacity(b);
+        #[allow(clippy::uninit_vec)]
         unsafe {
-            bqn_readF64Arr(self.value, ret.as_mut_ptr());
-            drop(l);
-            ret.set_len(b);
-        }
+            // We need to set length beforehand as wasi backend will need the length
+            // I don't want to mess with MaybeUninit<T> as it gets cumbersome and this is unsafe
+            // anyway
+            ret.set_len(b)
+        };
+        bqn_readF64Arr(self.value, &mut ret).unwrap();
+        drop(l);
 
         ret
     }
@@ -248,11 +255,15 @@ impl BQNValue {
 
         let b = self.bound();
         let mut objarr = Vec::with_capacity(b);
+        #[allow(clippy::uninit_vec)]
         unsafe {
-            bqn_readObjArr(self.value, objarr.as_mut_ptr());
-            drop(l);
-            objarr.set_len(b);
-        }
+            // We need to set length beforehand as wasi backend will need the length
+            // I don't want to mess with MaybeUninit<T> as it gets cumbersome and this is unsafe
+            // anyway
+            objarr.set_len(b)
+        };
+        bqn_readObjArr(self.value, &mut objarr).unwrap();
+        drop(l);
 
         objarr.into_iter().map(BQNValue::new).collect()
     }
@@ -266,11 +277,15 @@ impl BQNValue {
         let l = LOCK.lock();
         let b = self.get_character_array_bounds_or_panic();
         let mut u32s = Vec::with_capacity(b);
+        #[allow(clippy::uninit_vec)]
         unsafe {
-            bqn_readC32Arr(self.value, u32s.as_mut_ptr());
-            drop(l);
-            u32s.set_len(b);
-        }
+            // We need to set length beforehand as wasi backend will need the length
+            // I don't want to mess with MaybeUninit<T> as it gets cumbersome and this is unsafe
+            // anyway
+            u32s.set_len(b)
+        };
+        bqn_readC32Arr(self.value, &mut u32s).unwrap();
+        drop(l);
 
         u32s.into_iter().filter_map(char::from_u32).collect::<T>()
     }
@@ -298,8 +313,11 @@ impl BQNValue {
     /// # Examples
     /// ```
     /// # use cbqn::{BQN, BQNValue, eval};
+    /// # #[cfg(not(feature = "wasi-backend"))]
+    /// # {
     /// let add_three = BQNValue::fn1(|x| BQNValue::from(x.to_f64() + 3.0));
     /// assert_eq!(BQN!(3, "{𝕏𝕨}", add_three).to_f64(), 6.0);
+    /// # }
     /// ```
     ///
     /// # Panics
@@ -311,10 +329,14 @@ impl BQNValue {
     /// Calling this function will allocate memory that will last for the lifetime of the program.
     /// Calling it with two identical closures, but with different lifetimes, will allocate the
     /// memory multiple times.
+    ///
+    /// # Backend support
+    ///
+    /// Not supported in WASI backend
     pub fn fn1(func: fn(&BQNValue) -> BQNValue) -> BQNValue {
         INIT.call_once(|| {
             let _l = LOCK.lock();
-            unsafe { bqn_init() }
+            bqn_init().unwrap();
         });
 
         let mut key = 0;
@@ -336,7 +358,7 @@ impl BQNValue {
         let obj = BQNValue::from(f64::from_bits(key));
         let _l = LOCK.lock();
         BQNValue {
-            value: unsafe { bqn_makeBoundFn1(Some(boundfn_1_wrapper), obj.value) },
+            value: bqn_makeBoundFn1(Some(boundfn_1_wrapper), obj.value).unwrap(),
         }
     }
 
@@ -347,8 +369,11 @@ impl BQNValue {
     /// # Examples
     /// ```
     /// # use cbqn::{BQN, BQNValue, eval};
+    /// # #[cfg(not(feature = "wasi-backend"))]
+    /// # {
     /// let multiply = BQNValue::fn2(|w, x| BQNValue::from(w.to_f64() * x.to_f64()));
     /// assert_eq!(BQN!(multiply, "{𝕎´𝕩}", [1,2,3,4,5]).to_f64(), 120.0);
+    /// # }
     /// ```
     ///
     /// # Panics
@@ -360,10 +385,14 @@ impl BQNValue {
     /// Calling this function will allocate memory that will last for the lifetime of the program.
     /// Calling it with two identical closures, but with different lifetimes, will allocate the
     /// memory multiple times.
+    ///
+    /// # Backend support
+    ///
+    /// Not supported in WASI backend
     pub fn fn2(func: fn(&BQNValue, &BQNValue) -> BQNValue) -> BQNValue {
         INIT.call_once(|| {
             let _l = LOCK.lock();
-            unsafe { bqn_init() }
+            bqn_init().unwrap()
         });
 
         let mut key = 0;
@@ -385,16 +414,16 @@ impl BQNValue {
         let obj = BQNValue::from(f64::from_bits(key));
         let _l = LOCK.lock();
         BQNValue {
-            value: unsafe { bqn_makeBoundFn2(Some(boundfn_2_wrapper), obj.value) },
+            value: bqn_makeBoundFn2(Some(boundfn_2_wrapper), obj.value).unwrap(),
         }
     }
 
     fn bound(&self) -> usize {
-        unsafe { bqn_bound(self.value) as usize }
+        bqn_bound(self.value).unwrap() as usize
     }
 
     fn direct_arr_type(&self) -> u32 {
-        unsafe { bqn_directArrType(self.value) }
+        bqn_directArrType(self.value).unwrap()
     }
 
     fn get_character_array_bounds_or_panic(&self) -> usize {
@@ -404,10 +433,10 @@ impl BQNValue {
         let b = self.bound();
         if !self.known_char_arr() {
             for i in 0..b {
-                let t = BQNType::try_from(unsafe {
-                    let v = bqn_pick(self.value, i.try_into().unwrap());
-                    let t = bqn_type(v);
-                    bqn_free(v);
+                let t = BQNType::try_from({
+                    let v = bqn_pick(self.value, i.try_into().unwrap()).unwrap();
+                    let t = bqn_type(v).unwrap();
+                    bqn_free(v).unwrap();
                     t
                 })
                 .expect("expected known type");
@@ -427,10 +456,10 @@ impl BQNValue {
         let b = self.bound();
         if !self.known_f64_arr() {
             for i in 0..b {
-                let t = BQNType::try_from(unsafe {
-                    let v = bqn_pick(self.value, i.try_into().unwrap());
-                    let t = bqn_type(v);
-                    bqn_free(v);
+                let t = BQNType::try_from({
+                    let v = bqn_pick(self.value, i.try_into().unwrap()).unwrap();
+                    let t = bqn_type(v).unwrap();
+                    bqn_free(v).unwrap();
                     t
                 })
                 .expect("expected known type");
@@ -476,7 +505,7 @@ impl Clone for BQNValue {
     fn clone(&self) -> BQNValue {
         let _l = LOCK.lock();
         BQNValue {
-            value: unsafe { bqn_copy(self.value) },
+            value: bqn_copy(self.value).unwrap(),
         }
     }
 }
@@ -484,7 +513,7 @@ impl Clone for BQNValue {
 impl Drop for BQNValue {
     fn drop(&mut self) {
         let _l = LOCK.lock();
-        unsafe { bqn_free(self.value) };
+        bqn_free(self.value).unwrap();
     }
 }
 
@@ -535,9 +564,20 @@ unsafe extern "C" fn boundfn_2_wrapper(obj: BQNV, w: BQNV, x: BQNV) -> BQNV {
 pub fn eval(bqn: &str) -> BQNValue {
     INIT.call_once(|| {
         let _l = LOCK.lock();
-        unsafe { bqn_init() }
+        bqn_init().unwrap();
     });
     let _l = LOCK.lock();
-    let ret = BQNValue::new(unsafe { bqn_eval(BQNValue::from(bqn).value) });
-    ret
+    BQNValue::new(bqn_eval(BQNValue::from(bqn).value).unwrap())
+}
+
+/// Initializes the CBQN interpreter
+///
+/// This is called automatically when first using the crate. This function exists to be able to
+/// call the initialize function before using the library, i.e. in a background thread.
+///
+/// Mostly useful with WASI backend as it will take some hundred milliseconds to compile the WASI
+/// module, which is done at the first use of the module.
+pub fn init() {
+    let _l = LOCK.lock();
+    crate::INIT.call_once(|| bqn_init().unwrap());
 }

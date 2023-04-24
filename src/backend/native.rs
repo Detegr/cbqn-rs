@@ -5,7 +5,7 @@ use super::{
     Result,
 };
 
-pub fn bqn_bound(v: BQNV) -> Result<bindings::size_t> {
+pub fn bqn_bound(v: BQNV) -> Result<usize> {
     Ok(unsafe { bindings::bqn_bound(v) })
 }
 
@@ -85,7 +85,7 @@ pub fn bqn_makeUTF8Str(s: &str) -> Result<BQNV> {
     Ok(unsafe { bindings::bqn_makeUTF8Str(s.len().try_into().unwrap(), s.as_ptr() as *const i8) })
 }
 
-pub fn bqn_pick(v: BQNV, pos: bindings::size_t) -> Result<BQNV> {
+pub fn bqn_pick(v: BQNV, pos: usize) -> Result<BQNV> {
     Ok(unsafe { bindings::bqn_pick(v, pos) })
 }
 

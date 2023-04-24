@@ -2,13 +2,30 @@
 
 use super::{
     bindings::{self, BQNV},
-    Result,
+    Error, Result,
 };
-use anyhow::anyhow;
 use once_cell::sync::Lazy;
-use std::{cell::UnsafeCell, mem};
+use std::{cell::UnsafeCell, mem, num::TryFromIntError};
 use wasmer::*;
 use wasmer_wasi::WasiState;
+
+impl From<MemoryAccessError> for Error {
+    fn from(e: MemoryAccessError) -> Error {
+        Error::Wasi(format!("{e:?}"))
+    }
+}
+
+impl From<RuntimeError> for Error {
+    fn from(e: RuntimeError) -> Error {
+        Error::Wasi(format!("{e:?}"))
+    }
+}
+
+impl From<TryFromIntError> for Error {
+    fn from(e: TryFromIntError) -> Error {
+        Error::Wasi(format!("{e:?}"))
+    }
+}
 
 struct BqnFfi {
     free: TypedFunction<WasmPtr<u32>, ()>,
@@ -207,11 +224,15 @@ pub fn bqn_init() -> Result<()> {
 }
 
 pub fn bqn_makeBoundFn1(_f: bindings::bqn_boundFn1, _obj: BQNV) -> Result<BQNV> {
-    Err(anyhow!("BoundFns are not supported with WASM backend"))
+    Err(Error::Wasi(
+        "BoundFns are not supported with WASI backend".into(),
+    ))
 }
 
 pub fn bqn_makeBoundFn2(_f: bindings::bqn_boundFn2, _obj: BQNV) -> Result<BQNV> {
-    Err(anyhow!("BoundFns are not supported with WASM backend"))
+    Err(Error::Wasi(
+        "BoundFns are not supported with WASI backend".into(),
+    ))
 }
 
 pub fn bqn_makeChar(c: u32) -> Result<BQNV> {

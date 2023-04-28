@@ -4,28 +4,32 @@ use super::{
     bindings::{self, BQNV},
     Error, Result,
 };
+use crate::BQNValue;
 use once_cell::sync::Lazy;
-use std::{cell::UnsafeCell, mem, num::TryFromIntError};
+use std::{cell::UnsafeCell, io::Read, mem, num::TryFromIntError};
 use wasmer::*;
-use wasmer_wasi::WasiState;
+use wasmer_wasix::{Pipe, WasiEnv};
 
-impl From<MemoryAccessError> for Error {
-    fn from(e: MemoryAccessError) -> Error {
-        Error::Wasi(format!("{e:?}"))
-    }
+#[inline]
+pub fn backend_eval(bqn: &str) -> Result<BQNValue> {
+    Ok(BQNValue::new(bqn_eval(BQNValue::from(bqn).value)?))
 }
 
-impl From<RuntimeError> for Error {
-    fn from(e: RuntimeError) -> Error {
-        Error::Wasi(format!("{e:?}"))
+macro_rules! impl_error(($err:ty) => {
+    impl From<$err> for Error {
+        fn from(e: $err) -> Error {
+            let stderr = {
+                let _l = crate::LOCK.lock();
+                BQNFFI.stderr_unsafe()
+            };
+            Error::CBQN(stderr)
+        }
     }
-}
+});
 
-impl From<TryFromIntError> for Error {
-    fn from(e: TryFromIntError) -> Error {
-        Error::Wasi(format!("{e:?}"))
-    }
-}
+impl_error!(MemoryAccessError);
+impl_error!(RuntimeError);
+impl_error!(TryFromIntError);
 
 struct BqnFfi {
     free: TypedFunction<WasmPtr<u32>, ()>,
@@ -58,6 +62,7 @@ struct BqnFfi {
     bqn_type: TypedFunction<BQNV, i32>,
 
     store: UnsafeCell<Store>,
+    stderr: UnsafeCell<Pipe>,
     memory: Memory,
 }
 
@@ -69,6 +74,13 @@ impl BqnFfi {
     /// multi-threaded in practice.
     fn get_store_unsafe(&self) -> &mut Store {
         unsafe { self.store.get().as_mut().unwrap() }
+    }
+
+    fn stderr_unsafe(&self) -> String {
+        let stderr = unsafe { self.stderr.get().as_mut().unwrap() };
+        let mut ret = String::new();
+        stderr.read_to_string(&mut ret).unwrap_or(0);
+        ret
     }
 }
 /// NOTE: The type is not really Sync. The user of this library must make sure this code is not
@@ -85,9 +97,11 @@ static BQNFFI: Lazy<BqnFfi> = Lazy::new(|| {
     let mut store = Store::new(compiler_config);
     let module = Module::new(&store, wasm_bytes).expect("Create module");
 
-    let mut wasi_env = WasiState::new("cbqn")
+    let (tx, rx) = Pipe::channel();
+    let mut wasi_env = WasiEnv::builder("cbqn")
+        .stderr(Box::new(tx))
         .finalize(&mut store)
-        .expect("Create WasiState");
+        .expect("Create WasiEnv");
 
     let import_object = wasi_env
         .import_object(&mut store, &module)
@@ -95,7 +109,7 @@ static BQNFFI: Lazy<BqnFfi> = Lazy::new(|| {
 
     let instance = Instance::new(&mut store, &module, &import_object).expect("Create instance");
     wasi_env
-        .initialize(&mut store, &instance)
+        .initialize(&mut store, instance.clone())
         .expect("Initialize wasi_env");
 
     instance
@@ -136,6 +150,7 @@ static BQNFFI: Lazy<BqnFfi> = Lazy::new(|| {
         bqn_type: wasmfn!(instance, store, "bqn_type"),
 
         store: UnsafeCell::new(store),
+        stderr: UnsafeCell::new(rx.with_blocking(false)),
         memory: instance
             .exports
             .get_memory("memory")
@@ -224,13 +239,13 @@ pub fn bqn_init() -> Result<()> {
 }
 
 pub fn bqn_makeBoundFn1(_f: bindings::bqn_boundFn1, _obj: BQNV) -> Result<BQNV> {
-    Err(Error::Wasi(
+    Err(Error::NotSupported(
         "BoundFns are not supported with WASI backend".into(),
     ))
 }
 
 pub fn bqn_makeBoundFn2(_f: bindings::bqn_boundFn2, _obj: BQNV) -> Result<BQNV> {
-    Err(Error::Wasi(
+    Err(Error::NotSupported(
         "BoundFns are not supported with WASI backend".into(),
     ))
 }

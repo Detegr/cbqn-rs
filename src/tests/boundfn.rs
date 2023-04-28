@@ -7,7 +7,7 @@ fn fn1() {
         BQNValue::from(&s.to_uppercase()[..])
     });
     assert_eq!(
-        to_upper.call1(&"hello, world!".into()).to_string(),
+        to_upper.call1(&"hello, world!".into()).unwrap().to_string(),
         "HELLO, WORLD!"
     );
 }
@@ -22,6 +22,7 @@ fn fn2() {
     });
     assert_eq!(
         BQN!(split, "{' '𝕎𝕩}¨", ["Hello world!", "Rust ❤️ BQN"])
+            .unwrap()
             .to_bqnvalue_vec()
             .iter()
             .map(|v| {
@@ -43,11 +44,14 @@ fn clone() {
     });
     let to_upper_2 = to_upper.clone();
     assert_eq!(
-        to_upper.call1(&"hello, world!".into()).to_string(),
+        to_upper.call1(&"hello, world!".into()).unwrap().to_string(),
         "HELLO, WORLD!"
     );
     assert_eq!(
-        to_upper_2.call1(&"hello, world!".into()).to_string(),
+        to_upper_2
+            .call1(&"hello, world!".into())
+            .unwrap()
+            .to_string(),
         "HELLO, WORLD!"
     );
 }
@@ -61,11 +65,11 @@ fn boundfn_inside_boundfn() {
             BQNValue::from(&s.to_lowercase()[..])
         });
         let lower_x = to_lower.call1(x);
-        let s = lower_x.to_string();
+        let s = lower_x.unwrap().to_string();
         BQNValue::from(&s.to_uppercase()[..])
     });
     assert_eq!(
-        to_upper.call1(&"hello, world!".into()).to_string(),
+        to_upper.call1(&"hello, world!".into()).unwrap().to_string(),
         "HELLO, WORLD!"
     );
 }
@@ -74,11 +78,11 @@ fn boundfn_inside_boundfn() {
 fn lifetime() {
     fn boundfn() -> BQNValue {
         let f = BQNValue::fn1(|x| BQNValue::from(x.to_f64() * 2.0));
-        BQN!("⊢", f)
+        BQN!("⊢", f).unwrap()
     }
 
     let f = boundfn();
-    assert_eq!(f.call1(&1.0.into()).to_f64(), 2.0);
+    assert_eq!(f.call1(&1.0.into()).unwrap().to_f64(), 2.0);
 }
 
 #[test]

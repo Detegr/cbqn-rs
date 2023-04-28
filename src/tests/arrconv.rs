@@ -24,35 +24,35 @@ fn c32_string_to_f64_vec() {
 #[test]
 #[should_panic]
 fn should_panic_f64_arr_to_string() {
-    let v = BQN!("1.2‿3.4‿5.6");
+    let v = BQN!("1.2‿3.4‿5.6").unwrap();
     let _ = v.to_string();
 }
 
 #[test]
 #[should_panic]
 fn i32_arr_to_string() {
-    let v = BQN!("67000‿68000");
+    let v = BQN!("67000‿68000").unwrap();
     let _ = v.to_string();
 }
 
 #[test]
 #[should_panic]
 fn should_panic_i16_arr_to_string() {
-    let v = BQN!("1234‿5678");
+    let v = BQN!("1234‿5678").unwrap();
     let _ = v.to_string();
 }
 
 #[test]
 #[should_panic]
 fn i8_arr_to_string() {
-    let v = BQN!("12‿34");
+    let v = BQN!("12‿34").unwrap();
     let _ = v.to_string();
 }
 
 #[test]
 #[should_panic]
 fn should_panic_number_to_string() {
-    let v = BQN!("123");
+    let v = BQN!("123").unwrap();
     let _ = v.to_string();
 }
 
@@ -96,6 +96,7 @@ fn c32_string_to_bqnvalue_vec() {
 fn arr_to_bqnvalue_vec() {
     assert_eq!(
         BQN!("12‿34")
+            .unwrap()
             .to_bqnvalue_vec()
             .iter()
             .map(BQNValue::to_f64)

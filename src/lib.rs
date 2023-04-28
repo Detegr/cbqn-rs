@@ -15,18 +15,19 @@
 //! # Examples using the BQN! macro
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval};
-//! let sum = BQN!("1+1");
+//! let sum = BQN!("1+1").unwrap();
 //! assert_eq!(sum.to_f64(), 2.0);
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval};
-//! assert_eq!(BQN!("⌽≡⊢", "BQN").to_f64(), 0.0);
+//! assert_eq!(BQN!("⌽≡⊢", "BQN").unwrap().to_f64(), 0.0);
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval};
 //! let strs = BQN!(' ', "(⊢-˜+`×¬)∘=⊔⊢", "Rust ❤️ BQN")
+//!     .unwrap()
 //!     .to_bqnvalue_vec()
 //!     .iter()
 //!     .map(BQNValue::to_string)
@@ -37,27 +38,28 @@
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval};
 //! let strings = ["join", "these", "please"];
-//! assert_eq!(BQN!("∾", strings).to_string(), "jointheseplease");
+//! assert_eq!(BQN!("∾", strings).unwrap().to_string(), "jointheseplease");
 //! ```
 //!
 //! # Examples using BQNValue
 //!
 //! ```
 //! # use cbqn::{BQNValue, eval};
-//! let sum = eval("1+1");
+//! let sum = eval("1+1").unwrap();
 //! assert_eq!(sum.to_f64(), 2.0);
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQNValue, eval};
 //! let is_anagram = eval("⌽≡⊢");
-//! assert_eq!(is_anagram.call1(&"BQN".into()).to_f64(), 0.0);
+//! assert_eq!(is_anagram.call1(&"BQN".into()).unwrap().to_f64(), 0.0);
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQNValue, eval};
-//! let split = eval("(⊢-˜+`×¬)∘=⊔⊢");
+//! let split = eval("(⊢-˜+`×¬)∘=⊔⊢").unwrap();
 //! let strs = split.call2(&' '.into(), &"Rust ❤️ BQN".into())
+//!     .unwrap()
 //!     .to_bqnvalue_vec()
 //!     .iter()
 //!     .map(BQNValue::to_string)
@@ -67,11 +69,11 @@
 //!
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval};
-//! let counter = BQN!("{v←0 ⋄ Inc⇐{v+↩𝕩}}");
+//! let counter = BQN!("{v←0 ⋄ Inc⇐{v+↩𝕩}}").unwrap();
 //! let increment = counter.get_field("inc").unwrap();
-//! increment.call1(&1.into());
-//! increment.call1(&2.into());
-//! let result = increment.call1(&3.into());
+//! increment.call1(&1.into()).unwrap();
+//! increment.call1(&2.into()).unwrap();
+//! let result = increment.call1(&3.into()).unwrap();
 //! assert_eq!(result.to_f64(), 6.0);
 //! ```
 */
@@ -111,7 +113,7 @@ impl BQNValue {
     ///
     /// ```
     /// # use cbqn::{BQN, BQNValue, eval};
-    /// BQN!('a', "-", BQNValue::null());
+    /// BQN!('a', "-", BQNValue::null()).unwrap();
     /// ```
     pub fn null() -> BQNValue {
         let _l = LOCK.lock();
@@ -168,15 +170,15 @@ impl BQNValue {
     }
 
     /// Calls `BQNValue` as a function with one argument
-    pub fn call1(&self, x: &BQNValue) -> BQNValue {
+    pub fn call1(&self, x: &BQNValue) -> Result<BQNValue> {
         let _l = LOCK.lock();
-        BQNValue::new(bqn_call1(self.value, x.value).unwrap())
+        Ok(BQNValue::new(bqn_call1(self.value, x.value)?))
     }
 
     /// Calls `BQNValue` as a function with two arguments
-    pub fn call2(&self, w: &BQNValue, x: &BQNValue) -> BQNValue {
+    pub fn call2(&self, w: &BQNValue, x: &BQNValue) -> Result<BQNValue> {
         let _l = LOCK.lock();
-        BQNValue::new(bqn_call2(self.value, w.value, x.value).unwrap())
+        Ok(BQNValue::new(bqn_call2(self.value, w.value, x.value)?))
     }
 
     /// Returns the BQN type of the BQNValue
@@ -320,7 +322,7 @@ impl BQNValue {
     /// # #[cfg(not(feature = "wasi-backend"))]
     /// # {
     /// let add_three = BQNValue::fn1(|x| BQNValue::from(x.to_f64() + 3.0));
-    /// assert_eq!(BQN!(3, "{𝕏𝕨}", add_three).to_f64(), 6.0);
+    /// assert_eq!(BQN!(3, "{𝕏𝕨}", add_three).unwrap().to_f64(), 6.0);
     /// # }
     /// ```
     ///
@@ -376,7 +378,7 @@ impl BQNValue {
     /// # #[cfg(not(feature = "wasi-backend"))]
     /// # {
     /// let multiply = BQNValue::fn2(|w, x| BQNValue::from(w.to_f64() * x.to_f64()));
-    /// assert_eq!(BQN!(multiply, "{𝕎´𝕩}", [1,2,3,4,5]).to_f64(), 120.0);
+    /// assert_eq!(BQN!(multiply, "{𝕎´𝕩}", [1,2,3,4,5]).unwrap().to_f64(), 120.0);
     /// # }
     /// ```
     ///
@@ -438,7 +440,7 @@ impl BQNValue {
         if !self.known_char_arr() {
             for i in 0..b {
                 let t = BQNType::try_from({
-                    let v = bqn_pick(self.value, i.try_into().unwrap()).unwrap();
+                    let v = bqn_pick(self.value, i).unwrap();
                     let t = bqn_type(v).unwrap();
                     bqn_free(v).unwrap();
                     t
@@ -461,7 +463,7 @@ impl BQNValue {
         if !self.known_f64_arr() {
             for i in 0..b {
                 let t = BQNType::try_from({
-                    let v = bqn_pick(self.value, i.try_into().unwrap()).unwrap();
+                    let v = bqn_pick(self.value, i).unwrap();
                     let t = bqn_type(v).unwrap();
                     bqn_free(v).unwrap();
                     t
@@ -480,27 +482,27 @@ impl BQNValue {
     // Returns false if *it is not known* whether the array elements are of type f64 or not
     fn known_f64_arr(&self) -> bool {
         #![allow(non_upper_case_globals)]
-        match self.direct_arr_type() {
-            BQNElType_elt_f64 | BQNElType_elt_i32 | BQNElType_elt_i16 | BQNElType_elt_i8 => true,
-            _ => false,
-        }
+        matches!(
+            self.direct_arr_type(),
+            BQNElType_elt_f64 | BQNElType_elt_i32 | BQNElType_elt_i16 | BQNElType_elt_i8
+        )
     }
 
     // This function returns whether it's known that the array elements are of type char
     // Returns false if *it is not known* whether the array elements are of type char or not
     fn known_char_arr(&self) -> bool {
         #![allow(non_upper_case_globals)]
-        match self.direct_arr_type() {
-            BQNElType_elt_c32 | BQNElType_elt_c16 | BQNElType_elt_c8 => true,
-            _ => false,
-        }
+        matches!(
+            self.direct_arr_type(),
+            BQNElType_elt_c32 | BQNElType_elt_c16 | BQNElType_elt_c8
+        )
     }
 }
 
 impl fmt::Debug for BQNValue {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let fmt = crate::eval("•Fmt");
-        let formatted = fmt.call1(self);
+        let fmt = crate::eval("•Fmt").expect("fmt");
+        let formatted = fmt.call1(self).expect("fmt.call1");
         write!(f, "{}", formatted.to_string())
     }
 }
@@ -562,16 +564,16 @@ unsafe extern "C" fn boundfn_2_wrapper(obj: BQNV, w: BQNV, x: BQNV) -> BQNV {
 /// # Examples
 /// ```
 /// # use cbqn::eval;
-/// let bqnv = eval("1+1");
-/// let bqnfn = eval("{𝕩×10}");
+/// let bqnv = eval("1+1").unwrap();
+/// let bqnfn = eval("{𝕩×10}").unwrap();
 /// ```
-pub fn eval(bqn: &str) -> BQNValue {
+pub fn eval(bqn: &str) -> Result<BQNValue> {
     INIT.call_once(|| {
         let _l = LOCK.lock();
         bqn_init().unwrap();
     });
     let _l = LOCK.lock();
-    BQNValue::new(bqn_eval(BQNValue::from(bqn).value).unwrap())
+    backend_eval(bqn)
 }
 
 /// Initializes the CBQN interpreter

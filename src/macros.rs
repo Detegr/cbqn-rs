@@ -106,19 +106,20 @@ macro_rules! impl_from_vec {
 /// # Examples
 /// ```
 /// # use cbqn::{BQN, BQNValue, eval};
-/// let sum = BQN!("1+1");
+/// let sum = BQN!("1+1").unwrap();
 /// assert_eq!(sum.to_f64(), 2.0);
 /// ```
 ///
 /// ```
 /// # use cbqn::{BQN, BQNValue, eval};
-/// let bqn_is_anagram = BQN!("⌽≡⊢", "BQN");
+/// let bqn_is_anagram = BQN!("⌽≡⊢", "BQN").unwrap();
 /// assert_eq!(bqn_is_anagram.to_f64(), 0.0);
 /// ```
 ///
 /// ```
 /// # use cbqn::{BQN, BQNValue, eval};
 /// let strs = BQN!(' ', "(⊢-˜+`×¬)∘=⊔⊢", "Rust ❤️ BQN")
+///     .unwrap()
 ///     .to_bqnvalue_vec()
 ///     .iter()
 ///     .map(BQNValue::to_string)
@@ -129,7 +130,7 @@ macro_rules! impl_from_vec {
 /// ```
 /// # use cbqn::{BQN, BQNValue, eval};
 /// let strings = ["join", "these", "please"];
-/// assert_eq!(BQN!("∾", strings).to_string(), "jointheseplease");
+/// assert_eq!(BQN!("∾", strings).unwrap().to_string(), "jointheseplease");
 /// ```
 #[macro_export]
 macro_rules! BQN {
@@ -137,10 +138,10 @@ macro_rules! BQN {
         eval($code)
     };
     ($code:expr, $x:expr) => {
-        eval($code).call1(&BQNValue::from($x))
+        eval($code).and_then(|v| v.call1(&BQNValue::from($x)))
     };
     ($w:expr, $code:expr, $x:expr) => {
-        eval($code).call2(&BQNValue::from($w), &BQNValue::from($x))
+        eval($code).and_then(|v| v.call2(&BQNValue::from($w), &BQNValue::from($x)))
     };
 }
 

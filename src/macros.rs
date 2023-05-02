@@ -107,30 +107,32 @@ macro_rules! impl_from_vec {
 /// ```
 /// # use cbqn::{BQN, BQNValue, eval};
 /// let sum = BQN!("1+1").unwrap();
-/// assert_eq!(sum.to_f64(), 2.0);
+/// assert_eq!(sum.to_f64().unwrap(), 2.0);
 /// ```
 ///
 /// ```
 /// # use cbqn::{BQN, BQNValue, eval};
-/// let bqn_is_anagram = BQN!("⌽≡⊢", "BQN").unwrap();
-/// assert_eq!(bqn_is_anagram.to_f64(), 0.0);
+/// let bqn_is_anagram = BQN!("⌽≡⊢", "BQN").and_then(|e| e.to_f64()).unwrap();
+/// assert_eq!(bqn_is_anagram, 0.0);
 /// ```
 ///
 /// ```
 /// # use cbqn::{BQN, BQNValue, eval};
 /// let strs = BQN!(' ', "(⊢-˜+`×¬)∘=⊔⊢", "Rust ❤️ BQN")
-///     .unwrap()
-///     .to_bqnvalue_vec()
-///     .iter()
-///     .map(BQNValue::to_string)
-///     .collect::<Vec<String>>();
+///     .and_then(|e| e.to_bqnvalue_vec())
+///     .and_then(|v| {
+///         v.iter()
+///             .map(BQNValue::to_string)
+///             .collect::<Result<Vec<String>, _>>()
+///     })
+///     .unwrap();
 /// assert_eq!(strs, ["Rust", "❤️", "BQN"]);
 /// ```
 ///
 /// ```
 /// # use cbqn::{BQN, BQNValue, eval};
 /// let strings = ["join", "these", "please"];
-/// assert_eq!(BQN!("∾", strings).unwrap().to_string(), "jointheseplease");
+/// assert_eq!(BQN!("∾", strings).and_then(|e| e.to_string()).unwrap(), "jointheseplease");
 /// ```
 #[macro_export]
 macro_rules! BQN {

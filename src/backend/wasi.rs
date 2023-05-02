@@ -17,7 +17,7 @@ pub fn backend_eval(bqn: &str) -> Result<BQNValue> {
 
 macro_rules! impl_error(($err:ty) => {
     impl From<$err> for Error {
-        fn from(e: $err) -> Error {
+        fn from(_e: $err) -> Error {
             let stderr = {
                 let _l = crate::LOCK.lock();
                 BQNFFI.stderr_unsafe()
@@ -327,8 +327,10 @@ pub fn bqn_makeUTF8Str(s: &str) -> Result<BQNV> {
     })
 }
 
-pub fn bqn_pick(v: BQNV, pos: u32) -> Result<BQNV> {
-    Ok(BQNFFI.bqn_pick.call(BQNFFI.get_store_unsafe(), v, pos)?)
+pub fn bqn_pick(v: BQNV, pos: usize) -> Result<BQNV> {
+    Ok(BQNFFI
+        .bqn_pick
+        .call(BQNFFI.get_store_unsafe(), v, pos as u32)?)
 }
 
 pub fn bqn_readC32Arr(v: BQNV, buf: &mut [u32]) -> Result<()> {

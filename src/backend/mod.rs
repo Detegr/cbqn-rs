@@ -4,6 +4,7 @@ use cbqn_sys as bindings;
 #[derive(Debug)]
 pub enum Error {
     CBQN(String),
+    InvalidType(String),
     NotSupported(String),
 }
 
@@ -40,7 +41,7 @@ mod eval {
         let err = bqn_pick(ret.value, 0)?;
         if err != 0 {
             let error = BQNValue::new(bqn_pick(ret.value, 1)?);
-            Err(Error::CBQN(error.to_string()))
+            Err(Error::CBQN(error.to_string()?))
         } else {
             Ok(BQNValue::new(bqn_pick(ret.value, 1)?))
         }

@@ -18,6 +18,7 @@ once_cell = "1.17.0"
 parking_lot = "0.12.1"
 wasmer = { version = "3.2.1", optional = true }
 wasmer-wasix = { version = "0.3.1", optional = true }
+thiserror = "1.0.40"
 
 [features]
 default = ["native-backend"]

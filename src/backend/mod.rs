@@ -1,10 +1,14 @@
 use crate::BQNValue;
 use cbqn_sys as bindings;
+use thiserror::Error as ThisError;
 
-#[derive(Debug)]
+#[derive(ThisError, Debug)]
 pub enum Error {
+    #[error("CBQN error: {0}")]
     CBQN(String),
+    #[error("Invalid type: {0}")]
     InvalidType(String),
+    #[error("{0}")]
     NotSupported(String),
 }
 

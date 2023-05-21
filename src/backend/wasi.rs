@@ -91,11 +91,12 @@ macro_rules! wasmfn(($instance:ident, $store:ident, $name:expr) => {
     $instance.exports.get_typed_function(&$store, $name).expect($name)
 });
 
+static WASM_BYTES: &'static [u8] = include_bytes!(env!("BQN_WASM"));
+
 static BQNFFI: Lazy<BqnFfi> = Lazy::new(|| {
-    let wasm_bytes = std::fs::read("BQN.wasm").expect("BQN.wasm not found");
     let compiler_config = Cranelift::default();
     let mut store = Store::new(compiler_config);
-    let module = Module::new(&store, wasm_bytes).expect("Create module");
+    let module = Module::new(&store, WASM_BYTES).expect("Create module");
 
     let (tx, rx) = Pipe::channel();
     let mut wasi_env = WasiEnv::builder("cbqn")

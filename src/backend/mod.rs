@@ -1,4 +1,3 @@
-use crate::BQNValue;
 use cbqn_sys as bindings;
 use thiserror::Error as ThisError;
 
@@ -25,6 +24,7 @@ mod native;
 #[cfg(feature = "native-backend")]
 mod eval {
     use super::*;
+    use crate::BQNValue;
     use once_cell::sync::OnceCell;
 
     static REBQN: OnceCell<BQNValue> = OnceCell::new();

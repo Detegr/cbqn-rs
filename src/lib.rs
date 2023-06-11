@@ -82,6 +82,12 @@
 //! # Ok::<(), Error>(())
 //! ```
 
+// Clippy outputs false positives because some of the casts and conversions are needed in the wasi
+// backend, but not in the native backend
+#![allow(clippy::unnecessary_cast)]
+#![allow(clippy::useless_conversion)]
+#![allow(clippy::unit_arg)]
+
 mod backend;
 use backend::*;
 
@@ -402,7 +408,7 @@ impl BQNValue {
     }
 
     fn bound(&self) -> usize {
-        bqn_bound(self.value).unwrap()
+        bqn_bound(self.value).unwrap() as usize
     }
 
     fn direct_arr_type(&self) -> u32 {

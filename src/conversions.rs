@@ -85,7 +85,7 @@ impl From<&[BQNValue]> for BQNValue {
             bqn_init().unwrap()
         });
 
-        let elems = arr.into_iter().map(|v| v.value).collect::<Vec<_>>();
+        let elems = arr.iter().map(|v| v.value).collect::<Vec<_>>();
         let _l = LOCK.lock();
         BQNValue::new(bqn_makeObjVec(&elems).unwrap())
     }

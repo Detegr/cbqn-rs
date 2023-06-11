@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["BQNType","BQN type enumeration"]],"fn":[["eval","Evaluates BQN code"]],"macro":[["BQN","Convenience macro for running BQN expressions"]],"struct":[["BQNValue","Represents a BQN value"]]};
+window.SIDEBAR_ITEMS = {"enum":["BQNType","Error"],"fn":["eval","init"],"macro":["BQN"],"struct":["BQNValue"]};

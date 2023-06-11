@@ -40,12 +40,9 @@ fn to_bqnvalue_vec() -> Result<()> {
 }
 
 #[test]
-fn should_panic_number_to_bqnvalue_vec() -> Result<()> {
+fn should_fail_number_to_bqnvalue_vec() -> Result<()> {
     let v = BQN!("123")?;
-    assert!(panic::catch_unwind(move || {
-        v.to_bqnvalue_vec().unwrap();
-    })
-    .is_err());
+    assert!(v.to_bqnvalue_vec().is_err());
     Ok(())
 }
 

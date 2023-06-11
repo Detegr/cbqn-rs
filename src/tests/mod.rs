@@ -9,7 +9,6 @@ mod to;
 
 use crate::*;
 use gen::*;
-use std::panic;
 
 #[test]
 fn call1() -> Result<()> {

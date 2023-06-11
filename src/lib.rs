@@ -130,10 +130,6 @@ impl BQNValue {
     /// As CBQN requires the searched field name to be in a string with all lowercase letters, this
     /// function returns `false` if it is supplied with a `field` string that contains uppercase
     /// characters.
-    ///
-    /// # Panics
-    ///
-    /// * If `self` isn't a namespace.
     pub fn has_field(&self, field: &str) -> Result<bool> {
         let _l = LOCK.lock();
 
@@ -152,10 +148,6 @@ impl BQNValue {
     /// As CBQN requires the searched field name to be in a string with all lowercase letters, this
     /// function returns `None` if it is supplied with a `field` string that contains uppercase
     /// characters.
-    ///
-    /// # Panics
-    ///
-    /// * If `self` isn't a namespace.
     pub fn get_field(&self, field: &str) -> Result<Option<BQNValue>> {
         let _l = LOCK.lock();
 
@@ -192,9 +184,6 @@ impl BQNValue {
     }
 
     /// Converts `BQNValue` into `f64`
-    ///
-    /// # Panics
-    /// * If `self` isn't a number
     pub fn to_f64(&self) -> Result<f64> {
         let _l = LOCK.lock();
         if self.bqn_type() != BQNType::Number {
@@ -207,9 +196,6 @@ impl BQNValue {
     ///
     /// Returns `None` if the value is not an Unicode scalar value. Rust `char`s cannot represent
     /// characters that are not Unicode scalar values.
-    ///
-    /// # Panics
-    /// * If `self` isn't a BQN character
     pub fn to_char(&self) -> Result<Option<char>> {
         let _l = LOCK.lock();
         if self.bqn_type() != BQNType::Character {
@@ -222,9 +208,6 @@ impl BQNValue {
     ///
     /// BQN characters can contain values that aren't Unicode scalar values. Those characters can
     /// be converted into a Rust type `u32` using this function.
-    ///
-    /// # Panics
-    /// * If `self` isn't a BQN character
     pub fn to_u32(&self) -> Result<u32> {
         let _l = LOCK.lock();
         if self.bqn_type() != BQNType::Character {
@@ -234,9 +217,6 @@ impl BQNValue {
     }
 
     /// Converts `BQNValue` into a vector of `f64`s
-    ///
-    /// # Panics
-    /// * If `self` isn't a BQN array containing numbers
     pub fn to_f64_vec(&self) -> Result<Vec<f64>> {
         let l = LOCK.lock();
         let b = self.get_numeric_array_bounds()?;
@@ -255,9 +235,6 @@ impl BQNValue {
     }
 
     /// Converts `BQNValue` into a vector of `BQNValue`s
-    ///
-    /// # Panics
-    /// * If `self` isn't a BQN array that contains BQN objects
     pub fn to_bqnvalue_vec(&self) -> Result<Vec<BQNValue>> {
         let l = LOCK.lock();
         if self.bqn_type() != BQNType::Array {
@@ -302,17 +279,11 @@ impl BQNValue {
     }
 
     /// Converts `BQNValue` into vector of `char`s
-    ///
-    /// # Panics
-    /// * If `self` isn't a BQN array that contains characters
     pub fn to_char_vec(&self) -> Result<Vec<char>> {
         self.to_char_container::<Vec<char>>()
     }
 
     /// Converts `BQNValue` into a `String`
-    ///
-    /// # Panics
-    /// * If `self` isn't a BQN array that contains characters
     pub fn to_string(&self) -> Result<String> {
         self.to_char_container::<String>()
     }
@@ -431,7 +402,7 @@ impl BQNValue {
     }
 
     fn bound(&self) -> usize {
-        bqn_bound(self.value).unwrap() as usize
+        bqn_bound(self.value).unwrap()
     }
 
     fn direct_arr_type(&self) -> u32 {

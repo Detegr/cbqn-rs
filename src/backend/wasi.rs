@@ -8,7 +8,7 @@ use crate::BQNValue;
 use once_cell::sync::Lazy;
 use std::{cell::UnsafeCell, io::Read, mem, num::TryFromIntError};
 use wasmer::*;
-use wasmer_wasix::{Pipe, WasiEnv};
+use wasmer_wasix::{virtual_fs, Pipe, WasiEnv};
 
 #[inline]
 pub fn backend_eval(bqn: &str) -> Result<BQNValue> {
@@ -100,7 +100,10 @@ static BQNFFI: Lazy<BqnFfi> = Lazy::new(|| {
 
     let (tx, rx) = Pipe::channel();
     let mut wasi_env = WasiEnv::builder("cbqn")
+        .fs(Box::new(virtual_fs::host_fs::FileSystem))
         .stderr(Box::new(tx))
+        .preopen_dir("/")
+        .unwrap()
         .finalize(&mut store)
         .expect("Create WasiEnv");
 

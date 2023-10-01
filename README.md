@@ -26,4 +26,4 @@ The [documentation](https://detegr.github.io/cbqn-rs/cbqn) contains multiple exa
 
 # License
 
-Licensed under the [GNU General Public License v3.0](https://github.com/Detegr/cbqn-rs/blob/master/LICENSE). [CBQN](https://github.com/dzaima/CBQN) uses the same license.
+Licensed either under GPLv3, LGPLv3 or MPL 2.0 following the licensing of [CBQN](https://github.com/dzaima/CBQN/).

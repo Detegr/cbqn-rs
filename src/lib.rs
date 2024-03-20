@@ -54,8 +54,8 @@
 //!
 //! ```
 //! # use cbqn::{BQNValue, eval, Error};
-//! let is_anagram = eval("⌽≡⊢")?;
-//! assert_eq!(is_anagram.call1(&"BQN".into())?.to_f64()?, 0.0);
+//! let is_palindrome = eval("⌽≡⊢")?;
+//! assert_eq!(is_palindrome.call1(&"BQN".into())?.to_f64()?, 0.0);
 //! # Ok::<(), Error>(())
 //! ```
 //!

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/antti/.cargo/registry/src/github.com-1ecc6299db9ec823/syn-2.0.18/src/path.rs`."><title>path.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../static.files/ayu-be46fdc453a55015.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syn/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/antti/.cargo/registry/src/index.crates.io-6f17d22bba15001f/syn-2.0.58/src/path.rs`."><title>path.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syn" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -827,12 +828,97 @@
 <a href="#827" id="827">827</a>
 <a href="#828" id="828">828</a>
 <a href="#829" id="829">829</a>
-</pre><pre class="rust"><code><span class="kw">use super</span>::<span class="kw-2">*</span>;
+<a href="#830" id="830">830</a>
+<a href="#831" id="831">831</a>
+<a href="#832" id="832">832</a>
+<a href="#833" id="833">833</a>
+<a href="#834" id="834">834</a>
+<a href="#835" id="835">835</a>
+<a href="#836" id="836">836</a>
+<a href="#837" id="837">837</a>
+<a href="#838" id="838">838</a>
+<a href="#839" id="839">839</a>
+<a href="#840" id="840">840</a>
+<a href="#841" id="841">841</a>
+<a href="#842" id="842">842</a>
+<a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
+<a href="#855" id="855">855</a>
+<a href="#856" id="856">856</a>
+<a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
+<a href="#868" id="868">868</a>
+<a href="#869" id="869">869</a>
+<a href="#870" id="870">870</a>
+<a href="#871" id="871">871</a>
+<a href="#872" id="872">872</a>
+<a href="#873" id="873">873</a>
+<a href="#874" id="874">874</a>
+<a href="#875" id="875">875</a>
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">"parsing"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::error::Result;
+<span class="kw">use </span><span class="kw">crate</span>::expr::Expr;
+<span class="kw">use </span><span class="kw">crate</span>::generics::TypeParamBound;
+<span class="kw">use </span><span class="kw">crate</span>::ident::Ident;
+<span class="kw">use </span><span class="kw">crate</span>::lifetime::Lifetime;
 <span class="kw">use </span><span class="kw">crate</span>::punctuated::Punctuated;
+<span class="kw">use </span><span class="kw">crate</span>::token;
+<span class="kw">use </span><span class="kw">crate</span>::ty::{ReturnType, Type};
 
 <span class="macro">ast_struct! </span>{
     <span class="doccomment">/// A path at which a named item is exported (e.g. `std::collections::HashMap`).
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">&quot;full&quot;</span>, feature = <span class="string">&quot;derive&quot;</span>))))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>Path {
         <span class="kw">pub </span>leading_colon: <span class="prelude-ty">Option</span>&lt;<span class="macro">Token!</span>[::]&gt;,
         <span class="kw">pub </span>segments: Punctuated&lt;PathSegment, <span class="macro">Token!</span>[::]&gt;,
@@ -872,19 +958,20 @@
     /// use syn::{Attribute, Error, Meta, Result};
     ///
     /// fn get_serde_meta_item(attr: &amp;Attribute) -&gt; Result&lt;Option&lt;&amp;TokenStream&gt;&gt; {
-    ///     if attr.path().is_ident(&quot;serde&quot;) {
+    ///     if attr.path().is_ident("serde") {
     ///         match &amp;attr.meta {
     ///             Meta::List(meta) =&gt; Ok(Some(&amp;meta.tokens)),
-    ///             bad =&gt; Err(Error::new_spanned(bad, &quot;unrecognized attribute&quot;)),
+    ///             bad =&gt; Err(Error::new_spanned(bad, "unrecognized attribute")),
     ///         }
     ///     } else {
     ///         Ok(None)
     ///     }
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>is_ident&lt;I: <span class="question-mark">?</span>Sized&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, ident: <span class="kw-2">&amp;</span>I) -&gt; bool
+    </span><span class="kw">pub fn </span>is_ident&lt;I&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, ident: <span class="kw-2">&amp;</span>I) -&gt; bool
     <span class="kw">where
-        </span>Ident: PartialEq&lt;I&gt;,
+        </span>I: <span class="question-mark">?</span>Sized,
+        Ident: PartialEq&lt;I&gt;,
     {
         <span class="kw">match </span><span class="self">self</span>.get_ident() {
             <span class="prelude-val">Some</span>(id) =&gt; id == ident,
@@ -910,11 +997,24 @@
             <span class="prelude-val">None
         </span>}
     }
+
+    <span class="doccomment">/// An error if this path is not a single ident, as defined in `get_ident`.
+    </span><span class="attr">#[cfg(feature = <span class="string">"parsing"</span>)]
+    #[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
+    </span><span class="kw">pub fn </span>require_ident(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>Ident&gt; {
+        <span class="self">self</span>.get_ident().ok_or_else(|| {
+            <span class="kw">crate</span>::error::new2(
+                <span class="self">self</span>.segments.first().unwrap().ident.span(),
+                <span class="self">self</span>.segments.last().unwrap().ident.span(),
+                <span class="string">"expected this path to be an identifier"</span>,
+            )
+        })
+    }
 }
 
 <span class="macro">ast_struct! </span>{
     <span class="doccomment">/// A segment of a path together with any path arguments on that segment.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">&quot;full&quot;</span>, feature = <span class="string">&quot;derive&quot;</span>))))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>PathSegment {
         <span class="kw">pub </span>ident: Ident,
         <span class="kw">pub </span>arguments: PathArguments,
@@ -938,15 +1038,15 @@
     ///
     /// ## Angle bracketed
     ///
-    /// The `&lt;&#39;a, T&gt;` in `std::slice::iter&lt;&#39;a, T&gt;`.
+    /// The `&lt;'a, T&gt;` in `std::slice::iter&lt;'a, T&gt;`.
     ///
     /// ## Parenthesized
     ///
     /// The `(A, B) -&gt; C` in `Fn(A, B) -&gt; C`.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">&quot;full&quot;</span>, feature = <span class="string">&quot;derive&quot;</span>))))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub enum </span>PathArguments {
         <span class="prelude-val">None</span>,
-        <span class="doccomment">/// The `&lt;&#39;a, T&gt;` in `std::slice::iter&lt;&#39;a, T&gt;`.
+        <span class="doccomment">/// The `&lt;'a, T&gt;` in `std::slice::iter&lt;'a, T&gt;`.
         </span>AngleBracketed(AngleBracketedGenericArguments),
         <span class="doccomment">/// The `(A, B) -&gt; C` in `Fn(A, B) -&gt; C`.
         </span>Parenthesized(ParenthesizedGenericArguments),
@@ -977,8 +1077,8 @@
 }
 
 <span class="macro">ast_enum! </span>{
-    <span class="doccomment">/// An individual generic argument, like `&#39;a`, `T`, or `Item = T`.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">&quot;full&quot;</span>, feature = <span class="string">&quot;derive&quot;</span>))))]
+    <span class="doccomment">/// An individual generic argument, like `'a`, `T`, or `Item = T`.
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     #[non_exhaustive]
     </span><span class="kw">pub enum </span>GenericArgument {
         <span class="doccomment">/// A lifetime argument.
@@ -1004,7 +1104,7 @@
 <span class="macro">ast_struct! </span>{
     <span class="doccomment">/// Angle bracketed arguments of a path segment: the `&lt;K, V&gt;` in `HashMap&lt;K,
     /// V&gt;`.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">&quot;full&quot;</span>, feature = <span class="string">&quot;derive&quot;</span>))))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>AngleBracketedGenericArguments {
         <span class="kw">pub </span>colon2_token: <span class="prelude-ty">Option</span>&lt;<span class="macro">Token!</span>[::]&gt;,
         <span class="kw">pub </span>lt_token: <span class="macro">Token!</span>[&lt;],
@@ -1016,7 +1116,7 @@
 <span class="macro">ast_struct! </span>{
     <span class="doccomment">/// A binding (equality constraint) on an associated type: the `Item = u8`
     /// in `Iterator&lt;Item = u8&gt;`.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">&quot;full&quot;</span>, feature = <span class="string">&quot;derive&quot;</span>))))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>AssocType {
         <span class="kw">pub </span>ident: Ident,
         <span class="kw">pub </span>generics: <span class="prelude-ty">Option</span>&lt;AngleBracketedGenericArguments&gt;,
@@ -1028,7 +1128,7 @@
 <span class="macro">ast_struct! </span>{
     <span class="doccomment">/// An equality constraint on an associated constant: the `PANIC = false` in
     /// `Trait&lt;PANIC = false&gt;`.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">&quot;full&quot;</span>, feature = <span class="string">&quot;derive&quot;</span>))))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>AssocConst {
         <span class="kw">pub </span>ident: Ident,
         <span class="kw">pub </span>generics: <span class="prelude-ty">Option</span>&lt;AngleBracketedGenericArguments&gt;,
@@ -1039,7 +1139,7 @@
 
 <span class="macro">ast_struct! </span>{
     <span class="doccomment">/// An associated type bound: `Iterator&lt;Item: Display&gt;`.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">&quot;full&quot;</span>, feature = <span class="string">&quot;derive&quot;</span>))))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>Constraint {
         <span class="kw">pub </span>ident: Ident,
         <span class="kw">pub </span>generics: <span class="prelude-ty">Option</span>&lt;AngleBracketedGenericArguments&gt;,
@@ -1051,7 +1151,7 @@
 <span class="macro">ast_struct! </span>{
     <span class="doccomment">/// Arguments of a function path segment: the `(A, B) -&gt; C` in `Fn(A,B) -&gt;
     /// C`.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">&quot;full&quot;</span>, feature = <span class="string">&quot;derive&quot;</span>))))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>ParenthesizedGenericArguments {
         <span class="kw">pub </span>paren_token: token::Paren,
         <span class="doccomment">/// `(A, B)`
@@ -1078,7 +1178,7 @@
     ///  ^~~~~~   ^
     ///  ty       position = 0
     /// ```
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">&quot;full&quot;</span>, feature = <span class="string">&quot;derive&quot;</span>))))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>QSelf {
         <span class="kw">pub </span>lt_token: <span class="macro">Token!</span>[&lt;],
         <span class="kw">pub </span>ty: Box&lt;Type&gt;,
@@ -1088,21 +1188,39 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;parsing&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"parsing"</span>)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>parsing {
-    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::error::Result;
+    <span class="attr">#[cfg(feature = <span class="string">"full"</span>)]
+    </span><span class="kw">use </span><span class="kw">crate</span>::expr::ExprBlock;
+    <span class="kw">use </span><span class="kw">crate</span>::expr::{Expr, ExprPath};
+    <span class="kw">use </span><span class="kw">crate</span>::ext::IdentExt <span class="kw">as _</span>;
+    <span class="attr">#[cfg(feature = <span class="string">"full"</span>)]
+    </span><span class="kw">use </span><span class="kw">crate</span>::generics::TypeParamBound;
+    <span class="kw">use </span><span class="kw">crate</span>::ident::Ident;
+    <span class="kw">use </span><span class="kw">crate</span>::lifetime::Lifetime;
+    <span class="kw">use </span><span class="kw">crate</span>::lit::Lit;
+    <span class="kw">use </span><span class="kw">crate</span>::parse::{Parse, ParseStream};
+    <span class="attr">#[cfg(feature = <span class="string">"full"</span>)]
+    </span><span class="kw">use </span><span class="kw">crate</span>::path::Constraint;
+    <span class="kw">use </span><span class="kw">crate</span>::path::{
+        AngleBracketedGenericArguments, AssocConst, AssocType, GenericArgument,
+        ParenthesizedGenericArguments, Path, PathArguments, PathSegment, QSelf,
+    };
+    <span class="kw">use </span><span class="kw">crate</span>::punctuated::Punctuated;
+    <span class="kw">use </span><span class="kw">crate</span>::token;
+    <span class="kw">use </span><span class="kw">crate</span>::ty::{ReturnType, Type};
+    <span class="attr">#[cfg(not(feature = <span class="string">"full"</span>))]
+    </span><span class="kw">use </span><span class="kw">crate</span>::verbatim;
 
-    <span class="kw">use </span><span class="kw">crate</span>::ext::IdentExt;
-    <span class="kw">use </span><span class="kw">crate</span>::parse::{Parse, ParseStream, <span class="prelude-ty">Result</span>};
-
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;parsing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
     </span><span class="kw">impl </span>Parse <span class="kw">for </span>Path {
         <span class="kw">fn </span>parse(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="self">Self</span>::parse_helper(input, <span class="bool-val">false</span>)
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;parsing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
     </span><span class="kw">impl </span>Parse <span class="kw">for </span>GenericArgument {
         <span class="kw">fn </span>parse(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="kw">if </span>input.peek(Lifetime) &amp;&amp; !input.peek2(<span class="macro">Token!</span>[+]) {
@@ -1150,7 +1268,7 @@
                         };
                     }
 
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;full&quot;</span>)]
+                    <span class="attr">#[cfg(feature = <span class="string">"full"</span>)]
                     </span><span class="kw">if let </span><span class="prelude-val">Some</span>(colon_token) = input.parse::&lt;<span class="prelude-ty">Option</span>&lt;<span class="macro">Token!</span>[:]&gt;&gt;()<span class="question-mark">? </span>{
                         <span class="kw">let </span>segment = ty.path.segments.pop().unwrap().into_value();
                         <span class="kw">return </span><span class="prelude-val">Ok</span>(GenericArgument::Constraint(Constraint {
@@ -1197,8 +1315,7 @@
             <span class="kw">return </span><span class="prelude-val">Ok</span>(Expr::Lit(lit));
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;full&quot;</span>)]
-        </span><span class="kw">if </span>input.peek(Ident) {
+        <span class="kw">if </span>input.peek(Ident) {
             <span class="kw">let </span>ident: Ident = input.parse()<span class="question-mark">?</span>;
             <span class="kw">return </span><span class="prelude-val">Ok</span>(Expr::Path(ExprPath {
                 attrs: Vec::new(),
@@ -1208,19 +1325,19 @@
         }
 
         <span class="kw">if </span>input.peek(token::Brace) {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;full&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"full"</span>)]
             </span>{
                 <span class="kw">let </span>block: ExprBlock = input.parse()<span class="question-mark">?</span>;
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(Expr::Block(block));
             }
 
-            <span class="attr">#[cfg(not(feature = <span class="string">&quot;full&quot;</span>))]
+            <span class="attr">#[cfg(not(feature = <span class="string">"full"</span>))]
             </span>{
                 <span class="kw">let </span>begin = input.fork();
                 <span class="kw">let </span>content;
                 <span class="macro">braced!</span>(content <span class="kw">in </span>input);
                 content.parse::&lt;Expr&gt;()<span class="question-mark">?</span>;
-                <span class="kw">let </span>verbatim = verbatim::between(begin, input);
+                <span class="kw">let </span>verbatim = verbatim::between(<span class="kw-2">&amp;</span>begin, input);
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(Expr::Verbatim(verbatim));
             }
         }
@@ -1233,14 +1350,17 @@
         ///
         /// The ordinary [`Parse`] impl for `AngleBracketedGenericArguments`
         /// parses optional leading `::`.
-        </span><span class="attr">#[cfg(feature = <span class="string">&quot;full&quot;</span>)]
-        #[cfg_attr(doc_cfg, doc(cfg(all(feature = <span class="string">&quot;parsing&quot;</span>, feature = <span class="string">&quot;full&quot;</span>))))]
+        </span><span class="attr">#[cfg(feature = <span class="string">"full"</span>)]
+        #[cfg_attr(doc_cfg, doc(cfg(all(feature = <span class="string">"parsing"</span>, feature = <span class="string">"full"</span>))))]
         </span><span class="kw">pub fn </span>parse_turbofish(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="kw">let </span>colon2_token: <span class="macro">Token!</span>[::] = input.parse()<span class="question-mark">?</span>;
             <span class="self">Self</span>::do_parse(<span class="prelude-val">Some</span>(colon2_token), input)
         }
 
-        <span class="kw">fn </span>do_parse(colon2_token: <span class="prelude-ty">Option</span>&lt;<span class="macro">Token!</span>[::]&gt;, input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>do_parse(
+            colon2_token: <span class="prelude-ty">Option</span>&lt;<span class="macro">Token!</span>[::]&gt;,
+            input: ParseStream,
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="prelude-val">Ok</span>(AngleBracketedGenericArguments {
                 colon2_token,
                 lt_token: input.parse()<span class="question-mark">?</span>,
@@ -1265,7 +1385,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;parsing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
     </span><span class="kw">impl </span>Parse <span class="kw">for </span>AngleBracketedGenericArguments {
         <span class="kw">fn </span>parse(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="kw">let </span>colon2_token: <span class="prelude-ty">Option</span>&lt;<span class="macro">Token!</span>[::]&gt; = input.parse()<span class="question-mark">?</span>;
@@ -1273,7 +1393,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;parsing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
     </span><span class="kw">impl </span>Parse <span class="kw">for </span>ParenthesizedGenericArguments {
         <span class="kw">fn </span>parse(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="kw">let </span>content;
@@ -1285,7 +1405,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;parsing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
     </span><span class="kw">impl </span>Parse <span class="kw">for </span>PathSegment {
         <span class="kw">fn </span>parse(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="self">Self</span>::parse_helper(input, <span class="bool-val">false</span>)
@@ -1297,7 +1417,7 @@
             <span class="kw">if </span>input.peek(<span class="macro">Token!</span>[<span class="kw">super</span>])
                 || input.peek(<span class="macro">Token!</span>[<span class="self">self</span>])
                 || input.peek(<span class="macro">Token!</span>[<span class="kw">crate</span>])
-                || <span class="macro">cfg!</span>(feature = <span class="string">&quot;full&quot;</span>) &amp;&amp; input.peek(<span class="macro">Token!</span>[<span class="kw">try</span>])
+                || <span class="macro">cfg!</span>(feature = <span class="string">"full"</span>) &amp;&amp; input.peek(<span class="macro">Token!</span>[<span class="kw">try</span>])
             {
                 <span class="kw">let </span>ident = input.call(Ident::parse_any)<span class="question-mark">?</span>;
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(PathSegment::from(ident));
@@ -1353,7 +1473,7 @@
         ///     }
         /// }
         /// ```
-        </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;parsing&quot;</span>)))]
+        </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
         </span><span class="kw">pub fn </span>parse_mod_style(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="prelude-val">Ok</span>(Path {
                 leading_colon: input.parse()<span class="question-mark">?</span>,
@@ -1379,7 +1499,7 @@
                     <span class="kw">if </span>segments.is_empty() {
                         <span class="kw">return </span><span class="prelude-val">Err</span>(input.parse::&lt;Ident&gt;().unwrap_err());
                     } <span class="kw">else if </span>segments.trailing_punct() {
-                        <span class="kw">return </span><span class="prelude-val">Err</span>(input.error(<span class="string">&quot;expected path segment after `::`&quot;</span>));
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(input.error(<span class="string">"expected path segment after `::`"</span>));
                     }
                     segments
                 },
@@ -1474,15 +1594,24 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;printing&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"printing"</span>)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>printing {
-    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::expr::Expr;
+    <span class="kw">use </span><span class="kw">crate</span>::path::{
+        AngleBracketedGenericArguments, AssocConst, AssocType, Constraint, GenericArgument,
+        ParenthesizedGenericArguments, Path, PathArguments, PathSegment, QSelf,
+    };
     <span class="kw">use </span><span class="kw">crate</span>::print::TokensOrDefault;
+    <span class="attr">#[cfg(feature = <span class="string">"parsing"</span>)]
+    </span><span class="kw">use </span><span class="kw">crate</span>::spanned::Spanned;
+    <span class="kw">use </span><span class="kw">crate</span>::token;
+    <span class="attr">#[cfg(feature = <span class="string">"parsing"</span>)]
+    </span><span class="kw">use </span>proc_macro2::Span;
     <span class="kw">use </span>proc_macro2::TokenStream;
     <span class="kw">use </span>quote::ToTokens;
     <span class="kw">use </span>std::cmp;
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>Path {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="self">self</span>.leading_colon.to_tokens(tokens);
@@ -1490,7 +1619,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>PathSegment {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="self">self</span>.ident.to_tokens(tokens);
@@ -1498,7 +1627,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>PathArguments {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="kw">match </span><span class="self">self </span>{
@@ -1513,7 +1642,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>GenericArgument {
         <span class="attr">#[allow(clippy::match_same_arms)]
         </span><span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
@@ -1521,10 +1650,21 @@
                 GenericArgument::Lifetime(lt) =&gt; lt.to_tokens(tokens),
                 GenericArgument::Type(ty) =&gt; ty.to_tokens(tokens),
                 GenericArgument::Const(expr) =&gt; <span class="kw">match </span>expr {
-                    Expr::Lit(<span class="kw">_</span>) =&gt; expr.to_tokens(tokens),
+                    Expr::Lit(expr) =&gt; expr.to_tokens(tokens),
 
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;full&quot;</span>)]
-                    </span>Expr::Block(<span class="kw">_</span>) =&gt; expr.to_tokens(tokens),
+                    Expr::Path(expr)
+                        <span class="kw">if </span>expr.attrs.is_empty()
+                            &amp;&amp; expr.qself.is_none()
+                            &amp;&amp; expr.path.get_ident().is_some() =&gt;
+                    {
+                        expr.to_tokens(tokens);
+                    }
+
+                    <span class="attr">#[cfg(feature = <span class="string">"full"</span>)]
+                    </span>Expr::Block(expr) =&gt; expr.to_tokens(tokens),
+
+                    <span class="attr">#[cfg(not(feature = <span class="string">"full"</span>))]
+                    </span>Expr::Verbatim(expr) =&gt; expr.to_tokens(tokens),
 
                     <span class="comment">// ERROR CORRECTION: Add braces to make sure that the
                     // generated code is valid.
@@ -1539,7 +1679,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>AngleBracketedGenericArguments {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="self">self</span>.colon2_token.to_tokens(tokens);
@@ -1582,7 +1722,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>AssocType {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="self">self</span>.ident.to_tokens(tokens);
@@ -1592,7 +1732,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>AssocConst {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="self">self</span>.ident.to_tokens(tokens);
@@ -1602,7 +1742,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>Constraint {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="self">self</span>.ident.to_tokens(tokens);
@@ -1612,7 +1752,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>ParenthesizedGenericArguments {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="self">self</span>.paren_token.surround(tokens, |tokens| {
@@ -1655,6 +1795,22 @@
             segment.to_tokens(tokens);
         }
     }
+
+    <span class="attr">#[cfg(feature = <span class="string">"parsing"</span>)]
+    #[cfg_attr(doc_cfg, doc(cfg(all(feature = <span class="string">"parsing"</span>, feature = <span class="string">"printing"</span>))))]
+    </span><span class="kw">impl </span>Spanned <span class="kw">for </span>QSelf {
+        <span class="kw">fn </span>span(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Span {
+            <span class="kw">struct </span>QSelfDelimiters&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>QSelf);
+
+            <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToTokens <span class="kw">for </span>QSelfDelimiters&lt;<span class="lifetime">'a</span>&gt; {
+                <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
+                    <span class="self">self</span>.<span class="number">0</span>.lt_token.to_tokens(tokens);
+                    <span class="self">self</span>.<span class="number">0</span>.gt_token.to_tokens(tokens);
+                }
+            }
+
+            QSelfDelimiters(<span class="self">self</span>).span()
+        }
+    }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syn" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/antti/.cargo/registry/src/github.com-1ecc6299db9ec823/scopeguard-1.1.0/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../static.files/ayu-be46fdc453a55015.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../scopeguard/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/antti/.cargo/registry/src/index.crates.io-6f17d22bba15001f/scopeguard-1.2.0/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="scopeguard" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -576,12 +577,29 @@
 <a href="#576" id="576">576</a>
 <a href="#577" id="577">577</a>
 <a href="#578" id="578">578</a>
-</pre><pre class="rust"><code><span class="attr">#![cfg_attr(not(any(test, feature = <span class="string">&quot;use_std&quot;</span>)), no_std)]
-#![doc(html_root_url = <span class="string">&quot;https://docs.rs/scopeguard/1/&quot;</span>)]
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+</pre></div><pre class="rust"><code><span class="attr">#![cfg_attr(not(any(test, feature = <span class="string">"use_std"</span>)), no_std)]
+#![doc(html_root_url = <span class="string">"https://docs.rs/scopeguard/1/"</span>)]
 
 </span><span class="doccomment">//! A scope guard will run a given closure when it goes out of scope,
 //! even if the code between panics.
-//! (as long as panic doesn&#39;t abort)
+//! (as long as panic doesn't abort)
 //!
 //! # Examples
 //!
@@ -594,12 +612,12 @@
 //!
 //! fn f() {
 //!     let _guard = scopeguard::guard((), |_| {
-//!         println!(&quot;Hello Scope Exit!&quot;);
+//!         println!("Hello Scope Exit!");
 //!     });
 //!
 //!     // rest of the code here.
 //!
-//!     // Here, at the end of `_guard`&#39;s scope, the guard&#39;s closure is called.
+//!     // Here, at the end of `_guard`'s scope, the guard's closure is called.
 //!     // It is also called if we exit this scope through unwinding instead.
 //! }
 //! # fn main() {
@@ -628,7 +646,7 @@
 //!
 //!         // Do regular operations here in the meantime.
 //!
-//!         // Just before scope exit: it hasn&#39;t run yet.
+//!         // Just before scope exit: it hasn't run yet.
 //!         assert_eq!(drop_counter.get(), 0);
 //!
 //!         // The following scope end is where the defer closure is called
@@ -654,7 +672,7 @@
 //!
 //! use std::fs::*;
 //! use std::io::{self, Write};
-//! # // Mock file so that we don&#39;t actually write a file
+//! # // Mock file so that we don't actually write a file
 //! # struct MockFile;
 //! # impl MockFile {
 //! #     fn create(_s: &amp;str) -&gt; io::Result&lt;Self&gt; { Ok(MockFile) }
@@ -664,13 +682,13 @@
 //! # use self::MockFile as File;
 //!
 //! fn try_main() -&gt; io::Result&lt;()&gt; {
-//!     let f = File::create(&quot;newfile.txt&quot;)?;
+//!     let f = File::create("newfile.txt")?;
 //!     let mut file = scopeguard::guard(f, |f| {
 //!         // ensure we flush file at return or panic
 //!         let _ = f.sync_all();
 //!     });
 //!     // Access the file through the scope guard itself
-//!     file.write_all(b&quot;test me\n&quot;).map(|_| ())
+//!     file.write_all(b"test me\n").map(|_| ())
 //! }
 //!
 //! fn main() {
@@ -704,8 +722,8 @@
 //! fn insertion_sort_first&lt;T&gt;(v: &amp;mut Vec&lt;T&gt;)
 //!     where T: PartialOrd
 //! {
-//!     struct Hole&lt;&#39;a, T: &#39;a&gt; {
-//!         v: &amp;&#39;a mut Vec&lt;T&gt;,
+//!     struct Hole&lt;'a, T: 'a&gt; {
+//!         v: &amp;'a mut Vec&lt;T&gt;,
 //!         index: usize,
 //!         value: ManuallyDrop&lt;T&gt;,
 //!     }
@@ -726,12 +744,12 @@
 //!         });
 //!
 //!         // run algorithm that moves the hole in the vector here
-//!         // move the hole until it&#39;s in a sorted position
+//!         // move the hole until it's in a sorted position
 //!         for i in 1..hole_guard.v.len() {
 //!             if *hole_guard.value &gt;= hole_guard.v[i] {
 //!                 // move the element back and the hole forward
 //!                 let index = hole_guard.index;
-//!                 ptr::copy_nonoverlapping(&amp;hole_guard.v[index + 1], &amp;mut hole_guard.v[index], 1);
+//!                 hole_guard.v.swap(index, index + 1);
 //!                 hole_guard.index += 1;
 //!             } else {
 //!                 break;
@@ -744,9 +762,9 @@
 //!
 //! fn main() {
 //!     let string = String::from;
-//!     let mut data = vec![string(&quot;c&quot;), string(&quot;a&quot;), string(&quot;b&quot;), string(&quot;d&quot;)];
+//!     let mut data = vec![string("c"), string("a"), string("b"), string("d")];
 //!     insertion_sort_first(&amp;mut data);
-//!     assert_eq!(data, vec![&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]);
+//!     assert_eq!(data, vec!["a", "b", "c", "d"]);
 //! }
 //!
 //! ```
@@ -766,12 +784,12 @@
 //! upgrade policy, where in a later 1.x version, we will raise the minimum
 //! required Rust version.
 
-</span><span class="attr">#[cfg(not(any(test, feature = <span class="string">&quot;use_std&quot;</span>)))]
+</span><span class="attr">#[cfg(not(any(test, feature = <span class="string">"use_std"</span>)))]
 </span><span class="kw">extern crate </span>core <span class="kw">as </span>std;
 
 <span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::marker::PhantomData;
-<span class="kw">use </span>std::mem::{<span class="self">self</span>, ManuallyDrop};
+<span class="kw">use </span>std::mem::ManuallyDrop;
 <span class="kw">use </span>std::ops::{Deref, DerefMut};
 <span class="kw">use </span>std::ptr;
 
@@ -793,32 +811,38 @@
 <span class="doccomment">/// Run on scope exit through unwinding.
 ///
 /// Requires crate feature `use_std`.
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
 #[derive(Debug)]
 </span><span class="kw">pub enum </span>OnUnwind {}
 
 <span class="doccomment">/// Run on regular scope exit, when not unwinding.
 ///
 /// Requires crate feature `use_std`.
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
 #[derive(Debug)]
 </span><span class="kw">pub enum </span>OnSuccess {}
 
 <span class="kw">impl </span>Strategy <span class="kw">for </span>Always {
     <span class="attr">#[inline(always)]
-    </span><span class="kw">fn </span>should_run() -&gt; bool { <span class="bool-val">true </span>}
+    </span><span class="kw">fn </span>should_run() -&gt; bool {
+        <span class="bool-val">true
+    </span>}
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
 </span><span class="kw">impl </span>Strategy <span class="kw">for </span>OnUnwind {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>should_run() -&gt; bool { std::thread::panicking() }
+    </span><span class="kw">fn </span>should_run() -&gt; bool {
+        std::thread::panicking()
+    }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
 </span><span class="kw">impl </span>Strategy <span class="kw">for </span>OnSuccess {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>should_run() -&gt; bool { !std::thread::panicking() }
+    </span><span class="kw">fn </span>should_run() -&gt; bool {
+        !std::thread::panicking()
+    }
 }
 
 <span class="doccomment">/// Macro to create a `ScopeGuard` (always run).
@@ -838,7 +862,7 @@
 /// that will run when the scope is exited.
 ///
 /// Requires crate feature `use_std`.
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
 #[macro_export]
 </span><span class="macro">macro_rules! </span>defer_on_success {
     ($(<span class="macro-nonterminal">$t</span>:tt)<span class="kw-2">*</span>) =&gt; {
@@ -852,7 +876,7 @@
 /// that will run when the scope is exited.
 ///
 /// Requires crate feature `use_std`.
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
 #[macro_export]
 </span><span class="macro">macro_rules! </span>defer_on_unwind {
     ($(<span class="macro-nonterminal">$t</span>:tt)<span class="kw-2">*</span>) =&gt; {
@@ -870,12 +894,13 @@
 /// The `S` parameter for [`Strategy`](trait.Strategy.html) determines if
 /// the closure actually runs.
 ///
-/// The guard&#39;s closure will be called with the held value in the destructor.
+/// The guard's closure will be called with the held value in the destructor.
 ///
 /// The `ScopeGuard` implements `Deref` so that you can access the inner value.
 </span><span class="kw">pub struct </span>ScopeGuard&lt;T, F, S = Always&gt;
-    <span class="kw">where </span>F: FnOnce(T),
-          S: Strategy,
+<span class="kw">where
+    </span>F: FnOnce(T),
+    S: Strategy,
 {
     value: ManuallyDrop&lt;T&gt;,
     dropfn: ManuallyDrop&lt;F&gt;,
@@ -884,14 +909,16 @@
 }
 
 <span class="kw">impl</span>&lt;T, F, S&gt; ScopeGuard&lt;T, F, S&gt;
-    <span class="kw">where </span>F: FnOnce(T),
-          S: Strategy,
+<span class="kw">where
+    </span>F: FnOnce(T),
+    S: Strategy,
 {
     <span class="doccomment">/// Create a `ScopeGuard` that owns `v` (accessible through deref) and calls
     /// `dropfn` when its destructor runs.
     ///
-    /// The `Strategy` decides whether the scope guard&#39;s closure should run.
+    /// The `Strategy` decides whether the scope guard's closure should run.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>with_strategy(v: T, dropfn: F) -&gt; ScopeGuard&lt;T, F, S&gt; {
         ScopeGuard {
             value: ManuallyDrop::new(v),
@@ -912,7 +939,7 @@
     /// fn main() {
     ///     let mut guard = guard(Vec::new(), |mut v| v.clear());
     ///     guard.push(1);
-    ///     
+    ///
     ///     if conditional() {
     ///         // a condition maybe makes us decide to
     ///         // “defuse” the guard and get back its inner parts
@@ -924,26 +951,26 @@
     /// ```
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>into_inner(guard: <span class="self">Self</span>) -&gt; T {
-        <span class="comment">// Cannot move out of Drop-implementing types, so
-        // ptr::read the value and forget the guard.
-        </span><span class="kw">unsafe </span>{
+        <span class="comment">// Cannot move out of `Drop`-implementing types,
+        // so `ptr::read` the value and forget the guard.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>guard = ManuallyDrop::new(guard);
+        <span class="kw">unsafe </span>{
             <span class="kw">let </span>value = ptr::read(<span class="kw-2">&amp;*</span>guard.value);
-            <span class="comment">// read the closure so that it is dropped, and assign it to a local
-            // variable to ensure that it is only dropped after the guard has
-            // been forgotten. (In case the Drop impl of the closure, or that
-            // of any consumed captured variable, panics).
-            </span><span class="kw">let </span>_dropfn = ptr::read(<span class="kw-2">&amp;*</span>guard.dropfn);
-            mem::forget(guard);
+            <span class="comment">// Drop the closure after `value` has been read, so that if the
+            // closure's `drop` function panics, unwinding still tries to drop
+            // `value`.
+            </span>ManuallyDrop::drop(<span class="kw-2">&amp;mut </span>guard.dropfn);
             value
         }
     }
 }
 
-
 <span class="doccomment">/// Create a new `ScopeGuard` owning `v` and with deferred closure `dropfn`.
 </span><span class="attr">#[inline]
+#[must_use]
 </span><span class="kw">pub fn </span>guard&lt;T, F&gt;(v: T, dropfn: F) -&gt; ScopeGuard&lt;T, F, Always&gt;
-    <span class="kw">where </span>F: FnOnce(T)
+<span class="kw">where
+    </span>F: FnOnce(T),
 {
     ScopeGuard::with_strategy(v, dropfn)
 }
@@ -951,10 +978,12 @@
 <span class="doccomment">/// Create a new `ScopeGuard` owning `v` and with deferred closure `dropfn`.
 ///
 /// Requires crate feature `use_std`.
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
 #[inline]
+#[must_use]
 </span><span class="kw">pub fn </span>guard_on_success&lt;T, F&gt;(v: T, dropfn: F) -&gt; ScopeGuard&lt;T, F, OnSuccess&gt;
-    <span class="kw">where </span>F: FnOnce(T)
+<span class="kw">where
+    </span>F: FnOnce(T),
 {
     ScopeGuard::with_strategy(v, dropfn)
 }
@@ -968,7 +997,7 @@
 /// For performance reasons, or to emulate “only run guard on unwind” in
 /// no-std environments, we can also use the default guard and simply manually
 /// defuse it at the end of scope like the following example. (The performance
-/// reason would be if the [`OnUnwind`]&#39;s call to [std::thread::panicking()] is
+/// reason would be if the [`OnUnwind`]'s call to [std::thread::panicking()] is
 /// an issue.)
 ///
 /// ```
@@ -986,26 +1015,31 @@
 /// }
 /// # }
 /// ```
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
 #[inline]
+#[must_use]
 </span><span class="kw">pub fn </span>guard_on_unwind&lt;T, F&gt;(v: T, dropfn: F) -&gt; ScopeGuard&lt;T, F, OnUnwind&gt;
-    <span class="kw">where </span>F: FnOnce(T)
+<span class="kw">where
+    </span>F: FnOnce(T),
 {
     ScopeGuard::with_strategy(v, dropfn)
 }
 
-<span class="comment">// ScopeGuard can be Sync even if F isn&#39;t because the closure is
+<span class="comment">// ScopeGuard can be Sync even if F isn't because the closure is
 // not accessible from references.
 // The guard does not store any instance of S, so it is also irrelevant.
 </span><span class="kw">unsafe impl</span>&lt;T, F, S&gt; Sync <span class="kw">for </span>ScopeGuard&lt;T, F, S&gt;
-    <span class="kw">where </span>T: Sync,
-          F: FnOnce(T),
-          S: Strategy
-{}
+<span class="kw">where
+    </span>T: Sync,
+    F: FnOnce(T),
+    S: Strategy,
+{
+}
 
 <span class="kw">impl</span>&lt;T, F, S&gt; Deref <span class="kw">for </span>ScopeGuard&lt;T, F, S&gt;
-    <span class="kw">where </span>F: FnOnce(T),
-          S: Strategy
+<span class="kw">where
+    </span>F: FnOnce(T),
+    S: Strategy,
 {
     <span class="kw">type </span>Target = T;
 
@@ -1015,8 +1049,9 @@
 }
 
 <span class="kw">impl</span>&lt;T, F, S&gt; DerefMut <span class="kw">for </span>ScopeGuard&lt;T, F, S&gt;
-    <span class="kw">where </span>F: FnOnce(T),
-          S: Strategy
+<span class="kw">where
+    </span>F: FnOnce(T),
+    S: Strategy,
 {
     <span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T {
         <span class="kw-2">&amp;mut *</span><span class="self">self</span>.value
@@ -1024,15 +1059,14 @@
 }
 
 <span class="kw">impl</span>&lt;T, F, S&gt; Drop <span class="kw">for </span>ScopeGuard&lt;T, F, S&gt;
-    <span class="kw">where </span>F: FnOnce(T),
-          S: Strategy
+<span class="kw">where
+    </span>F: FnOnce(T),
+    S: Strategy,
 {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="comment">// This is OK because the fields are `ManuallyDrop`s
         // which will not be dropped by the compiler.
-        </span><span class="kw">let </span>(value, dropfn) = <span class="kw">unsafe </span>{
-            (ptr::read(<span class="kw-2">&amp;*</span><span class="self">self</span>.value), ptr::read(<span class="kw-2">&amp;*</span><span class="self">self</span>.dropfn))
-        };
+        </span><span class="kw">let </span>(value, dropfn) = <span class="kw">unsafe </span>{ (ptr::read(<span class="kw-2">&amp;*</span><span class="self">self</span>.value), ptr::read(<span class="kw-2">&amp;*</span><span class="self">self</span>.dropfn)) };
         <span class="kw">if </span>S::should_run() {
             dropfn(value);
         }
@@ -1040,14 +1074,15 @@
 }
 
 <span class="kw">impl</span>&lt;T, F, S&gt; fmt::Debug <span class="kw">for </span>ScopeGuard&lt;T, F, S&gt;
-    <span class="kw">where </span>T: fmt::Debug,
-          F: FnOnce(T),
-          S: Strategy
+<span class="kw">where
+    </span>T: fmt::Debug,
+    F: FnOnce(T),
+    S: Strategy,
 {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         f.debug_struct(<span class="macro">stringify!</span>(ScopeGuard))
-         .field(<span class="string">&quot;value&quot;</span>, <span class="kw-2">&amp;*</span><span class="self">self</span>.value)
-         .finish()
+            .field(<span class="string">"value"</span>, <span class="kw-2">&amp;*</span><span class="self">self</span>.value)
+            .finish()
     }
 }
 
@@ -1065,7 +1100,7 @@
         <span class="macro">assert_eq!</span>(drops.get(), <span class="number">0</span>);
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
     #[test]
     </span><span class="kw">fn </span>test_defer_success_1() {
         <span class="kw">let </span>drops = Cell::new(<span class="number">0</span>);
@@ -1076,30 +1111,30 @@
         <span class="macro">assert_eq!</span>(drops.get(), <span class="number">1</span>);
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
     #[test]
     </span><span class="kw">fn </span>test_defer_success_2() {
         <span class="kw">let </span>drops = Cell::new(<span class="number">0</span>);
         <span class="kw">let _ </span>= catch_unwind(AssertUnwindSafe(|| {
             <span class="macro">defer_on_success!</span>(drops.set(<span class="number">1</span>));
-            <span class="macro">panic!</span>(<span class="string">&quot;failure&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"failure"</span>)
         }));
         <span class="macro">assert_eq!</span>(drops.get(), <span class="number">0</span>);
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
     #[test]
     </span><span class="kw">fn </span>test_defer_unwind_1() {
         <span class="kw">let </span>drops = Cell::new(<span class="number">0</span>);
         <span class="kw">let _ </span>= catch_unwind(AssertUnwindSafe(|| {
             <span class="macro">defer_on_unwind!</span>(drops.set(<span class="number">1</span>));
             <span class="macro">assert_eq!</span>(drops.get(), <span class="number">0</span>);
-            <span class="macro">panic!</span>(<span class="string">&quot;failure&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"failure"</span>)
         }));
         <span class="macro">assert_eq!</span>(drops.get(), <span class="number">1</span>);
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
     #[test]
     </span><span class="kw">fn </span>test_defer_unwind_2() {
         <span class="kw">let </span>drops = Cell::new(<span class="number">0</span>);
@@ -1122,7 +1157,7 @@
         <span class="macro">assert_eq!</span>(closure_drops.get(), <span class="number">1</span>);
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;use_std&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
     #[test]
     </span><span class="kw">fn </span>test_dropped_once_when_not_run() {
         <span class="kw">let </span>value_drops = Cell::new(<span class="number">0</span>);
@@ -1154,5 +1189,4 @@
         <span class="macro">assert_eq!</span>(<span class="kw-2">*</span>inner, <span class="number">42</span>);
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="scopeguard" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

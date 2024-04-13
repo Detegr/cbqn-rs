@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["cbqn","cbqn_sys","cfg_if","libc","lock_api","once_cell","parking_lot","parking_lot_core","proc_macro2","quote","scopeguard","smallvec","syn","thiserror","thiserror_impl","unicode_ident"];
+window.ALL_CRATES = ["cbqn"];

@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"cbqn":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.76.0/core/cmp/trait.PartialEq.html\" title=\"trait core::cmp::PartialEq\">PartialEq</a> for <a class=\"enum\" href=\"cbqn/enum.BQNType.html\" title=\"enum cbqn::BQNType\">BQNType</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

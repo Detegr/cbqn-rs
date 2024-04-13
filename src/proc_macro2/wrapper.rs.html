@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/antti/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.60/src/wrapper.rs`."><title>wrapper.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../static.files/ayu-be46fdc453a55015.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../proc_macro2/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/antti/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proc-macro2-1.0.79/src/wrapper.rs`."><title>wrapper.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="proc_macro2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -952,24 +953,13 @@
 <a href="#952" id="952">952</a>
 <a href="#953" id="953">953</a>
 <a href="#954" id="954">954</a>
-<a href="#955" id="955">955</a>
-<a href="#956" id="956">956</a>
-<a href="#957" id="957">957</a>
-<a href="#958" id="958">958</a>
-<a href="#959" id="959">959</a>
-<a href="#960" id="960">960</a>
-<a href="#961" id="961">961</a>
-<a href="#962" id="962">962</a>
-<a href="#963" id="963">963</a>
-<a href="#964" id="964">964</a>
-<a href="#965" id="965">965</a>
-<a href="#966" id="966">966</a>
-</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::detection::inside_proc_macro;
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::detection::inside_proc_macro;
 <span class="attr">#[cfg(span_locations)]
 </span><span class="kw">use </span><span class="kw">crate</span>::location::LineColumn;
 <span class="kw">use crate</span>::{fallback, Delimiter, Punct, Spacing, TokenTree};
 <span class="kw">use </span>core::fmt::{<span class="self">self</span>, Debug, Display};
-<span class="kw">use </span>core::iter::FromIterator;
+<span class="attr">#[cfg(span_locations)]
+</span><span class="kw">use </span>core::ops::Range;
 <span class="kw">use </span>core::ops::RangeBounds;
 <span class="kw">use </span>core::str::FromStr;
 <span class="kw">use </span>std::panic;
@@ -995,18 +985,23 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum </span>LexError {
     Compiler(proc_macro::LexError),
     Fallback(fallback::LexError),
+
+    <span class="comment">// Rustc was supposed to return a LexError, but it panicked instead.
+    // https://github.com/rust-lang/rust/issues/58736
+    </span>CompilerPanic,
 }
 
-<span class="kw">impl </span>LexError {
-    <span class="kw">fn </span>call_site() -&gt; <span class="self">Self </span>{
-        LexError::Fallback(fallback::LexError {
-            span: fallback::Span::call_site(),
-        })
+<span class="attr">#[cold]
+</span><span class="kw">fn </span>mismatch(line: u32) -&gt; ! {
+    <span class="attr">#[cfg(procmacro2_backtrace)]
+    </span>{
+        <span class="kw">let </span>backtrace = std::backtrace::Backtrace::force_capture();
+        <span class="macro">panic!</span>(<span class="string">"compiler/fallback mismatch #{}\n\n{}"</span>, line, backtrace)
     }
-}
-
-<span class="kw">fn </span>mismatch() -&gt; ! {
-    <span class="macro">panic!</span>(<span class="string">&quot;compiler/fallback mismatch&quot;</span>)
+    <span class="attr">#[cfg(not(procmacro2_backtrace))]
+    </span>{
+        <span class="macro">panic!</span>(<span class="string">"compiler/fallback mismatch #{}"</span>, line)
+    }
 }
 
 <span class="kw">impl </span>DeferredTokenStream {
@@ -1055,13 +1050,13 @@
     <span class="kw">fn </span>unwrap_nightly(<span class="self">self</span>) -&gt; proc_macro::TokenStream {
         <span class="kw">match </span><span class="self">self </span>{
             TokenStream::Compiler(s) =&gt; s.into_token_stream(),
-            TokenStream::Fallback(<span class="kw">_</span>) =&gt; mismatch(),
+            TokenStream::Fallback(<span class="kw">_</span>) =&gt; mismatch(<span class="macro">line!</span>()),
         }
     }
 
     <span class="kw">fn </span>unwrap_stable(<span class="self">self</span>) -&gt; fallback::TokenStream {
         <span class="kw">match </span><span class="self">self </span>{
-            TokenStream::Compiler(<span class="kw">_</span>) =&gt; mismatch(),
+            TokenStream::Compiler(<span class="kw">_</span>) =&gt; mismatch(<span class="macro">line!</span>()),
             TokenStream::Fallback(s) =&gt; s,
         }
     }
@@ -1084,7 +1079,7 @@
 <span class="comment">// Work around https://github.com/rust-lang/rust/issues/58736.
 </span><span class="kw">fn </span>proc_macro_parse(src: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;proc_macro::TokenStream, LexError&gt; {
     <span class="kw">let </span>result = panic::catch_unwind(|| src.parse().map_err(LexError::Compiler));
-    result.unwrap_or_else(|<span class="kw">_</span>| <span class="prelude-val">Err</span>(LexError::call_site()))
+    result.unwrap_or_else(|<span class="kw">_</span>| <span class="prelude-val">Err</span>(LexError::CompilerPanic))
 }
 
 <span class="kw">impl </span>Display <span class="kw">for </span>TokenStream {
@@ -1165,14 +1160,14 @@
                 first.evaluate_now();
                 first.stream.extend(streams.map(|s| <span class="kw">match </span>s {
                     TokenStream::Compiler(s) =&gt; s.into_token_stream(),
-                    TokenStream::Fallback(<span class="kw">_</span>) =&gt; mismatch(),
+                    TokenStream::Fallback(<span class="kw">_</span>) =&gt; mismatch(<span class="macro">line!</span>()),
                 }));
                 TokenStream::Compiler(first)
             }
             <span class="prelude-val">Some</span>(TokenStream::Fallback(<span class="kw-2">mut </span>first)) =&gt; {
                 first.extend(streams.map(|s| <span class="kw">match </span>s {
                     TokenStream::Fallback(s) =&gt; s,
-                    TokenStream::Compiler(<span class="kw">_</span>) =&gt; mismatch(),
+                    TokenStream::Compiler(<span class="kw">_</span>) =&gt; mismatch(<span class="macro">line!</span>()),
                 }));
                 TokenStream::Fallback(first)
             }
@@ -1222,7 +1217,7 @@
 <span class="kw">impl </span>LexError {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>span(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Span {
         <span class="kw">match </span><span class="self">self </span>{
-            LexError::Compiler(<span class="kw">_</span>) =&gt; Span::call_site(),
+            LexError::Compiler(<span class="kw">_</span>) | LexError::CompilerPanic =&gt; Span::call_site(),
             LexError::Fallback(e) =&gt; Span::Fallback(e.span()),
         }
     }
@@ -1245,6 +1240,10 @@
         <span class="kw">match </span><span class="self">self </span>{
             LexError::Compiler(e) =&gt; Debug::fmt(e, f),
             LexError::Fallback(e) =&gt; Debug::fmt(e, f),
+            LexError::CompilerPanic =&gt; {
+                <span class="kw">let </span>fallback = fallback::LexError::call_site();
+                Debug::fmt(<span class="kw-2">&amp;</span>fallback, f)
+            }
         }
     }
 }
@@ -1252,16 +1251,12 @@
 <span class="kw">impl </span>Display <span class="kw">for </span>LexError {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         <span class="kw">match </span><span class="self">self </span>{
-            <span class="attr">#[cfg(not(no_lexerror_display))]
-            </span>LexError::Compiler(e) =&gt; Display::fmt(e, f),
-            <span class="attr">#[cfg(no_lexerror_display)]
-            </span>LexError::Compiler(_e) =&gt; Display::fmt(
-                <span class="kw-2">&amp;</span>fallback::LexError {
-                    span: fallback::Span::call_site(),
-                },
-                f,
-            ),
+            LexError::Compiler(e) =&gt; Display::fmt(e, f),
             LexError::Fallback(e) =&gt; Display::fmt(e, f),
+            LexError::CompilerPanic =&gt; {
+                <span class="kw">let </span>fallback = fallback::LexError::call_site();
+                Display::fmt(<span class="kw-2">&amp;</span>fallback, f)
+            }
         }
     }
 }
@@ -1372,8 +1367,7 @@
         }
     }
 
-    <span class="attr">#[cfg(not(no_hygiene))]
-    </span><span class="kw">pub fn </span>mixed_site() -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>mixed_site() -&gt; <span class="self">Self </span>{
         <span class="kw">if </span>inside_proc_macro() {
             Span::Compiler(proc_macro::Span::mixed_site())
         } <span class="kw">else </span>{
@@ -1392,36 +1386,26 @@
 
     <span class="kw">pub fn </span>resolved_at(<span class="kw-2">&amp;</span><span class="self">self</span>, other: Span) -&gt; Span {
         <span class="kw">match </span>(<span class="self">self</span>, other) {
-            <span class="attr">#[cfg(not(no_hygiene))]
-            </span>(Span::Compiler(a), Span::Compiler(b)) =&gt; Span::Compiler(a.resolved_at(b)),
-
-            <span class="comment">// Name resolution affects semantics, but location is only cosmetic
-            </span><span class="attr">#[cfg(no_hygiene)]
-            </span>(Span::Compiler(<span class="kw">_</span>), Span::Compiler(<span class="kw">_</span>)) =&gt; other,
-
+            (Span::Compiler(a), Span::Compiler(b)) =&gt; Span::Compiler(a.resolved_at(b)),
             (Span::Fallback(a), Span::Fallback(b)) =&gt; Span::Fallback(a.resolved_at(b)),
-            <span class="kw">_ </span>=&gt; mismatch(),
+            (Span::Compiler(<span class="kw">_</span>), Span::Fallback(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
+            (Span::Fallback(<span class="kw">_</span>), Span::Compiler(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
         }
     }
 
     <span class="kw">pub fn </span>located_at(<span class="kw-2">&amp;</span><span class="self">self</span>, other: Span) -&gt; Span {
         <span class="kw">match </span>(<span class="self">self</span>, other) {
-            <span class="attr">#[cfg(not(no_hygiene))]
-            </span>(Span::Compiler(a), Span::Compiler(b)) =&gt; Span::Compiler(a.located_at(b)),
-
-            <span class="comment">// Name resolution affects semantics, but location is only cosmetic
-            </span><span class="attr">#[cfg(no_hygiene)]
-            </span>(Span::Compiler(<span class="kw">_</span>), Span::Compiler(<span class="kw">_</span>)) =&gt; <span class="kw-2">*</span><span class="self">self</span>,
-
+            (Span::Compiler(a), Span::Compiler(b)) =&gt; Span::Compiler(a.located_at(b)),
             (Span::Fallback(a), Span::Fallback(b)) =&gt; Span::Fallback(a.located_at(b)),
-            <span class="kw">_ </span>=&gt; mismatch(),
+            (Span::Compiler(<span class="kw">_</span>), Span::Fallback(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
+            (Span::Fallback(<span class="kw">_</span>), Span::Compiler(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
         }
     }
 
     <span class="kw">pub fn </span>unwrap(<span class="self">self</span>) -&gt; proc_macro::Span {
         <span class="kw">match </span><span class="self">self </span>{
             Span::Compiler(s) =&gt; s,
-            Span::Fallback(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;proc_macro::Span is only available in procedural macros&quot;</span>),
+            Span::Fallback(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(<span class="string">"proc_macro::Span is only available in procedural macros"</span>),
         }
     }
 
@@ -1430,6 +1414,17 @@
         <span class="kw">match </span><span class="self">self </span>{
             Span::Compiler(s) =&gt; SourceFile::nightly(s.source_file()),
             Span::Fallback(s) =&gt; SourceFile::Fallback(s.source_file()),
+        }
+    }
+
+    <span class="attr">#[cfg(span_locations)]
+    </span><span class="kw">pub fn </span>byte_range(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Range&lt;usize&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            <span class="attr">#[cfg(proc_macro_span)]
+            </span>Span::Compiler(s) =&gt; s.byte_range(),
+            <span class="attr">#[cfg(not(proc_macro_span))]
+            </span>Span::Compiler(<span class="kw">_</span>) =&gt; <span class="number">0</span>..<span class="number">0</span>,
+            Span::Fallback(s) =&gt; s.byte_range(),
         }
     }
 
@@ -1481,7 +1476,7 @@
     <span class="kw">fn </span>unwrap_nightly(<span class="self">self</span>) -&gt; proc_macro::Span {
         <span class="kw">match </span><span class="self">self </span>{
             Span::Compiler(s) =&gt; s,
-            Span::Fallback(<span class="kw">_</span>) =&gt; mismatch(),
+            Span::Fallback(<span class="kw">_</span>) =&gt; mismatch(<span class="macro">line!</span>()),
         }
     }
 }
@@ -1510,7 +1505,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>debug_span_field_if_nontrivial(debug: <span class="kw-2">&amp;mut </span>fmt::DebugStruct, span: Span) {
     <span class="kw">match </span>span {
         Span::Compiler(s) =&gt; {
-            debug.field(<span class="string">&quot;span&quot;</span>, <span class="kw-2">&amp;</span>s);
+            debug.field(<span class="string">"span"</span>, <span class="kw-2">&amp;</span>s);
         }
         Span::Fallback(s) =&gt; fallback::debug_span_field_if_nontrivial(debug, s),
     }
@@ -1568,20 +1563,14 @@
 
     <span class="kw">pub fn </span>span_open(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Span {
         <span class="kw">match </span><span class="self">self </span>{
-            <span class="attr">#[cfg(not(no_group_open_close))]
-            </span>Group::Compiler(g) =&gt; Span::Compiler(g.span_open()),
-            <span class="attr">#[cfg(no_group_open_close)]
-            </span>Group::Compiler(g) =&gt; Span::Compiler(g.span()),
+            Group::Compiler(g) =&gt; Span::Compiler(g.span_open()),
             Group::Fallback(g) =&gt; Span::Fallback(g.span_open()),
         }
     }
 
     <span class="kw">pub fn </span>span_close(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Span {
         <span class="kw">match </span><span class="self">self </span>{
-            <span class="attr">#[cfg(not(no_group_open_close))]
-            </span>Group::Compiler(g) =&gt; Span::Compiler(g.span_close()),
-            <span class="attr">#[cfg(no_group_open_close)]
-            </span>Group::Compiler(g) =&gt; Span::Compiler(g.span()),
+            Group::Compiler(g) =&gt; Span::Compiler(g.span_close()),
             Group::Fallback(g) =&gt; Span::Fallback(g.span_close()),
         }
     }
@@ -1590,14 +1579,15 @@
         <span class="kw">match </span>(<span class="self">self</span>, span) {
             (Group::Compiler(g), Span::Compiler(s)) =&gt; g.set_span(s),
             (Group::Fallback(g), Span::Fallback(s)) =&gt; g.set_span(s),
-            <span class="kw">_ </span>=&gt; mismatch(),
+            (Group::Compiler(<span class="kw">_</span>), Span::Fallback(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
+            (Group::Fallback(<span class="kw">_</span>), Span::Compiler(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
         }
     }
 
     <span class="kw">fn </span>unwrap_nightly(<span class="self">self</span>) -&gt; proc_macro::Group {
         <span class="kw">match </span><span class="self">self </span>{
             Group::Compiler(g) =&gt; g,
-            Group::Fallback(<span class="kw">_</span>) =&gt; mismatch(),
+            Group::Fallback(<span class="kw">_</span>) =&gt; mismatch(<span class="macro">line!</span>()),
         }
     }
 }
@@ -1633,38 +1623,28 @@
 }
 
 <span class="kw">impl </span>Ident {
-    <span class="kw">pub fn </span>new(string: <span class="kw-2">&amp;</span>str, span: Span) -&gt; <span class="self">Self </span>{
+    <span class="attr">#[track_caller]
+    </span><span class="kw">pub fn </span>new_checked(string: <span class="kw-2">&amp;</span>str, span: Span) -&gt; <span class="self">Self </span>{
         <span class="kw">match </span>span {
             Span::Compiler(s) =&gt; Ident::Compiler(proc_macro::Ident::new(string, s)),
-            Span::Fallback(s) =&gt; Ident::Fallback(fallback::Ident::new(string, s)),
+            Span::Fallback(s) =&gt; Ident::Fallback(fallback::Ident::new_checked(string, s)),
         }
     }
 
-    <span class="kw">pub fn </span>new_raw(string: <span class="kw-2">&amp;</span>str, span: Span) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new_unchecked(string: <span class="kw-2">&amp;</span>str, span: fallback::Span) -&gt; <span class="self">Self </span>{
+        Ident::Fallback(fallback::Ident::new_unchecked(string, span))
+    }
+
+    <span class="attr">#[track_caller]
+    </span><span class="kw">pub fn </span>new_raw_checked(string: <span class="kw-2">&amp;</span>str, span: Span) -&gt; <span class="self">Self </span>{
         <span class="kw">match </span>span {
-            <span class="attr">#[cfg(not(no_ident_new_raw))]
-            </span>Span::Compiler(s) =&gt; Ident::Compiler(proc_macro::Ident::new_raw(string, s)),
-            <span class="attr">#[cfg(no_ident_new_raw)]
-            </span>Span::Compiler(s) =&gt; {
-                <span class="kw">let _ </span>= proc_macro::Ident::new(string, s);
-                <span class="comment">// At this point the un-r#-prefixed string is known to be a
-                // valid identifier. Try to produce a valid raw identifier by
-                // running the `TokenStream` parser, and unwrapping the first
-                // token as an `Ident`.
-                </span><span class="kw">let </span>raw_prefixed = <span class="macro">format!</span>(<span class="string">&quot;r#{}&quot;</span>, string);
-                <span class="kw">if let </span><span class="prelude-val">Ok</span>(ts) = raw_prefixed.parse::&lt;proc_macro::TokenStream&gt;() {
-                    <span class="kw">let </span><span class="kw-2">mut </span>iter = ts.into_iter();
-                    <span class="kw">if let </span>(<span class="prelude-val">Some</span>(proc_macro::TokenTree::Ident(<span class="kw-2">mut </span>id)), <span class="prelude-val">None</span>) =
-                        (iter.next(), iter.next())
-                    {
-                        id.set_span(s);
-                        <span class="kw">return </span>Ident::Compiler(id);
-                    }
-                }
-                <span class="macro">panic!</span>(<span class="string">&quot;not allowed as a raw identifier: `{}`&quot;</span>, raw_prefixed)
-            }
-            Span::Fallback(s) =&gt; Ident::Fallback(fallback::Ident::new_raw(string, s)),
+            Span::Compiler(s) =&gt; Ident::Compiler(proc_macro::Ident::new_raw(string, s)),
+            Span::Fallback(s) =&gt; Ident::Fallback(fallback::Ident::new_raw_checked(string, s)),
         }
+    }
+
+    <span class="kw">pub fn </span>new_raw_unchecked(string: <span class="kw-2">&amp;</span>str, span: fallback::Span) -&gt; <span class="self">Self </span>{
+        Ident::Fallback(fallback::Ident::new_raw_unchecked(string, span))
     }
 
     <span class="kw">pub fn </span>span(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Span {
@@ -1678,14 +1658,15 @@
         <span class="kw">match </span>(<span class="self">self</span>, span) {
             (Ident::Compiler(t), Span::Compiler(s)) =&gt; t.set_span(s),
             (Ident::Fallback(t), Span::Fallback(s)) =&gt; t.set_span(s),
-            <span class="kw">_ </span>=&gt; mismatch(),
+            (Ident::Compiler(<span class="kw">_</span>), Span::Fallback(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
+            (Ident::Fallback(<span class="kw">_</span>), Span::Compiler(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
         }
     }
 
     <span class="kw">fn </span>unwrap_nightly(<span class="self">self</span>) -&gt; proc_macro::Ident {
         <span class="kw">match </span><span class="self">self </span>{
             Ident::Compiler(s) =&gt; s,
-            Ident::Fallback(<span class="kw">_</span>) =&gt; mismatch(),
+            Ident::Fallback(<span class="kw">_</span>) =&gt; mismatch(<span class="macro">line!</span>()),
         }
     }
 }
@@ -1695,7 +1676,8 @@
         <span class="kw">match </span>(<span class="self">self</span>, other) {
             (Ident::Compiler(t), Ident::Compiler(o)) =&gt; t.to_string() == o.to_string(),
             (Ident::Fallback(t), Ident::Fallback(o)) =&gt; t == o,
-            <span class="kw">_ </span>=&gt; mismatch(),
+            (Ident::Compiler(<span class="kw">_</span>), Ident::Fallback(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
+            (Ident::Fallback(<span class="kw">_</span>), Ident::Compiler(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
         }
     }
 }
@@ -1764,9 +1746,9 @@
 <span class="kw">impl </span>Literal {
     <span class="kw">pub unsafe fn </span>from_str_unchecked(repr: <span class="kw-2">&amp;</span>str) -&gt; <span class="self">Self </span>{
         <span class="kw">if </span>inside_proc_macro() {
-            Literal::Compiler(compiler_literal_from_str(repr).expect(<span class="string">&quot;invalid literal&quot;</span>))
+            Literal::Compiler(proc_macro::Literal::from_str(repr).expect(<span class="string">"invalid literal"</span>))
         } <span class="kw">else </span>{
-            Literal::Fallback(fallback::Literal::from_str_unchecked(repr))
+            Literal::Fallback(<span class="kw">unsafe </span>{ fallback::Literal::from_str_unchecked(repr) })
         }
     }
 
@@ -1854,7 +1836,8 @@
         <span class="kw">match </span>(<span class="self">self</span>, span) {
             (Literal::Compiler(lit), Span::Compiler(s)) =&gt; lit.set_span(s),
             (Literal::Fallback(lit), Span::Fallback(s)) =&gt; lit.set_span(s),
-            <span class="kw">_ </span>=&gt; mismatch(),
+            (Literal::Compiler(<span class="kw">_</span>), Span::Fallback(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
+            (Literal::Fallback(<span class="kw">_</span>), Span::Compiler(<span class="kw">_</span>)) =&gt; mismatch(<span class="macro">line!</span>()),
         }
     }
 
@@ -1871,7 +1854,7 @@
     <span class="kw">fn </span>unwrap_nightly(<span class="self">self</span>) -&gt; proc_macro::Literal {
         <span class="kw">match </span><span class="self">self </span>{
             Literal::Compiler(s) =&gt; s,
-            Literal::Fallback(<span class="kw">_</span>) =&gt; mismatch(),
+            Literal::Fallback(<span class="kw">_</span>) =&gt; mismatch(<span class="macro">line!</span>()),
         }
     }
 }
@@ -1887,29 +1870,12 @@
 
     <span class="kw">fn </span>from_str(repr: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
         <span class="kw">if </span>inside_proc_macro() {
-            compiler_literal_from_str(repr).map(Literal::Compiler)
+            <span class="kw">let </span>literal = proc_macro::Literal::from_str(repr)<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(Literal::Compiler(literal))
         } <span class="kw">else </span>{
             <span class="kw">let </span>literal = fallback::Literal::from_str(repr)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(Literal::Fallback(literal))
         }
-    }
-}
-
-<span class="kw">fn </span>compiler_literal_from_str(repr: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;proc_macro::Literal, LexError&gt; {
-    <span class="attr">#[cfg(not(no_literal_from_str))]
-    </span>{
-        proc_macro::Literal::from_str(repr).map_err(LexError::Compiler)
-    }
-    <span class="attr">#[cfg(no_literal_from_str)]
-    </span>{
-        <span class="kw">let </span>tokens = proc_macro_parse(repr)<span class="question-mark">?</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>iter = tokens.into_iter();
-        <span class="kw">if let </span>(<span class="prelude-val">Some</span>(proc_macro::TokenTree::Literal(literal)), <span class="prelude-val">None</span>) = (iter.next(), iter.next()) {
-            <span class="kw">if </span>literal.to_string().len() == repr.len() {
-                <span class="kw">return </span><span class="prelude-val">Ok</span>(literal);
-            }
-        }
-        <span class="prelude-val">Err</span>(LexError::call_site())
     }
 }
 
@@ -1930,5 +1896,15 @@
         }
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="proc_macro2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+
+<span class="attr">#[cfg(span_locations)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>invalidate_current_thread_spans() {
+    <span class="kw">if </span>inside_proc_macro() {
+        <span class="macro">panic!</span>(
+            <span class="string">"proc_macro2::extra::invalidate_current_thread_spans is not available in procedural macros"
+        </span>);
+    } <span class="kw">else </span>{
+        <span class="kw">crate</span>::fallback::invalidate_current_thread_spans();
+    }
+}
+</code></pre></div></section></main></body></html>

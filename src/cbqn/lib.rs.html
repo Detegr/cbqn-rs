@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../static.files/ayu-be46fdc453a55015.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../cbqn/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cbqn" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -580,7 +581,7 @@
 <a href="#580" id="580">580</a>
 <a href="#581" id="581">581</a>
 <a href="#582" id="582">582</a>
-</pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022-2023 Antti Keränen
+</pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022-2023 Antti Keränen
 //
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3.
 
@@ -596,32 +597,32 @@
 //! # Examples using the BQN! macro
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval, Error};
-//! let sum = BQN!(&quot;1+1&quot;)?;
+//! let sum = BQN!("1+1")?;
 //! assert_eq!(sum.to_f64()?, 2.0);
 //! # Ok::&lt;(), Error&gt;(())
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval, Error};
-//! assert_eq!(BQN!(&quot;⌽≡⊢&quot;, &quot;BQN&quot;)?.to_f64()?, 0.0);
+//! assert_eq!(BQN!("⌽≡⊢", "BQN")?.to_f64()?, 0.0);
 //! # Ok::&lt;(), Error&gt;(())
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval, Error};
-//! let strs = BQN!(&#39; &#39;, &quot;(⊢-˜+`×¬)∘=⊔⊢&quot;, &quot;Rust ❤️ BQN&quot;)?
+//! let strs = BQN!(' ', "(⊢-˜+`×¬)∘=⊔⊢", "Rust ❤️ BQN")?
 //!     .to_bqnvalue_vec()?
 //!     .iter()
 //!     .map(|v| v.to_string())
 //!     .collect::&lt;Result&lt;Vec&lt;String&gt;, _&gt;&gt;()?;
-//! assert_eq!(strs, [&quot;Rust&quot;, &quot;❤️&quot;, &quot;BQN&quot;]);
+//! assert_eq!(strs, ["Rust", "❤️", "BQN"]);
 //! # Ok::&lt;(), Error&gt;(())
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval, Error};
-//! let strings = [&quot;join&quot;, &quot;these&quot;, &quot;please&quot;];
-//! assert_eq!(BQN!(&quot;∾&quot;, strings)?.to_string()?, &quot;jointheseplease&quot;);
+//! let strings = ["join", "these", "please"];
+//! assert_eq!(BQN!("∾", strings)?.to_string()?, "jointheseplease");
 //! # Ok::&lt;(), Error&gt;(())
 //! ```
 //!
@@ -629,34 +630,34 @@
 //!
 //! ```
 //! # use cbqn::{BQNValue, eval, Error};
-//! let sum = eval(&quot;1+1&quot;)?;
+//! let sum = eval("1+1")?;
 //! assert_eq!(sum.to_f64()?, 2.0);
 //! # Ok::&lt;(), Error&gt;(())
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQNValue, eval, Error};
-//! let is_anagram = eval(&quot;⌽≡⊢&quot;)?;
-//! assert_eq!(is_anagram.call1(&amp;&quot;BQN&quot;.into())?.to_f64()?, 0.0);
+//! let is_palindrome = eval("⌽≡⊢")?;
+//! assert_eq!(is_palindrome.call1(&amp;"BQN".into())?.to_f64()?, 0.0);
 //! # Ok::&lt;(), Error&gt;(())
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQNValue, eval, Error};
-//! let split = eval(&quot;(⊢-˜+`×¬)∘=⊔⊢&quot;)?;
-//! let strs = split.call2(&amp;&#39; &#39;.into(), &amp;&quot;Rust ❤️ BQN&quot;.into())?
+//! let split = eval("(⊢-˜+`×¬)∘=⊔⊢")?;
+//! let strs = split.call2(&amp;' '.into(), &amp;"Rust ❤️ BQN".into())?
 //!     .to_bqnvalue_vec()?
 //!     .iter()
 //!     .map(BQNValue::to_string)
 //!     .collect::&lt;Result&lt;Vec&lt;String&gt;, _&gt;&gt;()?;
-//! assert_eq!(strs, [&quot;Rust&quot;, &quot;❤️&quot;, &quot;BQN&quot;]);
+//! assert_eq!(strs, ["Rust", "❤️", "BQN"]);
 //! # Ok::&lt;(), Error&gt;(())
 //! ```
 //!
 //! ```
 //! # use cbqn::{BQN, BQNValue, eval, Error};
-//! let counter = BQN!(&quot;{v←0 ⋄ Inc⇐{v+↩𝕩}}&quot;)?;
-//! let increment = counter.get_field(&quot;inc&quot;)?.unwrap();
+//! let counter = BQN!("{v←0 ⋄ Inc⇐{v+↩𝕩}}")?;
+//! let increment = counter.get_field("inc")?.unwrap();
 //! increment.call1(&amp;1.into())?;
 //! increment.call1(&amp;2.into())?;
 //! let result = increment.call1(&amp;3.into())?;
@@ -706,7 +707,7 @@
     ///
     /// ```
     /// # use cbqn::{BQN, BQNValue, eval};
-    /// BQN!(&#39;a&#39;, &quot;-&quot;, BQNValue::null()).unwrap();
+    /// BQN!('a', "-", BQNValue::null()).unwrap();
     /// ```
     </span><span class="kw">pub fn </span>null() -&gt; BQNValue {
         <span class="kw">let </span>_l = LOCK.lock();
@@ -726,7 +727,7 @@
         }
 
         <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Namespace {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">&quot;value isn&#39;t a namespace&quot;</span>.into()));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">"value isn't a namespace"</span>.into()));
         }
         bqn_hasField(<span class="self">self</span>.value, BQNValue::from(field).value)
     }
@@ -744,7 +745,7 @@
         }
 
         <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Namespace {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">&quot;value isn&#39;t a namespace&quot;</span>.into()));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">"value isn't a namespace"</span>.into()));
         }
         <span class="kw">let </span>f = BQNValue::from(field);
         <span class="prelude-val">Ok</span>(<span class="kw">if </span>bqn_hasField(<span class="self">self</span>.value, f.value).unwrap() {
@@ -768,14 +769,14 @@
 
     <span class="doccomment">/// Returns the BQN type of the BQNValue
     </span><span class="kw">pub fn </span>bqn_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; BQNType {
-        BQNType::try_from(bqn_type(<span class="self">self</span>.value).unwrap()).expect(<span class="string">&quot;expected to handle all types&quot;</span>)
+        BQNType::try_from(bqn_type(<span class="self">self</span>.value).unwrap()).expect(<span class="string">"expected to handle all types"</span>)
     }
 
     <span class="doccomment">/// Converts `BQNValue` into `f64`
     </span><span class="kw">pub fn </span>to_f64(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;f64&gt; {
         <span class="kw">let </span>_l = LOCK.lock();
         <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Number {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">&quot;value isn&#39;t a number&quot;</span>.into()));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">"value isn't a number"</span>.into()));
         }
         bqn_readF64(<span class="self">self</span>.value)
     }
@@ -787,19 +788,19 @@
     </span><span class="kw">pub fn </span>to_char(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;char&gt;&gt; {
         <span class="kw">let </span>_l = LOCK.lock();
         <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Character {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">&quot;value isn&#39;t a character&quot;</span>.into()));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">"value isn't a character"</span>.into()));
         }
         <span class="prelude-val">Ok</span>(char::from_u32(bqn_readChar(<span class="self">self</span>.value)<span class="question-mark">?</span>))
     }
 
     <span class="doccomment">/// Converts `BQNValue` into `u32`
     ///
-    /// BQN characters can contain values that aren&#39;t Unicode scalar values. Those characters can
+    /// BQN characters can contain values that aren't Unicode scalar values. Those characters can
     /// be converted into a Rust type `u32` using this function.
     </span><span class="kw">pub fn </span>to_u32(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;u32&gt; {
         <span class="kw">let </span>_l = LOCK.lock();
         <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Character {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">&quot;value isn&#39;t a character&quot;</span>.into()));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">"value isn't a character"</span>.into()));
         }
         bqn_readChar(<span class="self">self</span>.value)
     }
@@ -812,7 +813,7 @@
         <span class="attr">#[allow(clippy::uninit_vec)]
         </span><span class="kw">unsafe </span>{
             <span class="comment">// We need to set length beforehand as wasi backend will need the length
-            // I don&#39;t want to mess with MaybeUninit&lt;T&gt; as it gets cumbersome and this is unsafe
+            // I don't want to mess with MaybeUninit&lt;T&gt; as it gets cumbersome and this is unsafe
             // anyway
             </span>ret.set_len(b)
         };
@@ -826,7 +827,7 @@
     </span><span class="kw">pub fn </span>to_bqnvalue_vec(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;BQNValue&gt;&gt; {
         <span class="kw">let </span>l = LOCK.lock();
         <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Array {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">&quot;value isn&#39;t an object array&quot;</span>.into()));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">"value isn't an object array"</span>.into()));
         }
 
         <span class="kw">let </span>b = <span class="self">self</span>.bound();
@@ -834,7 +835,7 @@
         <span class="attr">#[allow(clippy::uninit_vec)]
         </span><span class="kw">unsafe </span>{
             <span class="comment">// We need to set length beforehand as wasi backend will need the length
-            // I don&#39;t want to mess with MaybeUninit&lt;T&gt; as it gets cumbersome and this is unsafe
+            // I don't want to mess with MaybeUninit&lt;T&gt; as it gets cumbersome and this is unsafe
             // anyway
             </span>objarr.set_len(b)
         };
@@ -846,7 +847,7 @@
 
     <span class="kw">fn </span>is_valid_namespace_field(field: <span class="kw-2">&amp;</span>str) -&gt; bool {
         <span class="comment">// CBQN requires the string to be all lowercase and contain no underscores
-        </span>field.chars().all(|c| c.is_lowercase() &amp;&amp; c != <span class="string">&#39;_&#39;</span>)
+        </span>field.chars().all(|c| c.is_lowercase() &amp;&amp; c != <span class="string">'_'</span>)
     }
 
     <span class="kw">fn </span>to_char_container&lt;T: FromIterator&lt;char&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;T&gt; {
@@ -856,7 +857,7 @@
         <span class="attr">#[allow(clippy::uninit_vec)]
         </span><span class="kw">unsafe </span>{
             <span class="comment">// We need to set length beforehand as wasi backend will need the length
-            // I don&#39;t want to mess with MaybeUninit&lt;T&gt; as it gets cumbersome and this is unsafe
+            // I don't want to mess with MaybeUninit&lt;T&gt; as it gets cumbersome and this is unsafe
             // anyway
             </span>u32s.set_len(b)
         };
@@ -883,10 +884,10 @@
     /// # Examples
     /// ```
     /// # use cbqn::{BQN, BQNValue, eval};
-    /// # #[cfg(not(feature = &quot;wasi-backend&quot;))]
+    /// # #[cfg(not(feature = "wasi-backend"))]
     /// # {
     /// let add_three = BQNValue::fn1(|x| BQNValue::from(x.to_f64().unwrap() + 3.0));
-    /// assert_eq!(BQN!(3, &quot;{𝕏𝕨}&quot;, add_three).unwrap().to_f64().unwrap(), 6.0);
+    /// assert_eq!(BQN!(3, "{𝕏𝕨}", add_three).unwrap().to_f64().unwrap(), 6.0);
     /// # }
     /// ```
     ///
@@ -939,11 +940,11 @@
     /// # Examples
     /// ```
     /// # use cbqn::{BQN, BQNValue, eval};
-    /// # #[cfg(not(feature = &quot;wasi-backend&quot;))]
+    /// # #[cfg(not(feature = "wasi-backend"))]
     /// # {
     /// let multiply = BQNValue::fn2(|w, x| BQNValue::from(w.to_f64().unwrap() *
     /// x.to_f64().unwrap()));
-    /// assert_eq!(BQN!(multiply, &quot;{𝕎´𝕩}&quot;, [1,2,3,4,5]).unwrap().to_f64().unwrap(), 120.0);
+    /// assert_eq!(BQN!(multiply, "{𝕎´𝕩}", [1,2,3,4,5]).unwrap().to_f64().unwrap(), 120.0);
     /// # }
     /// ```
     ///
@@ -999,7 +1000,7 @@
 
     <span class="kw">fn </span>get_character_array_bounds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
         <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Array {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">&quot;value isn&#39;t an array&quot;</span>.into()));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">"value isn't an array"</span>.into()));
         }
         <span class="kw">let </span>b = <span class="self">self</span>.bound();
         <span class="kw">if </span>!<span class="self">self</span>.known_char_arr() {
@@ -1010,10 +1011,10 @@
                     bqn_free(v)<span class="question-mark">?</span>;
                     t
                 })
-                .expect(<span class="string">&quot;expected known type&quot;</span>);
+                .expect(<span class="string">"expected known type"</span>);
 
                 <span class="kw">if </span>t != BQNType::Character {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">&quot;value isn&#39;t a character array&quot;</span>.into()));
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">"value isn't a character array"</span>.into()));
                 }
             }
         }
@@ -1022,7 +1023,7 @@
 
     <span class="kw">fn </span>get_numeric_array_bounds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
         <span class="kw">if </span><span class="self">self</span>.bqn_type() != BQNType::Array {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">&quot;value isn&#39;t an array&quot;</span>.into()));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">"value isn't an array"</span>.into()));
         }
         <span class="kw">let </span>b = <span class="self">self</span>.bound();
         <span class="kw">if </span>!<span class="self">self</span>.known_f64_arr() {
@@ -1033,17 +1034,17 @@
                     bqn_free(v)<span class="question-mark">?</span>;
                     t
                 })
-                .expect(<span class="string">&quot;expected known type&quot;</span>);
+                .expect(<span class="string">"expected known type"</span>);
 
                 <span class="kw">if </span>t != BQNType::Number {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">&quot;value isn&#39;t a f64 array&quot;</span>.into()));
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidType(<span class="string">"value isn't a f64 array"</span>.into()));
                 }
             }
         }
         <span class="prelude-val">Ok</span>(b)
     }
 
-    <span class="comment">// This function returns whether it&#39;s known that the array elements are of type f64
+    <span class="comment">// This function returns whether it's known that the array elements are of type f64
     // Returns false if *it is not known* whether the array elements are of type f64 or not
     </span><span class="kw">fn </span>known_f64_arr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="attr">#![allow(non_upper_case_globals)]
@@ -1053,7 +1054,7 @@
         )
     }
 
-    <span class="comment">// This function returns whether it&#39;s known that the array elements are of type char
+    <span class="comment">// This function returns whether it's known that the array elements are of type char
     // Returns false if *it is not known* whether the array elements are of type char or not
     </span><span class="kw">fn </span>known_char_arr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="attr">#![allow(non_upper_case_globals)]
@@ -1065,13 +1066,13 @@
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>BQNValue {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="kw">let </span>fmt = <span class="kw">crate</span>::eval(<span class="string">&quot;•Fmt&quot;</span>).expect(<span class="string">&quot;fmt&quot;</span>);
-        <span class="kw">let </span>formatted = fmt.call1(<span class="self">self</span>).expect(<span class="string">&quot;fmt.call1&quot;</span>);
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="kw">let </span>fmt = <span class="kw">crate</span>::eval(<span class="string">"•Fmt"</span>).expect(<span class="string">"fmt"</span>);
+        <span class="kw">let </span>formatted = fmt.call1(<span class="self">self</span>).expect(<span class="string">"fmt.call1"</span>);
         <span class="macro">write!</span>(
             f,
-            <span class="string">&quot;{}&quot;</span>,
-            formatted.to_string().expect(<span class="string">&quot;formatted.to_string()&quot;</span>)
+            <span class="string">"{}"</span>,
+            formatted.to_string().expect(<span class="string">"formatted.to_string()"</span>)
         )
     }
 }
@@ -1102,10 +1103,10 @@
     <span class="kw">static </span>FNS: RefCell&lt;BoundFns&gt; = RefCell::new(BoundFns::default());
 }
 
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>boundfn_1_wrapper(obj: BQNV, x: BQNV) -&gt; BQNV {
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>boundfn_1_wrapper(obj: BQNV, x: BQNV) -&gt; BQNV {
     <span class="kw">let </span>key = BQNValue::new(obj)
         .to_f64()
-        .expect(<span class="string">&quot;boundfn obj to_f64&quot;</span>)
+        .expect(<span class="string">"boundfn obj to_f64"</span>)
         .to_bits() <span class="kw">as </span>usize;
 
     FNS.with(|fns| {
@@ -1118,10 +1119,10 @@
     })
 }
 
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>boundfn_2_wrapper(obj: BQNV, w: BQNV, x: BQNV) -&gt; BQNV {
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>boundfn_2_wrapper(obj: BQNV, w: BQNV, x: BQNV) -&gt; BQNV {
     <span class="kw">let </span>key = BQNValue::new(obj)
         .to_f64()
-        .expect(<span class="string">&quot;boundfn obj to_f64&quot;</span>)
+        .expect(<span class="string">"boundfn obj to_f64"</span>)
         .to_bits() <span class="kw">as </span>usize;
 
     FNS.with(|fns| {
@@ -1139,8 +1140,8 @@
 /// # Examples
 /// ```
 /// # use cbqn::eval;
-/// let bqnv = eval(&quot;1+1&quot;).unwrap();
-/// let bqnfn = eval(&quot;{𝕩×10}&quot;).unwrap();
+/// let bqnv = eval("1+1").unwrap();
+/// let bqnfn = eval("{𝕩×10}").unwrap();
 /// ```
 </span><span class="kw">pub fn </span>eval(bqn: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;BQNValue&gt; {
     INIT.call_once(|| {
@@ -1162,5 +1163,4 @@
     <span class="kw">let </span>_l = LOCK.lock();
     <span class="kw">crate</span>::INIT.call_once(|| bqn_init().unwrap());
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cbqn" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

@@ -122,7 +122,10 @@ impl FromIterator<BQNValue> for BQNValue {
             bqn_init().unwrap();
         });
 
-        let elems = iter.into_iter().map(|v| v.value).collect::<Vec<_>>();
+        let elems = iter
+            .into_iter()
+            .map(|v| bqn_copy(v.value).expect("bqn_copy"))
+            .collect::<Vec<_>>();
         let _l = LOCK.lock();
         BQNValue::new(bqn_makeObjVec(&elems).unwrap())
     }

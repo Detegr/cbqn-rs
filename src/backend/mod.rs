@@ -34,7 +34,7 @@ mod eval {
             BQNValue::new(
                 bqn_eval(
                     BQNValue::from(
-                        r#"r←•ReBQN{repl⇐"strict"}⋄{0‿(R𝕩)}⎊{𝕊: 1‿("Error: "∾•CurrentError@)}"#,
+                        r#"r←•ReBQN{repl⇐"none"}⋄{0‿(R𝕩)}⎊{𝕊: 1‿("Error: "∾•CurrentError@)}"#,
                     )
                     .value,
                 )

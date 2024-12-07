@@ -1,1 +1,2 @@
-window.ALL_CRATES = ["cbqn"];
+window.ALL_CRATES = ["cbqn","cbqn_sys","cfg_if","libc","lock_api","once_cell","parking_lot","parking_lot_core","proc_macro2","quote","scopeguard","smallvec","syn","thiserror","thiserror_impl","unicode_ident"];
+//{"start":21,"fragment_lengths":[6,11,9,7,11,12,14,19,14,8,13,11,6,12,17,16]}

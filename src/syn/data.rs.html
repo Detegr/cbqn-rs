@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/antti/.cargo/registry/src/index.crates.io-6f17d22bba15001f/syn-2.0.58/src/data.rs`."><title>data.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syn" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/antti/.cargo/registry/src/index.crates.io-6f17d22bba15001f/syn-2.0.90/src/data.rs`."><title>data.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syn" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0 (f6e511eec 2024-10-15)" data-channel="1.82.0" data-search-js="search-a99f1315e7cc5121.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-921df33f47b8780c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -422,17 +421,18 @@
 <a href="#421" id="421">421</a>
 <a href="#422" id="422">422</a>
 <a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::attr::Attribute;
-<span class="kw">use </span><span class="kw">crate</span>::expr::Expr;
+<span class="kw">use </span><span class="kw">crate</span>::expr::{Expr, Index, Member};
 <span class="kw">use </span><span class="kw">crate</span>::ident::Ident;
 <span class="kw">use </span><span class="kw">crate</span>::punctuated::{<span class="self">self</span>, Punctuated};
 <span class="kw">use </span><span class="kw">crate</span>::restriction::{FieldMutability, Visibility};
 <span class="kw">use </span><span class="kw">crate</span>::token;
 <span class="kw">use </span><span class="kw">crate</span>::ty::Type;
 
-<span class="macro">ast_struct! </span>{
+<span class="macro">ast_struct!</span> {
     <span class="doccomment">/// An enum variant.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
+    </span><span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>Variant {
         <span class="kw">pub </span>attrs: Vec&lt;Attribute&gt;,
 
@@ -447,7 +447,7 @@
     }
 }
 
-<span class="macro">ast_enum_of_structs! </span>{
+<span class="macro">ast_enum_of_structs!</span> {
     <span class="doccomment">/// Data stored within an enum variant or struct.
     ///
     /// # Syntax tree enum
@@ -455,7 +455,7 @@
     /// This type is a [syntax tree enum].
     ///
     /// [syntax tree enum]: crate::expr::Expr#syntax-tree-enums
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
+    </span><span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub enum </span>Fields {
         <span class="doccomment">/// Named fields of a struct or struct variant such as `Point { x: f64,
         /// y: f64 }`.
@@ -469,19 +469,19 @@
     }
 }
 
-<span class="macro">ast_struct! </span>{
+<span class="macro">ast_struct!</span> {
     <span class="doccomment">/// Named fields of a struct or struct variant such as `Point { x: f64,
     /// y: f64 }`.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
+    </span><span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>FieldsNamed {
         <span class="kw">pub </span>brace_token: token::Brace,
         <span class="kw">pub </span>named: Punctuated&lt;Field, <span class="macro">Token!</span>[,]&gt;,
     }
 }
 
-<span class="macro">ast_struct! </span>{
+<span class="macro">ast_struct!</span> {
     <span class="doccomment">/// Unnamed fields of a tuple struct or tuple variant such as `Some(T)`.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
+    </span><span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>FieldsUnnamed {
         <span class="kw">pub </span>paren_token: token::Paren,
         <span class="kw">pub </span>unnamed: Punctuated&lt;Field, <span class="macro">Token!</span>[,]&gt;,
@@ -528,6 +528,47 @@
             Fields::Unnamed(f) =&gt; f.unnamed.is_empty(),
         }
     }
+
+    <span class="macro">return_impl_trait!</span> {
+        <span class="doccomment">/// Get an iterator over the fields of a struct or variant as [`Member`]s.
+        /// This iterator can be used to iterate over a named or unnamed struct or
+        /// variant's fields uniformly.
+        ///
+        /// # Example
+        ///
+        /// The following is a simplistic [`Clone`] derive for structs. (A more
+        /// complete implementation would additionally want to infer trait bounds on
+        /// the generic type parameters.)
+        ///
+        /// ```
+        /// # use quote::quote;
+        /// #
+        /// fn derive_clone(input: &amp;syn::ItemStruct) -&gt; proc_macro2::TokenStream {
+        ///     let ident = &amp;input.ident;
+        ///     let members = input.fields.members();
+        ///     let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
+        ///     quote! {
+        ///         impl #impl_generics Clone for #ident #ty_generics #where_clause {
+        ///             fn clone(&amp;self) -&gt; Self {
+        ///                 Self {
+        ///                     #(#members: self.#members.clone()),*
+        ///                 }
+        ///             }
+        ///         }
+        ///     }
+        /// }
+        /// ```
+        ///
+        /// For structs with named fields, it produces an expression like `Self { a:
+        /// self.a.clone() }`. For structs with unnamed fields, `Self { 0:
+        /// self.0.clone() }`. And for unit structs, `Self {}`.
+        </span><span class="kw">pub fn </span>members(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = Member&gt; + Clone + <span class="lifetime">'_ </span>[Members] {
+            Members {
+                fields: <span class="self">self</span>.iter(),
+                index: <span class="number">0</span>,
+            }
+        }
+    }
 }
 
 <span class="kw">impl </span>IntoIterator <span class="kw">for </span>Fields {
@@ -561,9 +602,9 @@
     }
 }
 
-<span class="macro">ast_struct! </span>{
+<span class="macro">ast_struct!</span> {
     <span class="doccomment">/// A field of a struct or enum variant.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
+    </span><span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">"full"</span>, feature = <span class="string">"derive"</span>))))]
     </span><span class="kw">pub struct </span>Field {
         <span class="kw">pub </span>attrs: Vec&lt;Attribute&gt;,
 
@@ -582,6 +623,43 @@
     }
 }
 
+<span class="kw">pub struct </span>Members&lt;<span class="lifetime">'a</span>&gt; {
+    fields: punctuated::Iter&lt;<span class="lifetime">'a</span>, Field&gt;,
+    index: u32,
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>Members&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = Member;
+
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+        <span class="kw">let </span>field = <span class="self">self</span>.fields.next()<span class="question-mark">?</span>;
+        <span class="kw">let </span>member = <span class="kw">match </span><span class="kw-2">&amp;</span>field.ident {
+            <span class="prelude-val">Some</span>(ident) =&gt; Member::Named(ident.clone()),
+            <span class="prelude-val">None </span>=&gt; {
+                <span class="attr">#[cfg(all(feature = <span class="string">"parsing"</span>, feature = <span class="string">"printing"</span>))]
+                </span><span class="kw">let </span>span = <span class="kw">crate</span>::spanned::Spanned::span(<span class="kw-2">&amp;</span>field.ty);
+                <span class="attr">#[cfg(not(all(feature = <span class="string">"parsing"</span>, feature = <span class="string">"printing"</span>)))]
+                </span><span class="kw">let </span>span = proc_macro2::Span::call_site();
+                Member::Unnamed(Index {
+                    index: <span class="self">self</span>.index,
+                    span,
+                })
+            }
+        };
+        <span class="self">self</span>.index += <span class="number">1</span>;
+        <span class="prelude-val">Some</span>(member)
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Clone <span class="kw">for </span>Members&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        Members {
+            fields: <span class="self">self</span>.fields.clone(),
+            index: <span class="self">self</span>.index,
+        }
+    }
+}
+
 <span class="attr">#[cfg(feature = <span class="string">"parsing"</span>)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>parsing {
     <span class="kw">use </span><span class="kw">crate</span>::attr::Attribute;
@@ -594,11 +672,13 @@
     </span><span class="kw">use </span><span class="kw">crate</span>::parse::discouraged::Speculative <span class="kw">as _</span>;
     <span class="kw">use </span><span class="kw">crate</span>::parse::{Parse, ParseStream};
     <span class="kw">use </span><span class="kw">crate</span>::restriction::{FieldMutability, Visibility};
+    <span class="attr">#[cfg(not(feature = <span class="string">"full"</span>))]
+    </span><span class="kw">use </span><span class="kw">crate</span>::scan_expr::scan_expr;
     <span class="kw">use </span><span class="kw">crate</span>::token;
     <span class="kw">use </span><span class="kw">crate</span>::ty::Type;
     <span class="kw">use </span><span class="kw">crate</span>::verbatim;
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
+    <span class="attr">#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"parsing"</span>)))]
     </span><span class="kw">impl </span>Parse <span class="kw">for </span>Variant {
         <span class="kw">fn </span>parse(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="kw">let </span>attrs = input.call(Attribute::parse_outer)<span class="question-mark">?</span>;
@@ -622,7 +702,7 @@
                     <span class="kw">let </span><span class="kw-2">mut </span>discriminant: <span class="prelude-ty">Result</span>&lt;Expr&gt; = ahead.parse();
                     <span class="kw">if </span>discriminant.is_ok() {
                         input.advance_to(<span class="kw-2">&amp;</span>ahead);
-                    } <span class="kw">else if </span>scan_lenient_discriminant(input).is_ok() {
+                    } <span class="kw">else if </span>scan_expr(input).is_ok() {
                         discriminant = <span class="prelude-val">Ok</span>(Expr::Verbatim(verbatim::between(<span class="kw-2">&amp;</span>begin, input)));
                     }
                     discriminant<span class="question-mark">?
@@ -640,86 +720,7 @@
         }
     }
 
-    <span class="attr">#[cfg(not(feature = <span class="string">"full"</span>))]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>scan_lenient_discriminant(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="kw">use </span><span class="kw">crate</span>::expr::Member;
-        <span class="kw">use </span><span class="kw">crate</span>::lifetime::Lifetime;
-        <span class="kw">use </span><span class="kw">crate</span>::lit::Lit;
-        <span class="kw">use </span><span class="kw">crate</span>::lit::LitFloat;
-        <span class="kw">use </span><span class="kw">crate</span>::op::{BinOp, UnOp};
-        <span class="kw">use </span><span class="kw">crate</span>::path::{<span class="self">self</span>, AngleBracketedGenericArguments};
-        <span class="kw">use </span>proc_macro2::Delimiter::{<span class="self">self</span>, Brace, Bracket, Parenthesis};
-
-        <span class="kw">let </span>consume = |delimiter: Delimiter| {
-            Result::unwrap(input.step(|cursor| <span class="kw">match </span>cursor.group(delimiter) {
-                <span class="prelude-val">Some</span>((_inside, _span, rest)) =&gt; <span class="prelude-val">Ok</span>((<span class="bool-val">true</span>, rest)),
-                <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>((<span class="bool-val">false</span>, <span class="kw-2">*</span>cursor)),
-            }))
-        };
-
-        <span class="macro">macro_rules! </span>consume {
-            [<span class="macro-nonterminal">$token</span>:tt] =&gt; {
-                input.parse::&lt;<span class="prelude-ty">Option</span>&lt;<span class="macro">Token!</span>[<span class="macro-nonterminal">$token</span>]&gt;&gt;().unwrap().is_some()
-            };
-        }
-
-        <span class="kw">let </span><span class="kw-2">mut </span>initial = <span class="bool-val">true</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>depth = <span class="number">0usize</span>;
-        <span class="kw">loop </span>{
-            <span class="kw">if </span>initial {
-                <span class="kw">if </span><span class="macro">consume!</span>[<span class="kw-2">&amp;</span>] {
-                    input.parse::&lt;<span class="prelude-ty">Option</span>&lt;<span class="macro">Token!</span>[<span class="kw-2">mut</span>]&gt;&gt;()<span class="question-mark">?</span>;
-                } <span class="kw">else if </span><span class="macro">consume!</span>[<span class="kw">if</span>] || <span class="macro">consume!</span>[<span class="kw">match</span>] || <span class="macro">consume!</span>[<span class="kw">while</span>] {
-                    depth += <span class="number">1</span>;
-                } <span class="kw">else if </span>input.parse::&lt;<span class="prelude-ty">Option</span>&lt;Lit&gt;&gt;()<span class="question-mark">?</span>.is_some()
-                    || (consume(Brace) || consume(Bracket) || consume(Parenthesis))
-                    || (<span class="macro">consume!</span>[<span class="kw">async</span>] || <span class="macro">consume!</span>[<span class="kw">const</span>] || <span class="macro">consume!</span>[<span class="kw">loop</span>] || <span class="macro">consume!</span>[<span class="kw">unsafe</span>])
-                        &amp;&amp; (consume(Brace) || <span class="kw">break</span>)
-                {
-                    initial = <span class="bool-val">false</span>;
-                } <span class="kw">else if </span><span class="macro">consume!</span>[<span class="kw">let</span>] {
-                    <span class="kw">while </span>!<span class="macro">consume!</span>[=] {
-                        <span class="kw">if </span>!((<span class="macro">consume!</span>[|] || <span class="macro">consume!</span>[<span class="kw-2">ref</span>] || <span class="macro">consume!</span>[<span class="kw-2">mut</span>] || <span class="macro">consume!</span>[@])
-                            || (<span class="macro">consume!</span>[!] || input.parse::&lt;<span class="prelude-ty">Option</span>&lt;Lit&gt;&gt;()<span class="question-mark">?</span>.is_some())
-                            || (<span class="macro">consume!</span>[..=] || <span class="macro">consume!</span>[..] || <span class="macro">consume!</span>[<span class="kw-2">&amp;</span>] || <span class="macro">consume!</span>[<span class="kw">_</span>])
-                            || (consume(Brace) || consume(Bracket) || consume(Parenthesis)))
-                        {
-                            path::parsing::qpath(input, <span class="bool-val">true</span>)<span class="question-mark">?</span>;
-                        }
-                    }
-                } <span class="kw">else if </span>input.parse::&lt;<span class="prelude-ty">Option</span>&lt;Lifetime&gt;&gt;()<span class="question-mark">?</span>.is_some() &amp;&amp; !<span class="macro">consume!</span>[:] {
-                    <span class="kw">break</span>;
-                } <span class="kw">else if </span>input.parse::&lt;UnOp&gt;().is_err() {
-                    path::parsing::qpath(input, <span class="bool-val">true</span>)<span class="question-mark">?</span>;
-                    initial = <span class="macro">consume!</span>[!] || depth == <span class="number">0 </span>&amp;&amp; input.peek(token::Brace);
-                }
-            } <span class="kw">else if </span>input.is_empty() || input.peek(<span class="macro">Token!</span>[,]) {
-                <span class="kw">return </span><span class="prelude-val">Ok</span>(());
-            } <span class="kw">else if </span>depth &gt; <span class="number">0 </span>&amp;&amp; consume(Brace) {
-                <span class="kw">if </span><span class="macro">consume!</span>[<span class="kw">else</span>] &amp;&amp; !consume(Brace) {
-                    initial = <span class="macro">consume!</span>[<span class="kw">if</span>] || <span class="kw">break</span>;
-                } <span class="kw">else </span>{
-                    depth -= <span class="number">1</span>;
-                }
-            } <span class="kw">else if </span>input.parse::&lt;BinOp&gt;().is_ok() || (<span class="macro">consume!</span>[..] | <span class="macro">consume!</span>[=]) {
-                initial = <span class="bool-val">true</span>;
-            } <span class="kw">else if </span><span class="macro">consume!</span>[.] {
-                <span class="kw">if </span>input.parse::&lt;<span class="prelude-ty">Option</span>&lt;LitFloat&gt;&gt;()<span class="question-mark">?</span>.is_none()
-                    &amp;&amp; (input.parse::&lt;Member&gt;()<span class="question-mark">?</span>.is_named() &amp;&amp; <span class="macro">consume!</span>[::])
-                {
-                    AngleBracketedGenericArguments::do_parse(<span class="prelude-val">None</span>, input)<span class="question-mark">?</span>;
-                }
-            } <span class="kw">else if </span><span class="macro">consume!</span>[<span class="kw">as</span>] {
-                input.parse::&lt;Type&gt;()<span class="question-mark">?</span>;
-            } <span class="kw">else if </span>!(consume(Brace) || consume(Bracket) || consume(Parenthesis)) {
-                <span class="kw">break</span>;
-            }
-        }
-
-        <span class="prelude-val">Err</span>(input.error(<span class="string">"unsupported expression"</span>))
-    }
-
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
+    <span class="attr">#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"parsing"</span>)))]
     </span><span class="kw">impl </span>Parse <span class="kw">for </span>FieldsNamed {
         <span class="kw">fn </span>parse(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="kw">let </span>content;
@@ -730,7 +731,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
+    <span class="attr">#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"parsing"</span>)))]
     </span><span class="kw">impl </span>Parse <span class="kw">for </span>FieldsUnnamed {
         <span class="kw">fn </span>parse(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="kw">let </span>content;
@@ -743,7 +744,7 @@
 
     <span class="kw">impl </span>Field {
         <span class="doccomment">/// Parses a named (braced struct) field.
-        </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
+        </span><span class="attr">#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"parsing"</span>)))]
         </span><span class="kw">pub fn </span>parse_named(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="kw">let </span>attrs = input.call(Attribute::parse_outer)<span class="question-mark">?</span>;
             <span class="kw">let </span>vis: Visibility = input.parse()<span class="question-mark">?</span>;
@@ -780,7 +781,7 @@
         }
 
         <span class="doccomment">/// Parses an unnamed (tuple struct) field.
-        </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
+        </span><span class="attr">#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"parsing"</span>)))]
         </span><span class="kw">pub fn </span>parse_unnamed(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="prelude-val">Ok</span>(Field {
                 attrs: input.call(Attribute::parse_outer)<span class="question-mark">?</span>,
@@ -801,7 +802,7 @@
     <span class="kw">use </span>proc_macro2::TokenStream;
     <span class="kw">use </span>quote::{ToTokens, TokenStreamExt};
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
+    <span class="attr">#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>Variant {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             tokens.append_all(<span class="kw-2">&amp;</span><span class="self">self</span>.attrs);
@@ -814,7 +815,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
+    <span class="attr">#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>FieldsNamed {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="self">self</span>.brace_token.surround(tokens, |tokens| {
@@ -823,7 +824,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
+    <span class="attr">#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>FieldsUnnamed {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="self">self</span>.paren_token.surround(tokens, |tokens| {
@@ -832,7 +833,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
+    <span class="attr">#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>Field {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             tokens.append_all(<span class="kw-2">&amp;</span><span class="self">self</span>.attrs);

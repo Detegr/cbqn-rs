@@ -84,3 +84,33 @@ fn clone() -> Result<()> {
     assert_eq!(BQN!(v.clone(), "≡", v)?.to_f64()?, 1.0);
     Ok(())
 }
+
+#[test]
+fn rank() -> Result<()> {
+    let rank0 = BQN!("<0")?;
+    let rank1 = BQN!("↕5")?;
+    let rank2 = BQN!("2‿2⥊5")?;
+    let rank3 = BQN!("2‿2‿2⥊5")?;
+
+    assert_eq!(rank0.rank(), 0);
+    assert_eq!(rank1.rank(), 1);
+    assert_eq!(rank2.rank(), 2);
+    assert_eq!(rank3.rank(), 3);
+
+    Ok(())
+}
+
+#[test]
+fn shape() -> Result<()> {
+    let shape0 = BQN!("<5")?;
+    let shape1 = BQN!("↕5")?;
+    let shape2 = BQN!("2‿2⥊5")?;
+    let shape3 = BQN!("2‿2‿2⥊5")?;
+
+    assert_eq!(shape0.shape(), vec![] as Vec<usize>);
+    assert_eq!(shape1.shape(), vec![5]);
+    assert_eq!(shape2.shape(), vec![2, 2]);
+    assert_eq!(shape3.shape(), vec![2, 2, 2]);
+
+    Ok(())
+}

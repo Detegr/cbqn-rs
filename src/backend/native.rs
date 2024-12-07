@@ -112,3 +112,11 @@ pub fn bqn_readObjArr(v: BQNV, buf: &mut [BQNV]) -> Result<()> {
 pub fn bqn_type(v: BQNV) -> Result<i32> {
     Ok(unsafe { bindings::bqn_type(v) })
 }
+
+pub fn bqn_rank(v: BQNV) -> Result<usize> {
+    Ok(unsafe { bindings::bqn_rank(v) })
+}
+
+pub fn bqn_shape(v: BQNV, buf: &mut [usize]) -> Result<()> {
+    Ok(unsafe { bindings::bqn_shape(v, buf.as_mut_ptr()) })
+}

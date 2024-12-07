@@ -60,6 +60,8 @@ struct BqnFfi {
     bqn_readF64Arr: TypedFunction<(BQNV, WasmPtr<u32>), ()>,
     bqn_readObjArr: TypedFunction<(BQNV, WasmPtr<u32>), ()>,
     bqn_type: TypedFunction<BQNV, i32>,
+    bqn_rank: TypedFunction<BQNV, u32>,
+    bqn_shape: TypedFunction<(BQNV, WasmPtr<u32>), ()>,
 
     store: UnsafeCell<Store>,
     stderr: UnsafeCell<Pipe>,
@@ -152,6 +154,8 @@ static BQNFFI: Lazy<BqnFfi> = Lazy::new(|| {
         bqn_readF64Arr: wasmfn!(instance, store, "bqn_readF64Arr"),
         bqn_readObjArr: wasmfn!(instance, store, "bqn_readObjArr"),
         bqn_type: wasmfn!(instance, store, "bqn_type"),
+        bqn_rank: wasmfn!(instance, store, "bqn_rank"),
+        bqn_shape: wasmfn!(instance, store, "bqn_shape"),
 
         store: UnsafeCell::new(store),
         stderr: UnsafeCell::new(rx.with_blocking(false)),
@@ -377,4 +381,29 @@ pub fn bqn_readObjArr(v: BQNV, buf: &mut [BQNV]) -> Result<()> {
 
 pub fn bqn_type(v: BQNV) -> Result<i32> {
     Ok(BQNFFI.bqn_type.call(BQNFFI.get_store_unsafe(), v)?)
+}
+
+pub fn bqn_rank(v: BQNV) -> Result<usize> {
+    Ok(BQNFFI.bqn_rank.call(BQNFFI.get_store_unsafe(), v)? as usize)
+}
+
+pub fn bqn_shape(v: BQNV, buf: &mut [usize]) -> Result<()> {
+    // In 32-bit WASI, usize is u32 so we need convert the values back and forth
+    let mut shape: Vec<u32> = Vec::with_capacity(buf.len());
+    unsafe {
+        shape.set_len(buf.len());
+    }
+
+    with_buf_mut(&mut shape, |buf, store, ptr| {
+        BQNFFI.bqn_shape.call(store, v, ptr)?;
+        let ptr: WasmPtr<u32> = ptr.cast();
+        let mem = BQNFFI.memory.view(store);
+        Ok(ptr.slice(&mem, buf.len().try_into()?)?.read_slice(buf)?)
+    })?;
+
+    for i in 0..buf.len() {
+        buf[i] = shape[i] as usize;
+    }
+
+    Ok(())
 }

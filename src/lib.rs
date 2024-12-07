@@ -262,6 +262,25 @@ impl BQNValue {
         Ok(objarr.into_iter().map(BQNValue::new).collect())
     }
 
+    pub fn rank(&self) -> usize {
+        bqn_rank(self.value).unwrap()
+    }
+
+    pub fn shape(&self) -> Vec<usize> {
+        let rank = self.rank();
+        let mut shape = Vec::with_capacity(rank);
+        #[allow(clippy::uninit_vec)]
+        unsafe {
+            // We need to set length beforehand as wasi backend will need the length
+            // I don't want to mess with MaybeUninit<T> as it gets cumbersome and this is unsafe
+            // anyway
+            shape.set_len(rank)
+        };
+
+        bqn_shape(self.value, &mut shape).unwrap();
+        shape
+    }
+
     fn is_valid_namespace_field(field: &str) -> bool {
         // CBQN requires the string to be all lowercase and contain no underscores
         field.chars().all(|c| c.is_lowercase() && c != '_')

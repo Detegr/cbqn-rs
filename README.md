@@ -6,10 +6,18 @@ A Rust crate for running [BQN](https://mlochbaum.github.io/BQN) code within a Ru
 
 ## Native backend (libcbqn.so)
 
-With the native backend (default), please make sure the libcbqn shared object can be found by rustc. For example, assuming `make shared-o3` build has been run in CBQN directory, running the tests for this crate require:
+With the native backend (default), please make sure the libcbqn shared object can be found by rustc. Build `libcbqn.so` with `make shared-o3` in CBQN repository and set up `.cargo/config.toml` as following:
 
 ```
-LD_LIBRARY_PATH=/path/to/CBQN RUSTFLAGS="-L /path/to/CBQN" RUSTDOCFLAGS="$RUSTFLAGS" cargo test
+[build]
+rustflags = "-L/path/to/CBQN"
+rustdocflags = "-L/path/to/CBQN"
+```
+
+To make the executable aware of libcbqn.so, if no global install is available for you, you can use `LD_LIBRARY_PATH` to tell where to load `libcbqn.so` from:
+
+```
+LD_LIBRARY_PATH=/path/to/CBQN cargo test
 ```
 
 ## WASI backend (BQN.wasm)

@@ -262,10 +262,12 @@ impl BQNValue {
         Ok(objarr.into_iter().map(BQNValue::new).collect())
     }
 
+    /// Returns the rank of `BQNValue`, same as `=a`
     pub fn rank(&self) -> usize {
         bqn_rank(self.value).unwrap()
     }
 
+    /// Returns the shape of `BQNValue`, same as `≢a`
     pub fn shape(&self) -> Vec<usize> {
         let rank = self.rank();
         let mut shape = Vec::with_capacity(rank);

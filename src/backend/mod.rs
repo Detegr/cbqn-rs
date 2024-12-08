@@ -25,9 +25,9 @@ mod native;
 mod eval {
     use super::*;
     use crate::BQNValue;
-    use once_cell::sync::OnceCell;
+    use std::sync::OnceLock;
 
-    static REBQN: OnceCell<BQNValue> = OnceCell::new();
+    static REBQN: OnceLock<BQNValue> = OnceLock::new();
 
     pub fn backend_eval(bqn: &str) -> Result<BQNValue> {
         let rebqn = REBQN.get_or_init(|| {

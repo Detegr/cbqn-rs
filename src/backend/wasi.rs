@@ -5,8 +5,7 @@ use super::{
     Error, Result,
 };
 use crate::BQNValue;
-use once_cell::sync::Lazy;
-use std::{cell::UnsafeCell, io::Read, mem, num::TryFromIntError};
+use std::{cell::UnsafeCell, io::Read, mem, num::TryFromIntError, sync::LazyLock};
 use wasmer::*;
 use wasmer_wasix::{virtual_fs, Pipe, WasiEnv};
 
@@ -95,7 +94,7 @@ macro_rules! wasmfn(($instance:ident, $store:ident, $name:expr) => {
 
 static WASM_BYTES: &'static [u8] = include_bytes!(env!("BQN_WASM"));
 
-static BQNFFI: Lazy<BqnFfi> = Lazy::new(|| {
+static BQNFFI: LazyLock<BqnFfi> = LazyLock::new(|| {
     let compiler_config = Cranelift::default();
     let mut store = Store::new(compiler_config);
     let module = Module::new(&store, WASM_BYTES).expect("Create module");

@@ -91,9 +91,10 @@
 mod backend;
 use backend::*;
 
-use once_cell::sync::Lazy;
 use parking_lot::ReentrantMutex;
-use std::{cell::RefCell, fmt, mem, sync::Once};
+use std::cell::RefCell;
+use std::{fmt, mem};
+use std::sync::{LazyLock, Once};
 
 #[cfg(test)]
 mod tests;
@@ -105,7 +106,7 @@ mod macros;
 pub use backend::Error;
 pub use bqntype::BQNType;
 
-static LOCK: Lazy<ReentrantMutex<()>> = Lazy::new(|| ReentrantMutex::new(()));
+static LOCK: LazyLock<ReentrantMutex<()>> = LazyLock::new(|| ReentrantMutex::new(()));
 static INIT: Once = Once::new();
 
 /// Represents a BQN value

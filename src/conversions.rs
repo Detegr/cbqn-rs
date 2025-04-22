@@ -68,8 +68,15 @@ impl<const N: usize> From<[BQNValue; N]> for BQNValue {
             let _l = LOCK.lock();
             bqn_init().unwrap()
         });
-        let elems = arr.into_iter().map(|v| v.value).collect::<Vec<_>>();
         let _l = LOCK.lock();
+        let elems = arr
+            .into_iter()
+            .map(|v| {
+                let val = v.value;
+                std::mem::forget(v);
+                val
+            })
+            .collect::<Vec<_>>();
         BQNValue::new(bqn_makeObjVec(&elems).unwrap())
     }
 }
@@ -85,8 +92,11 @@ impl From<&[BQNValue]> for BQNValue {
             bqn_init().unwrap()
         });
 
-        let elems = arr.iter().map(|v| v.value).collect::<Vec<_>>();
         let _l = LOCK.lock();
+        let elems = arr
+            .iter()
+            .map(|v| bqn_copy(v.value).expect("bqn_copy"))
+            .collect::<Vec<_>>();
         BQNValue::new(bqn_makeObjVec(&elems).unwrap())
     }
 }
@@ -102,7 +112,14 @@ impl From<Vec<BQNValue>> for BQNValue {
             bqn_init().unwrap();
         });
 
-        let elems = arr.into_iter().map(|v| v.value).collect::<Vec<_>>();
+        let elems = arr
+            .into_iter()
+            .map(|v| {
+                let val = v.value;
+                std::mem::forget(v);
+                val
+            })
+            .collect::<Vec<_>>();
         let _l = LOCK.lock();
         BQNValue::new(bqn_makeObjVec(&elems).unwrap())
     }
@@ -124,7 +141,11 @@ impl FromIterator<BQNValue> for BQNValue {
 
         let elems = iter
             .into_iter()
-            .map(|v| bqn_copy(v.value).expect("bqn_copy"))
+            .map(|v| {
+                let val = v.value;
+                std::mem::forget(v);
+                val
+            })
             .collect::<Vec<_>>();
         let _l = LOCK.lock();
         BQNValue::new(bqn_makeObjVec(&elems).unwrap())

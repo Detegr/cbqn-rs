@@ -93,8 +93,8 @@ use backend::*;
 
 use parking_lot::ReentrantMutex;
 use std::cell::RefCell;
-use std::{fmt, mem};
 use std::sync::{LazyLock, Once};
+use std::{fmt, mem};
 
 #[cfg(test)]
 mod tests;

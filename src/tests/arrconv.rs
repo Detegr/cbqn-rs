@@ -108,3 +108,59 @@ fn arr_to_bqnvalue_vec() {
         [12.0, 34.0]
     );
 }
+
+#[test]
+fn bqnvalue_array_to_bqnvalue_vec() {
+    let arr = [BQN!("1").unwrap(), BQN!("2").unwrap()];
+    let bqnv = BQNValue::from(arr);
+    let bqnv_vec = bqnv.to_bqnvalue_vec().unwrap();
+    assert_eq!(
+        bqnv_vec
+            .into_iter()
+            .map(|bqnv| bqnv.to_f64().unwrap())
+            .collect::<Vec<_>>(),
+        [1.0, 2.0]
+    );
+}
+
+#[test]
+fn bqnvalue_slice_to_bqnvalue_vec() {
+    let arr = [BQN!("1").unwrap(), BQN!("2").unwrap()];
+    let bqnv = BQNValue::from(&arr[..]);
+    let bqnv_vec = bqnv.to_bqnvalue_vec().unwrap();
+    assert_eq!(
+        bqnv_vec
+            .into_iter()
+            .map(|bqnv| bqnv.to_f64().unwrap())
+            .collect::<Vec<_>>(),
+        [1.0, 2.0]
+    );
+}
+
+#[test]
+fn bqnvalue_vec_to_bqnvalue_vec() {
+    let vec = vec![BQN!("1").unwrap(), BQN!("2").unwrap()];
+    let bqnv = BQNValue::from(vec);
+    let bqnv_vec = bqnv.to_bqnvalue_vec().unwrap();
+    assert_eq!(
+        bqnv_vec
+            .into_iter()
+            .map(|bqnv| bqnv.to_f64().unwrap())
+            .collect::<Vec<_>>(),
+        [1.0, 2.0]
+    );
+}
+
+#[test]
+fn bqnvalue_iter_to_bqnvalue_vec() {
+    let vec = vec![BQN!("1").unwrap(), BQN!("2").unwrap()];
+    let bqnv = vec.into_iter().collect::<BQNValue>();
+    let bqnv_vec = bqnv.to_bqnvalue_vec().unwrap();
+    assert_eq!(
+        bqnv_vec
+            .into_iter()
+            .map(|bqnv| bqnv.to_f64().unwrap())
+            .collect::<Vec<_>>(),
+        [1.0, 2.0]
+    );
+}

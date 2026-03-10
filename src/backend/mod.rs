@@ -42,8 +42,8 @@ mod eval {
             )
         });
         let ret = rebqn.call1(&BQNValue::from(bqn))?;
-        let err = bqn_pick(ret.value, 0)?;
-        if err != 0 {
+        let err = BQNValue::new(bqn_pick(ret.value, 0)?);
+        if err.to_f64()? != 0.0 {
             let error = BQNValue::new(bqn_pick(ret.value, 1)?);
             Err(Error::CBQN(error.to_string()?))
         } else {

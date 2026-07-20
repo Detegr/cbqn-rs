@@ -82,7 +82,12 @@ pub fn bqn_makeObjVec(a: &[BQNV]) -> Result<BQNV> {
 }
 
 pub fn bqn_makeUTF8Str(s: &str) -> Result<BQNV> {
-    Ok(unsafe { bindings::bqn_makeUTF8Str(s.len().try_into().unwrap(), s.as_ptr() as *const i8) })
+    Ok(unsafe {
+        bindings::bqn_makeUTF8Str(
+            s.len().try_into().unwrap(),
+            s.as_ptr() as *const std::os::raw::c_char,
+        )
+    })
 }
 
 pub fn bqn_pick(v: BQNV, pos: usize) -> Result<BQNV> {
